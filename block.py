@@ -1,7 +1,6 @@
 class Block:
-    content = []
-    start = []
-    end = []
+    start = 0
+    end = 0
 
     # def __init__(self, content):
     #     self.content = []
@@ -13,4 +12,4 @@ class Block:
         self.end = index
 
     def length(self):
-        return len(self.content)
+        return self.end - self.start
