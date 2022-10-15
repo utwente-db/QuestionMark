@@ -1,2 +1,3 @@
-/offers_corpus_english_v2.json.gz
+/datasets/*
 /.idea/workspace.xml
+/notepad.py

@@ -4,28 +4,10 @@ import time
 
 from block import Block
 from window import Window
-from Levenshtein import distance
+from offer_distance import levenshtein
 
 WZ = 2  # window size
 PHI = 0.5  # similarity threshold
-
-
-def get_distance(word1, word2):
-    if not word1 and not word2:
-        dist = 0
-        length = 1
-    elif not word1:
-        dist = len(word2)
-        length = len(word2)
-    elif not word2:
-        dist = len(word1)
-        length = len(word1)
-    else:
-        dist = distance(word1, word2)
-        length = (len(word1) + len(word2)) / 2
-    dist_percent = (dist / length)
-    # print('dist: ', dist_percent)
-    return dist_percent
 
 
 # TODO: determine value phi and wz
@@ -38,7 +20,6 @@ def asn_blocker(jsonzip):
     index = 0
 
     with gzip.open(jsonzip) as offers_file:  # Open the sorted dataset
-
         for offer in offers_file:
             offers.append(json.loads(offer.decode('utf-8')))
 
@@ -52,13 +33,13 @@ def asn_blocker(jsonzip):
             index = window.last
         else:
             # enlargement
-            if get_distance(offers[block.start].get('title'), offers[window.last].get('title')) <= PHI:
+            if levenshtein(offers[block.start].get('title'), offers[window.last].get('title')) <= PHI:
                 window.last += WZ
                 index += WZ
             # retrenchment and create block
             else:
                 for i in range(index, index - WZ - 1, -1):
-                    if get_distance(offers[block.start].get('title'), offers[index].get('title')) <= PHI:
+                    if levenshtein(offers[block.start].get('title'), offers[index].get('title')) <= PHI:
                         block.end = index
                         blocks.append(block)
                         # print(block.start, block.end)
