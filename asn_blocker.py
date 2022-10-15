@@ -4,13 +4,14 @@ import time
 
 from block import Block
 from window import Window
-from offer_distance import levenshtein
+from offer_distance import *
 
 WZ = 2  # window size
 PHI = 0.5  # similarity threshold
 
 
 # TODO: determine value phi and wz
+# Based on the paper of Yan et al. (2007) Adaptive Sorted Neighborhood Methods for Efficient Record Linkage.
 def asn_blocker(jsonzip):
     blocks = []
     offers = []
@@ -33,13 +34,13 @@ def asn_blocker(jsonzip):
             index = window.last
         else:
             # enlargement
-            if levenshtein(offers[block.start].get('title'), offers[window.last].get('title')) <= PHI:
+            if jarowinkler(offers[block.start].get('title'), offers[window.last].get('title')) <= PHI:
                 window.last += WZ
                 index += WZ
             # retrenchment and create block
             else:
                 for i in range(index, index - WZ - 1, -1):
-                    if levenshtein(offers[block.start].get('title'), offers[index].get('title')) <= PHI:
+                    if jarowinkler(offers[block.start].get('title'), offers[index].get('title')) <= PHI:
                         block.end = index
                         blocks.append(block)
                         # print(block.start, block.end)
@@ -75,10 +76,12 @@ def time_exec(dataset, iterations):
 
 
 if __name__ == '__main__':
-    # # #  Incrementally Adaptive Sorted Neighborhood blocking   --> 50 000 records in 320 ms over 50 runs average.
-    asn_blocker('datasets/offers_corpus_english_v2_sorted.json.gz')  # normal execution.
-    # time_exec('datasets/offers_corpus_english_v2_sorted.json.gz', 50)  # for a timed run.
+    # # #  Incrementally Adaptive Sorted Neighborhood blocking   --> .
+    # asn_blocker('datasets/offers_corpus_english_v2_sorted.json.gz')  # normal execution.
+    time_exec('datasets/offers_corpus_english_v2_sorted.json.gz', 50)  # for a timed run.
 
     # debug(blocks)
     # print(get_distance('hello', 'hella'))
     # print(get_distance('blabla', 'something'))
+
+

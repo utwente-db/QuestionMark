@@ -1,0 +1,14 @@
+# # # Information on run times:
+
+# The provided time is the average over the amount of runs, displayed between parenthesis at the end.
+
+# # Adaptive Sorted Neighborhood blocking
+
+# time:    dataset size,   distance,     parameters,        # iterations
+# 320 ms:  50 000 records, Levenshtein,  phi = 0.5, wz = 2. (50 runs)
+# 2130 ms: 50 000 records, Jaro-Winkler, phi = 0.5, wz = 2. (50 runs)
+# 2160 ms: 50 000 records, Jaro,         phi = 0.5, wz = 2.
+
+# # Improved Suffix Array blocking
+
+# todo.
