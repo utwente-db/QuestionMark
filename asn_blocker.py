@@ -6,21 +6,21 @@ from block import Block
 from window import Window
 from offer_distance import *
 
-WZ = 2  # window size
+WS = 2  # window size
 PHI = 0.5  # similarity threshold
 
 
 # TODO: determine value phi and wz
 # Based on the paper of Yan et al. (2007) Adaptive Sorted Neighborhood Methods for Efficient Record Linkage.
-def asn_blocker(jsonzip):
+def asn_blocker(dataset):
     blocks = []
     offers = []
 
-    window = Window(WZ, 0)
+    window = Window(WS, 0)
     block = Block()
     index = 0
 
-    with gzip.open(jsonzip) as offers_file:  # Open the sorted dataset
+    with gzip.open(dataset) as offers_file:  # Open the sorted dataset
         for offer in offers_file:
             offers.append(json.loads(offer.decode('utf-8')))
 
@@ -35,21 +35,21 @@ def asn_blocker(jsonzip):
         else:
             # enlargement
             if jarowinkler(offers[block.start].get('title'), offers[window.last].get('title')) <= PHI:
-                window.last += WZ
-                index += WZ
+                window.last += WS
+                index += WS
             # retrenchment and create block
             else:
-                for i in range(index, index - WZ - 1, -1):
-                    if jarowinkler(offers[block.start].get('title'), offers[index].get('title')) <= PHI:
+                for i in range(index, index - WS - 1, -1):
+                    if levenshtein(offers[block.start].get('title'), offers[index].get('title')) <= PHI:
                         block.end = index
                         blocks.append(block)
                         # print(block.start, block.end)
                         block = Block()
                         index += 1
                         window.first = index
-                        window.last = window.first + WZ
+                        window.last = window.first + WS
                         block.start = window.first
-                        index += WZ
+                        index += WS
                         continue
                     index -= 1
     return blocks
@@ -81,7 +81,6 @@ if __name__ == '__main__':
     time_exec('datasets/offers_corpus_english_v2_sorted.json.gz', 50)  # for a timed run.
 
     # debug(blocks)
-    # print(get_distance('hello', 'hella'))
-    # print(get_distance('blabla', 'something'))
+
 
 

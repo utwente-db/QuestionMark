@@ -11,4 +11,8 @@
 
 # # Improved Suffix Array blocking
 
+# time
+# time:    dataset size,   distance,     parameters,                   # iterations
+# 320 ms:  50 000 records, Levenshtein,  msl = 3, mbs = 30, phi = 0.4. (50 runs)
+
 # todo.
