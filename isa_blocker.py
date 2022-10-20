@@ -35,7 +35,9 @@ def isa_blocker(dataset):
     with gzip.open(dataset) as offers_file:  # Open the sorted dataset
         for line in offers_file:
             offer = json.loads(line.decode('utf-8'))
-            bkv = offer.get('category') + offer.get('brand') + offer.get('title')  # blocking key value
+            bkv = ((offer.get('category') if offer.get('category') else '') +
+                   (offer.get('brand') if offer.get('brand') else '') +
+                   (offer.get('title') if offer.get('title') else ''))  # blocking key value
             suffixes = get_suffixes(bkv)
             for suffix in suffixes:
                 if suffix not in ii:
@@ -63,6 +65,7 @@ def isa_blocker(dataset):
             block = fill_block(block, offers)
         prev_suffix = suffix
 
+    print(blocks)
     return blocks
 
 
@@ -81,8 +84,8 @@ def debug():
 
 if __name__ == '__main__':
     # # #  Incrementally Adaptive Sorted Neighborhood blocking   --> 50 000 records in x ms over 50 runs average.
-    # isa_blocker('datasets/offers_corpus_english_v2_sorted.json.gz')  # normal execution.
-    time_exec('datasets/offers_corpus_english_v2_sorted.json.gz', 50)  # for a timed run.
+    isa_blocker('datasets/offers_corpus_english_v2_sorted.json.gz')  # normal execution.
+    # time_exec('datasets/offers_corpus_english_v2_sorted.json.gz', 50)  # for a timed run.
 
     # blocks = isa_blocker('datasets/offers_corpus_english_v2_sorted.json.gz')  # normal execution.
     # print(blocks)

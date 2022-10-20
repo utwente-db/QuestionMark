@@ -2,7 +2,6 @@ import gzip
 import json
 import time
 
-from block import Block
 from window import Window
 from offer_distance import *
 
@@ -10,14 +9,20 @@ WS = 2  # window size
 PHI = 0.5  # similarity threshold
 
 
-# TODO: determine value phi and wz
+def get_blocks(blocks, offers):
+    blocks_filled: {}
+    for block in blocks:
+        for offer in range(block.start, block.end):
+            pass
+
+
 # Based on the paper of Yan et al. (2007) Adaptive Sorted Neighborhood Methods for Efficient Record Linkage.
 def asn_blocker(dataset):
     blocks = []
     offers = []
 
     window = Window(WS, 0)
-    block = Block()
+    block = []
     index = 0
 
     with gzip.open(dataset) as offers_file:  # Open the sorted dataset
@@ -34,21 +39,21 @@ def asn_blocker(dataset):
             index = window.last
         else:
             # enlargement
-            if jarowinkler(offers[block.start].get('title'), offers[window.last].get('title')) <= PHI:
+            if levenshtein(offers[window.first].get('title'), offers[window.last].get('title')) <= PHI:
                 window.last += WS
                 index += WS
             # retrenchment and create block
             else:
                 for i in range(index, index - WS - 1, -1):
-                    if levenshtein(offers[block.start].get('title'), offers[index].get('title')) <= PHI:
-                        block.end = index
+                    if levenshtein(offers[window.first].get('title'), offers[index].get('title')) <= PHI:
+                        for offer in (offers[window.first:window.last + 1]):
+                            block.append(offer.get('id'))
                         blocks.append(block)
                         # print(block.start, block.end)
-                        block = Block()
+                        block = []
                         index += 1
                         window.first = index
                         window.last = window.first + WS
-                        block.start = window.first
                         index += WS
                         continue
                     index -= 1
