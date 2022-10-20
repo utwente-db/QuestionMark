@@ -1,12 +1,11 @@
 import gzip
 import json
-import time
+import sys
 
 from window import Window
-from offer_distance import *
-
-WS = 2  # window size
-PHI = 0.5  # similarity threshold
+from offer_distance import levenshtein
+from offer_distance import jarowinkler
+from parameters import PHI, WS, DIST
 
 
 def get_blocks(blocks, offers):
@@ -39,13 +38,27 @@ def asn_blocker(dataset):
             index = window.last
         else:
             # enlargement
-            if levenshtein(offers[window.first].get('title'), offers[window.last].get('title')) <= PHI:
+            if DIST == 'levenshtein':
+                distance = levenshtein(offers[window.first].get('title'), offers[window.last].get('title'))
+            elif DIST == 'jarowinkler':
+                distance = jarowinkler(offers[window.first].get('title'), offers[window.last].get('title'))
+            else:
+                sys.exit("Please input for the parameter DIST in parameters.py either 'levenshtein' or 'jarowinkler'.")
+            if distance <= PHI:
                 window.last += WS
                 index += WS
             # retrenchment and create block
             else:
                 for i in range(index, index - WS - 1, -1):
-                    if levenshtein(offers[window.first].get('title'), offers[index].get('title')) <= PHI:
+                    if DIST == 'levenshtein':
+                        distance = levenshtein(offers[window.first].get('title'), offers[index].get('title'))
+                    elif DIST == 'jarowinkler':
+                        distance = jarowinkler(offers[window.first].get('title'), offers[index].get('title'))
+                    else:
+                        sys.exit(
+                            "Please input for the parameter DIST in parameters.py either"
+                            " 'levenshtein' or 'jarowinkler'.")
+                    if distance <= PHI:
                         for offer in (offers[window.first:window.last + 1]):
                             block.append(offer.get('id'))
                         blocks.append(block)
@@ -60,32 +73,11 @@ def asn_blocker(dataset):
     return blocks
 
 
-def debug(block_s):
-    count = 0
-    for b in block_s:
-        if not b.end == b.start:
-            print('block: ', b.start, b.end)
-        else:
-            count += 1
-    print('number of single blocks: ', count)
-    return
-
-
-def time_exec(dataset, iterations):
-    st = time.time()  # start time
-    for run in range(iterations):
-        asn_blocker(dataset)
-    et = time.time()  # end time
-    print("program duration: ", (et - st) * 10**3, "ms")
-    print("average duration: ", ((et - st) * 10**3) / iterations, "ms")
-
-
 if __name__ == '__main__':
-    # # #  Incrementally Adaptive Sorted Neighborhood blocking   --> .
-    # asn_blocker('datasets/offers_corpus_english_v2_sorted.json.gz')  # normal execution.
-    time_exec('datasets/offers_corpus_english_v2_sorted.json.gz', 50)  # for a timed run.
+    # # #  Incrementally Adaptive Sorted Neighborhood blocking
+    asn_blocker('datasets/offers_corpus_english_v2_sorted.json.gz')  # normal execution.
 
-    # debug(blocks)
+    # To measure the performance of this blocking algorithm, use blocker_performance.py
 
 
 

@@ -4,6 +4,7 @@ import time
 from asn_blocker import asn_blocker
 from gold_standard_dataset import get_matches
 from isa_blocker import isa_blocker
+from parameters import BLOCK, ITERS
 
 
 def get_blocks(dataset, blocker):
@@ -71,20 +72,22 @@ def get_runtime(dataset, blocker, iterations):
     return ((et - st) * 10**3) / iterations
 
 
-def full_performance_scan(dataset, blocker, iterations):
+def full_performance_scan(dataset):
+    blocker = BLOCK
+    iterations = ITERS
     blocks = get_blocks(dataset, blocker)
     tp, _, fp, fn = get_dataset_measures(blocks)
     precision = get_precision(tp, fp)
     recall    = get_recall(tp, fn)
     runtime   = get_runtime(dataset, blocker, iterations)
-    print('The ', blocker, ' blocking algorithm has the following performance:')
-    print('Precision: ', precision)
-    print('Recall: ', recall)
-    print('Average runtime over ', iterations, ' runs: ', runtime)
+    print('The', blocker, 'blocking algorithm has the following performance:')
+    print('Precision:', precision)
+    print('Recall:', recall)
+    print('Average runtime over', iterations, 'runs:', runtime)
 
 
 if __name__ == '__main__':
     # # #  Incrementally Adaptive Sorted Neighborhood blocking
-    full_performance_scan('datasets/offers_corpus_english_v2_gs.json.gz', 'asn', 1)
+    full_performance_scan('datasets/offers_corpus_english_v2_gs.json.gz')
 
     
