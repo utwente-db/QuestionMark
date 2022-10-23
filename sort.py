@@ -2,7 +2,7 @@ import gzip
 import json
 import time
 
-MAX_INSERT = 50000
+MAX_INSERT = 200000000  # no max
 ATTRS = ['description', 'identifiers', 'keyValuePairs', 'price', 'specTableContent']  # non key-attributes
 
 
@@ -39,8 +39,11 @@ def time_exec(dataset, iterations):
 
 if __name__ == '__main__':
     # # #  Sorting the dataset   --> 50 000 records in 710 ms over 50 runs average.
-    # # #  The generated dataset should be manually gzipped before use.
+    # # #  NOTE: The generated dataset should be manually gzipped before use.
+
     # sort_offers('datasets/offers_corpus_english_v2.json.gz', 'datasets/offers_corpus_english_v2_sorted.json')
-    sort_offers('datasets/offers_corpus_english_v2_gs.json.gz', 'datasets/offers_corpus_english_v2_gs_sorted.json')
+    # sort_offers('datasets/offers_corpus_english_v2_gs.json.gz', 'datasets/offers_corpus_english_v2_gs_sorted.json')
+    sort_offers('datasets/offers_corpus_english_v2_gs_50p.json.gz',
+                'datasets/offers_corpus_english_v2_gs_50p_sorted.json')
     # time_exec('datasets/offers_corpus_english_v2.json.gz', 50)  # for a timed run.
 

@@ -3,9 +3,21 @@ import json
 import collections
 import sys
 
-from offer_distance import levenshtein
-from offer_distance import jarowinkler
+from offer_distance import *
 from parameters import MSL, MBS, PHI, DIST
+
+
+def get_distance(word1, word2):
+    if DIST == 'levenshtein':
+        return levenshtein(word1, word2)
+    elif DIST == 'jarowinkler':
+        return jarowinkler(word1, word2)
+    elif DIST == 'hamming':
+        return hamming(word1, word2)
+    elif DIST == 'jaccard':
+        return jaccard(word1, word2)
+    else:
+        sys.exit("Please input a valid value for DIST in parameters.py.")
 
 
 def get_suffixes(bkv):
@@ -55,13 +67,8 @@ def isa_blocker(dataset):
     prev_suffix = ''
     block = []
     for suffix, offers in ord_ii.items():
-        if DIST == 'levenshtein':
-            distance = levenshtein(prev_suffix, suffix)
-        elif DIST == 'jarowinkler':
-            distance = jarowinkler(prev_suffix, suffix)
-        else:
-            sys.exit("Please input for the parameter DIST in parameters.py either 'levenshtein' or 'jarowinkler'.")
-        if distance < PHI:
+        dist = get_distance(prev_suffix, suffix)
+        if dist < PHI:
             block = fill_block(block, offers)
         else:
             blocks.append(block)
@@ -69,15 +76,14 @@ def isa_blocker(dataset):
             block = fill_block(block, offers)
         prev_suffix = suffix
 
-    print(blocks)
     return blocks
 
 
 if __name__ == '__main__':
     # # #  Incrementally Adaptive Sorted Neighborhood blocking
-    isa_blocker('datasets/offers_corpus_english_v2_sorted.json.gz')
+    isa_blocker('datasets/offers_corpus_english_v2_sorted_small.json.gz')
 
     # To measure the performance of this blocking algorithm, use blocker_performance.py
 
-    # blocks = isa_blocker('datasets/offers_corpus_english_v2_sorted.json.gz')  # normal execution.
+    # blocks = isa_blocker('datasets/offers_corpus_english_v2_sorted_small.json.gz')  # normal execution.
     # print(blocks)

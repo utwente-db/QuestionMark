@@ -3,16 +3,28 @@ import json
 import sys
 
 from window import Window
-from offer_distance import levenshtein
-from offer_distance import jarowinkler
+from offer_distance import *
 from parameters import PHI, WS, DIST
 
 
-def get_blocks(blocks, offers):
+def get_blocks(blocks):
     blocks_filled: {}
     for block in blocks:
         for offer in range(block.start, block.end):
             pass
+
+
+def get_distance(word1, word2):
+    if DIST == 'levenshtein':
+        return levenshtein(word1, word2)
+    elif DIST == 'jarowinkler':
+        return jarowinkler(word1, word2)
+    elif DIST == 'hamming':
+        return hamming(word1, word2)
+    elif DIST == 'jaccard':
+        return jaccard(word1, word2)
+    else:
+        sys.exit("Please input a valid value for DIST in parameters.py.")
 
 
 # Based on the paper of Yan et al. (2007) Adaptive Sorted Neighborhood Methods for Efficient Record Linkage.
@@ -38,31 +50,18 @@ def asn_blocker(dataset):
             index = window.last
         else:
             # enlargement
-            if DIST == 'levenshtein':
-                distance = levenshtein(offers[window.first].get('title'), offers[window.last].get('title'))
-            elif DIST == 'jarowinkler':
-                distance = jarowinkler(offers[window.first].get('title'), offers[window.last].get('title'))
-            else:
-                sys.exit("Please input for the parameter DIST in parameters.py either 'levenshtein' or 'jarowinkler'.")
-            if distance <= PHI:
+            dist = get_distance(offers[window.first].get('title'), offers[window.last].get('title'))
+            if dist <= PHI:
                 window.last += WS
                 index += WS
             # retrenchment and create block
             else:
                 for i in range(index, index - WS - 1, -1):
-                    if DIST == 'levenshtein':
-                        distance = levenshtein(offers[window.first].get('title'), offers[index].get('title'))
-                    elif DIST == 'jarowinkler':
-                        distance = jarowinkler(offers[window.first].get('title'), offers[index].get('title'))
-                    else:
-                        sys.exit(
-                            "Please input for the parameter DIST in parameters.py either"
-                            " 'levenshtein' or 'jarowinkler'.")
-                    if distance <= PHI:
+                    dist = get_distance(offers[window.first].get('title'), offers[index].get('title'))
+                    if dist <= PHI:
                         for offer in (offers[window.first:window.last + 1]):
                             block.append(offer.get('id'))
                         blocks.append(block)
-                        # print(block.start, block.end)
                         block = []
                         index += 1
                         window.first = index
@@ -75,7 +74,7 @@ def asn_blocker(dataset):
 
 if __name__ == '__main__':
     # # #  Incrementally Adaptive Sorted Neighborhood blocking
-    asn_blocker('datasets/offers_corpus_english_v2_sorted.json.gz')  # normal execution.
+    asn_blocker('datasets/offers_corpus_english_v2_sorted_small.json.gz')  # normal execution.
 
     # To measure the performance of this blocking algorithm, use blocker_performance.py
 

@@ -1,18 +1,56 @@
-# # # Information on run times:
+# Information on run times:
 
-# The provided time is the average over the amount of runs, displayed between parenthesis at the end.
+The provided time is the average over the amount of runs (iterations).
+
 
 # # Adaptive Sorted Neighborhood blocking
 
-# time:    dataset size,   distance,     parameters,        # iterations
-# 320 ms:  50 000 records, Levenshtein,  phi = 0.5, wz = 2. (50 runs)
-# 2130 ms: 50 000 records, Jaro-Winkler, phi = 0.5, wz = 2. (50 runs)
-# 2160 ms: 50 000 records, Jaro,         phi = 0.5, wz = 2.
+time, precision, recall:  dataset size,  distance,     parameters,         # iterations
+121 ms,   0.692, 0.934:   4 687 records, Levenshtein,  phi = 0.2, wz = 2.  20 runs
+178 ms,   0.671, 0.934:   4 687 records, Jaro,         phi = 0.2, wz = 2.  20 runs
+182 ms,   0.595, 0.931:   4 687 records, Jaro-Winkler, phi = 0.2, wz = 2.  20 runs
+676 ms,   0.712, 0.935:   4 687 records, Hamming,      phi = 0.2, wz = 2.  20 runs
+599 ms,   0.680, 0.934:   4 687 records, Jaccard,      phi = 0.2, wz = 2.  20 runs
+
+140 ms,   0.721, 0.935:   4 687 records, Levenshtein,  phi = 0.01,wz = 2.  20 runs
+140 ms,   0.715, 0.935:   4 687 records, Levenshtein,  phi = 0.05,wz = 2.  20 runs
+134 ms,   0.707, 0.935:   4 687 records, Levenshtein,  phi = 0.1, wz = 2.  20 runs
+133 ms,   0.678, 0.934:   4 687 records, Levenshtein,  phi = 0.3, wz = 2.  20 runs
+139 ms,   0.645, 0.933:   4 687 records, Levenshtein,  phi = 0.4, wz = 2.  20 runs
+
+122 ms,   0.754, 0.760:   4 687 records, Levenshtein,  phi = 0.2, wz = 1.  20 runs
+167 ms,   0.589, 0.932:   4 687 records, Levenshtein,  phi = 0.2, wz = 3.  20 runs
+133 ms,   0.678, 0.934:   4 687 records, Levenshtein,  phi = 0.2, wz = 4.  20 runs  # WHY DOES THIS CRASH??
+139 ms,   0.645, 0.933:   4 687 records, Levenshtein,  phi = 0.2, wz = 5.  20 runs
+
+19 ms,    0.707, 0.935:   1 171 records, Levenshtein,  phi = 0.2, wz = 2.  40 runs
+33 ms,    0.707, 0.935:   2 343 records, Levenshtein,  phi = 0.2, wz = 2.  40 runs
+
+
+599 ms,   0.680, 0.934:   4 687 records, Jaccard,      phi = 0.5, wz = 2.  20 runs  # WHY DOES THIS CRASH??
+
+
+
 
 # # Improved Suffix Array blocking
 
-# time
-# time:    dataset size,   distance,     parameters,                   # iterations
-# 320 ms:  50 000 records, Levenshtein,  msl = 3, mbs = 30, phi = 0.4. (50 runs)
+For the content of the selected dataset, the Improved Suffix Array blocking technique does not fit.
+This algorithm works best when comparing complete data of small strings.
 
-# todo.
+time, precision, recall:  dataset size,   distance,     parameters,                   # iterations
+2857 ms,  0.207, 0.186:   4 687 records, Levenshtein,  msl = 3, mbs = 30, phi = 0.2.  10 runs
+2857 ms,  0.234, 0.250:   4 687 records, Levenshtein,  msl = 3, mbs = 30, phi = 0.3.  10 runs
+2801 ms,  0.259, 0.319:   4 687 records, Levenshtein,  msl = 3, mbs = 30, phi = 0.4.  10 runs
+
+2836 ms,  0.293, 0.408:   4 687 records, Levenshtein,  msl = 3, mbs = 10, phi = 0.5.  10 runs
+3046 ms,  0.276, 0.411:   4 687 records, Levenshtein,  msl = 3, mbs = 50, phi = 0.5.  10 runs
+3262 ms,  0.267, 0.412:   4 687 records, Levenshtein,  msl = 3, mbs = 80, phi = 0.5.  10 runs
+3681 ms,  0.259, 0.412:   4 687 records, Levenshtein,  msl = 3, mbs = 120,phi = 0.5.  10 runs
+
+2873 ms,  0.282, 0.410:   4 687 records, Levenshtein,  msl = 1, mbs = 30, phi = 0.5.  10 runs
+2863 ms,  0.283, 0.410:   4 687 records, Levenshtein,  msl = 5, mbs = 30, phi = 0.5.  10 runs
+2573 ms,  0.288, 0.403:   4 687 records, Levenshtein,  msl = 15,mbs = 30, phi = 0.5.  10 runs
+
+660 ms,   0.288, 0.403:   1 171 records, Levenshtein,  msl = 3, mbs = 30, phi = 0.5.  10 runs
+1401 ms,  0.288, 0.403:   2 343 records, Levenshtein,  msl = 3, mbs = 30, phi = 0.5.  10 runs
+
