@@ -1,8 +1,8 @@
 # # GLOBAL VARIABLES
 
 # # Choose the blocking algorithm to be applied. Uncomment one.
-# BLOCK = 'asn'
-BLOCK = 'isa'
+BLOCK = 'asn'
+# BLOCK = 'isa'
 
 # # Choose the distance algorithm to be applied. Uncomment one.
 # # Valid values (in case of a delete): levenshtein, jarowinkler, hamming, jaccard, lcsstr.
@@ -14,11 +14,11 @@ DIST = 'levenshtein'  # from the asn paper, fastest
 # DIST = 'jaccard'
 
 # # Choose the amount of iterations for a timed run
-ITERS = 10
+ITERS = 1
 
 # # Change these variables to adjust the settings of the blocking algorithms.
 WS = 2     # Window Size            (asn)
-PHI = 0.5  # Similarity Threshold   (asn / isa)
+PHI = 0.2  # Similarity Threshold   (asn / isa)
 MSL = 3    # Minimum Suffix Length  (isa)
 MBS = 30   # Maximum Block Size     (isa)
 

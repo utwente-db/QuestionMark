@@ -2,7 +2,7 @@ import gzip
 import json
 import time
 
-MAX_INSERT = 200000000  # no max
+MAX_INSERT = 20000000  # no max
 ATTRS = ['description', 'identifiers', 'keyValuePairs', 'price', 'specTableContent']  # non key-attributes
 
 
@@ -43,7 +43,8 @@ if __name__ == '__main__':
 
     # sort_offers('datasets/offers_corpus_english_v2.json.gz', 'datasets/offers_corpus_english_v2_sorted.json')
     # sort_offers('datasets/offers_corpus_english_v2_gs.json.gz', 'datasets/offers_corpus_english_v2_gs_sorted.json')
-    sort_offers('datasets/offers_corpus_english_v2_gs_50p.json.gz',
-                'datasets/offers_corpus_english_v2_gs_50p_sorted.json')
+    # sort_offers('datasets/offers_corpus_english_v2_gs_50p.json.gz',
+    #             'datasets/offers_corpus_english_v2_gs_50p_sorted.json')
+    sort_offers('datasets/offers_corpus_english_v2.json.gz', 'datasets/offers_corpus_english_v2_20k_sorted.json')
     # time_exec('datasets/offers_corpus_english_v2.json.gz', 50)  # for a timed run.
 

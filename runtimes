@@ -5,26 +5,31 @@ The provided time is the average over the amount of runs (iterations).
 
 # # Adaptive Sorted Neighborhood blocking
 
-time, precision, recall:  dataset size,  distance,     parameters,         # iterations
-121 ms,   0.692, 0.934:   4 687 records, Levenshtein,  phi = 0.2, wz = 2.  20 runs
-178 ms,   0.671, 0.934:   4 687 records, Jaro,         phi = 0.2, wz = 2.  20 runs
-182 ms,   0.595, 0.931:   4 687 records, Jaro-Winkler, phi = 0.2, wz = 2.  20 runs
-676 ms,   0.712, 0.935:   4 687 records, Hamming,      phi = 0.2, wz = 2.  20 runs
-599 ms,   0.680, 0.934:   4 687 records, Jaccard,      phi = 0.2, wz = 2.  20 runs
+time, precision, recall: dataset size,  distance,     parameters,         # iterations
+121 ms,   0.692, 0.934:  4 687 records, Levenshtein,  phi = 0.2, wz = 2.  20 runs
+178 ms,   0.671, 0.934:  4 687 records, Jaro,         phi = 0.2, wz = 2.  20 runs
+182 ms,   0.595, 0.931:  4 687 records, Jaro-Winkler, phi = 0.2, wz = 2.  20 runs
+676 ms,   0.712, 0.935:  4 687 records, Hamming,      phi = 0.2, wz = 2.  20 runs
+599 ms,   0.680, 0.934:  4 687 records, Jaccard,      phi = 0.2, wz = 2.  20 runs
 
-140 ms,   0.721, 0.935:   4 687 records, Levenshtein,  phi = 0.01,wz = 2.  20 runs
-140 ms,   0.715, 0.935:   4 687 records, Levenshtein,  phi = 0.05,wz = 2.  20 runs
-134 ms,   0.707, 0.935:   4 687 records, Levenshtein,  phi = 0.1, wz = 2.  20 runs
-133 ms,   0.678, 0.934:   4 687 records, Levenshtein,  phi = 0.3, wz = 2.  20 runs
-139 ms,   0.645, 0.933:   4 687 records, Levenshtein,  phi = 0.4, wz = 2.  20 runs
+140 ms,   0.721, 0.935:  4 687 records, Levenshtein,  phi = 0.01,wz = 2.  20 runs
+140 ms,   0.715, 0.935:  4 687 records, Levenshtein,  phi = 0.05,wz = 2.  20 runs
+134 ms,   0.707, 0.935:  4 687 records, Levenshtein,  phi = 0.1, wz = 2.  20 runs
+133 ms,   0.678, 0.934:  4 687 records, Levenshtein,  phi = 0.3, wz = 2.  20 runs
+139 ms,   0.645, 0.933:  4 687 records, Levenshtein,  phi = 0.4, wz = 2.  20 runs
 
-122 ms,   0.754, 0.760:   4 687 records, Levenshtein,  phi = 0.2, wz = 1.  20 runs
-167 ms,   0.589, 0.932:   4 687 records, Levenshtein,  phi = 0.2, wz = 3.  20 runs
-133 ms,   0.678, 0.934:   4 687 records, Levenshtein,  phi = 0.2, wz = 4.  20 runs  # WHY DOES THIS CRASH??
-139 ms,   0.645, 0.933:   4 687 records, Levenshtein,  phi = 0.2, wz = 5.  20 runs
+122 ms,   0.754, 0.760:  4 687 records, Levenshtein,  phi = 0.2, wz = 1.  20 runs
+167 ms,   0.589, 0.932:  4 687 records, Levenshtein,  phi = 0.2, wz = 3.  20 runs
+133 ms,   0.678, 0.934:  4 687 records, Levenshtein,  phi = 0.2, wz = 4.  20 runs  # WHY DOES THIS CRASH??
+139 ms,   0.645, 0.933:  4 687 records, Levenshtein,  phi = 0.2, wz = 5.  20 runs
 
-19 ms,    0.707, 0.935:   1 171 records, Levenshtein,  phi = 0.2, wz = 2.  40 runs
-33 ms,    0.707, 0.935:   2 343 records, Levenshtein,  phi = 0.2, wz = 2.  40 runs
+19 ms,      N/A:         1 171 records, Levenshtein,  phi = 0.2, wz = 2.  40 runs
+33 ms,      N/A:         2 343 records, Levenshtein,  phi = 0.2, wz = 2.  40 runs
+410 ms,     N/A:        20 000 records, Levenshtein,  phi = 0.2, wz = 2.  10 runs
+7532 ms,    N/A:        80 000 records, Levenshtein,  phi = 0.2, wz = 2.  10 runs
+42778 ms,   N/A:       200 000 records, Levenshtein,  phi = 0.2, wz = 2.  5  runs
+2276543 ms, N/A:       999 000 records, Levenshtein,  phi = 0.2, wz = 2.  1  runs
+
 
 
 599 ms,   0.680, 0.934:   4 687 records, Jaccard,      phi = 0.5, wz = 2.  20 runs  # WHY DOES THIS CRASH??
@@ -51,6 +56,6 @@ time, precision, recall:  dataset size,   distance,     parameters,             
 2863 ms,  0.283, 0.410:   4 687 records, Levenshtein,  msl = 5, mbs = 30, phi = 0.5.  10 runs
 2573 ms,  0.288, 0.403:   4 687 records, Levenshtein,  msl = 15,mbs = 30, phi = 0.5.  10 runs
 
-660 ms,   0.288, 0.403:   1 171 records, Levenshtein,  msl = 3, mbs = 30, phi = 0.5.  10 runs
-1401 ms,  0.288, 0.403:   2 343 records, Levenshtein,  msl = 3, mbs = 30, phi = 0.5.  10 runs
+660 ms,   N/A:            1 171 records, Levenshtein,  msl = 3, mbs = 30, phi = 0.5.  10 runs
+1401 ms,  N/A:            2 343 records, Levenshtein,  msl = 3, mbs = 30, phi = 0.5.  10 runs
 

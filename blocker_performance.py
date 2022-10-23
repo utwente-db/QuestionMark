@@ -88,7 +88,6 @@ def full_performance_scan(dataset):
 
 if __name__ == '__main__':
     # full_performance_scan('datasets/offers_corpus_english_v2_gs.json.gz')
-    # full_performance_scan('datasets/offers_corpus_english_v2_gs_25p_sorted.json.gz')
-    full_performance_scan('datasets/offers_corpus_english_v2_gs_50p_sorted.json.gz')
+    full_performance_scan('datasets/offers_corpus_english_v2_999k_sorted.json.gz')
 
     
