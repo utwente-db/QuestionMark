@@ -7,13 +7,6 @@ from offer_distance import *
 from parameters import PHI, WS, DIST
 
 
-def get_blocks(blocks):
-    blocks_filled: {}
-    for block in blocks:
-        for offer in range(block.start, block.end):
-            pass
-
-
 def get_distance(word1, word2):
     if DIST == 'levenshtein':
         return levenshtein(word1, word2)
@@ -74,7 +67,7 @@ def asn_blocker(dataset):
 
 if __name__ == '__main__':
     # # #  Incrementally Adaptive Sorted Neighborhood blocking
-    asn_blocker('datasets/offers_corpus_english_v2_sorted_small.json.gz')  # normal execution.
+    asn_blocker('datasets/offers_corpus_english_v2_gs_sorted.json.gz')  # normal execution.
 
     # To measure the performance of this blocking algorithm, use blocker_performance.py
 

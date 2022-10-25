@@ -1,8 +1,13 @@
-# # GLOBAL VARIABLES
 
-# # Choose the blocking algorithm to be applied. Uncomment one.
-BLOCK = 'asn'
-# BLOCK = 'isa'
+# # ================
+# # GLOBAL VARIABLES
+# # ================
+
+# # This file contains all parameters that can be changed to tweak the performance of the algorithms.
+# # This section contains parameters used for both blocking and matching algorithms.
+
+# # Choose the amount of iterations for a timed run
+ITERS = 1
 
 # # Choose the distance algorithm to be applied. Uncomment one.
 # # Valid values (in case of a delete): levenshtein, jarowinkler, hamming, jaccard, lcsstr.
@@ -13,8 +18,16 @@ DIST = 'levenshtein'  # from the asn paper, fastest
 # DIST = 'hamming'  # relatively slow for longer words
 # DIST = 'jaccard'
 
-# # Choose the amount of iterations for a timed run
-ITERS = 1
+
+# # ===================
+# # BLOCKING ALGORITHMS
+# # ===================
+
+# # Check runtimes_blocker.txt to see how the different parameters change the performance of the algorithms.
+
+# # Choose the blocking algorithm to be applied. Uncomment one.
+BLOCK = 'asn'
+# BLOCK = 'isa'
 
 # # Change these variables to adjust the settings of the blocking algorithms.
 WS = 2     # Window Size            (asn)
@@ -22,4 +35,9 @@ PHI = 0.2  # Similarity Threshold   (asn / isa)
 MSL = 3    # Minimum Suffix Length  (isa)
 MBS = 30   # Maximum Block Size     (isa)
 
-# # Check runtimes.txt to see how the different parameters change the performance of the algorithm.
+
+# # ==================
+# # MATCHING ALGORITHM
+# # ==================
+
+# # Check runtimes_matcher.txt to see how the different parameters change the performance of the algorithm.

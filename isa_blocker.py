@@ -45,8 +45,8 @@ def isa_blocker(dataset):
     with gzip.open(dataset) as offers_file:  # Open the sorted dataset
         for line in offers_file:
             offer = json.loads(line.decode('utf-8'))
-            bkv = ((offer.get('category') if offer.get('category') else '') +
-                   (offer.get('brand') if offer.get('brand') else '') +
+            bkv = (  # (offer.get('category') if offer.get('category') else '') +
+                     # (offer.get('brand') if offer.get('brand') else '') +
                    (offer.get('title') if offer.get('title') else ''))  # blocking key value
             suffixes = get_suffixes(bkv)
             for suffix in suffixes:
