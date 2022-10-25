@@ -30,8 +30,8 @@ BLOCK = 'asn'
 # BLOCK = 'isa'
 
 # # Change these variables to adjust the settings of the blocking algorithms.
-WS = 2     # Window Size            (asn)
-PHI = 0.2  # Similarity Threshold   (asn / isa)
+WS = 3     # Window Size            (asn)
+PHI = 0.8  # Similarity Threshold   (asn / isa)
 MSL = 3    # Minimum Suffix Length  (isa)
 MBS = 30   # Maximum Block Size     (isa)
 

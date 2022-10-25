@@ -8,4 +8,4 @@ class Window:
         self.size = size
         self.current = first
         self.first = first
-        self.last = first + size
+        self.last = first + size - 1
