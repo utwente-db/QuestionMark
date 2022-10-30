@@ -1,8 +1,20 @@
 
-def aer_matcher(blocks):
-    pass
+def aer_matcher(blocks_file):
+    blocks = []
+    with open(blocks_file) as file:
+        for block in file:
+            if block == '[]\n':
+                continue
+            else:
+                print(block)
+                block = block.strip('\n').strip('][').split(', ')
+                print(block)
+                print(type(block))
+                block = list(map(int, block))
+                blocks.append(block)
+    print(blocks)
 
 
 if __name__ == '__main__':
     # # #  Incrementally Adaptive Sorted Neighborhood blocking
-    aer_matcher('datasets/offers_corpus_english_v2_sorted_small.json.gz')  # normal execution.
+    aer_matcher('datasets/asn_gs_blocks')  # normal execution.

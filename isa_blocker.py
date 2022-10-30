@@ -1,3 +1,14 @@
+# =================================================================================================================== #
+# ========= PLEASE NOTE ======== PLEASE NOTE ======== PLEASE NOTE ======== PLEASE NOTE ======== PLEASE NOTE ========= #
+# This blocking algorithm was set up as a test to verify its performance and suitability for use in the probabilistic #
+# benchmark that this dataset generator supports.  It was found that the type of data present in the original dataset #
+# used for this benchmark does not fit this blocking algorithm well. The blocking algorithm takes too long to process #
+# this data and provides an output which is suboptimal for the purpose of this benchmark. Altering this output to the #
+# desired formal would provide an even higher processing time. Therefore, it was decided to not finish this algorithm #
+# and focus on the Adaptive Sorted Neighborhood blocking algorithm,  as this showed to be more fitting.  This code is #
+# kept available,  so it can be adapted and used when deemed necessary for a testing specific real-world application. #
+# =================================================================================================================== #
+
 import gzip
 import json
 import collections
@@ -5,6 +16,13 @@ import sys
 
 from offer_distance import *
 from parameters import MSL, MBS, PHI, DIST
+
+
+def write_to_file(blocks, file):
+    with open(file, 'w+') as f:
+        for block in blocks:
+            f.write(str(block))
+            f.write('\n')
 
 
 def get_distance(word1, word2):
@@ -35,7 +53,6 @@ def fill_block(block, offers):
     return block
 
 
-# Apply Bloom filters?
 # Based on the paper of De Vries et al. (2011) Robust Record Linkage Blocking Using Suffix Arrays and Bloom Filters.
 def isa_blocker(dataset):
     blocks = []
@@ -76,14 +93,15 @@ def isa_blocker(dataset):
             block = fill_block(block, offers)
         prev_suffix = suffix
 
+    # Currently, the blocks are merged from neighboring suffixes that have a high similarity. As one word can produce
+    # suffixes that are not much alike (e.g. 'Hello' produces 'ello' and 'llo', which are alphabetically far apart),
+    # one offer will occur in multiple blocks. The original idea from the paper is that one can query the blocks for
+    # one specific offer, and retrieve all matches by looping through all blocks. This is computationally very
+    # expensive to do for all offers and implementing this is deemed out of scope for this research.
+
     return blocks
 
 
 if __name__ == '__main__':
     # # #  Incrementally Adaptive Sorted Neighborhood blocking
-    isa_blocker('datasets/offers_corpus_english_v2_sorted_small.json.gz')
-
-    # To measure the performance of this blocking algorithm, use blocker_performance.py
-
-    # blocks = isa_blocker('datasets/offers_corpus_english_v2_sorted_small.json.gz')  # normal execution.
-    # print(blocks)
+    isa_blocker('datasets/offers_corpus_english_v2_gs_sorted.json.gz')

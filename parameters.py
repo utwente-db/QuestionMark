@@ -27,13 +27,13 @@ DIST = 'levenshtein'  # from the asn paper, fastest
 
 # # Choose the blocking algorithm to be applied. Uncomment one.
 BLOCK = 'asn'
-# BLOCK = 'isa'
+# BLOCK = 'isa'  # DO NOT USE. See isa_blocker.py for more info.
 
 # # Change these variables to adjust the settings of the blocking algorithms.
 WS = 3     # Window Size            (asn)
-PHI = 0.8  # Similarity Threshold   (asn / isa)
+PHI = 0.5  # Similarity Threshold   (asn / isa)
 MSL = 3    # Minimum Suffix Length  (isa)
-MBS = 30   # Maximum Block Size     (isa)
+MBS = 20   # Maximum Block Size     (isa)
 
 
 # # ==================
