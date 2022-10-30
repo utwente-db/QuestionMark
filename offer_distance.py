@@ -1,7 +1,24 @@
+import sys
 import time
 
 from Levenshtein import distance
 import textdistance  # pip install textdistance
+
+from parameters import DIST
+
+
+# Used in asn_blocker.py, isa_blocker.py and aer_matcher.py.
+def get_distance(word1, word2):
+    if DIST == 'levenshtein':
+        return levenshtein(word1, word2)
+    elif DIST == 'jarowinkler':
+        return jarowinkler(word1, word2)
+    elif DIST == 'hamming':
+        return hamming(word1, word2)
+    elif DIST == 'jaccard':
+        return jaccard(word1, word2)
+    else:
+        sys.exit("Please input a valid value for DIST in parameters.py.")
 
 
 # Retrieves the distance percentile based on the Levenshtein distance between two words.
@@ -9,7 +26,7 @@ import textdistance  # pip install textdistance
 # Used in the paper of Yan et al. (2007) Adaptive Sorted Neighborhood Methods for Efficient Record Linkage.
 def levenshtein(word1, word2):
     if not word1 and not word2:
-        return 0
+        return 1  # could change to 0.
     elif not word1:
         return 1
     elif not word2:
@@ -18,7 +35,6 @@ def levenshtein(word1, word2):
         dist = distance(word1, word2)
         length = (len(word1) + len(word2)) / 2
         dist_percent = (dist / length)
-        # print('dist: ', dist_percent)
         return dist_percent
 
 
@@ -86,7 +102,7 @@ def timed(word1, word2):
     print(((et - st) * 10**3) / 50000)
 
 
-if __name__ == '__main__':
+def test():
     hamming('somethinginthisworldthatIhaveneverseen', 'somethingcompletelydifferentnobodyhaswitnessed')
     hamming('hello', 'hello')
     hamming('bla', 'ewo')
@@ -95,4 +111,6 @@ if __name__ == '__main__':
     # timed('blabla', 'ewoewo')
 
 
-
+if __name__ == '__main__':
+    # Can be used for testing
+    test()

@@ -2,8 +2,7 @@ import gzip
 import json
 import time
 
-MAX_INSERT = 20000000  # no max
-ATTRS = ['description', 'identifiers', 'keyValuePairs', 'price', 'specTableContent']  # non key-attributes
+from parameters import MAX_INSERT, NON_BKV
 
 
 def sort_offers(dataset, write_to):
@@ -16,7 +15,7 @@ def sort_offers(dataset, write_to):
             if total > MAX_INSERT:
                 break
             offer = json.loads(line)
-            for attribute in ATTRS:  # Only keep BKVs, cluster_id and id of offer.
+            for attribute in NON_BKV:  # Only keep BKVs, cluster_id and id of offer.
                 offer.pop(attribute)
             offers.append(offer)
         sorted_offers = sorted(offers,

@@ -12,10 +12,9 @@
 import gzip
 import json
 import collections
-import sys
 
 from offer_distance import *
-from parameters import MSL, MBS, PHI, DIST
+from parameters import MSL, MBS, PHI
 
 
 def write_to_file(blocks, file):
@@ -23,19 +22,6 @@ def write_to_file(blocks, file):
         for block in blocks:
             f.write(str(block))
             f.write('\n')
-
-
-def get_distance(word1, word2):
-    if DIST == 'levenshtein':
-        return levenshtein(word1, word2)
-    elif DIST == 'jarowinkler':
-        return jarowinkler(word1, word2)
-    elif DIST == 'hamming':
-        return hamming(word1, word2)
-    elif DIST == 'jaccard':
-        return jaccard(word1, word2)
-    else:
-        sys.exit("Please input a valid value for DIST in parameters.py.")
 
 
 def get_suffixes(bkv):
@@ -104,4 +90,4 @@ def isa_blocker(dataset):
 
 if __name__ == '__main__':
     # # #  Incrementally Adaptive Sorted Neighborhood blocking
-    isa_blocker('datasets/offers_corpus_english_v2_gs_sorted.json.gz')
+    isa_blocker('datasets/offer_corpus_english_v2_gs_sorted.json.gz')
