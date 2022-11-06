@@ -7,6 +7,16 @@ from isa_blocker import isa_blocker
 from parameters import BLOCK, ITERS
 
 
+def run_blocker(dataset, blocker):
+    if blocker == 'asn':
+        asn_blocker(dataset)
+    elif blocker == 'isa':
+        isa_blocker(dataset)
+    else:
+        sys.exit("Please input as second parameter 'asn' for Adaptive Sorted Neighborhood blocking, or 'isa' for "
+                 "Improved Suffix Array blocking.")
+
+
 def get_blocks(dataset, blocker):
     if blocker == 'asn':
         blocks_raw = asn_blocker(dataset)
@@ -57,17 +67,17 @@ def get_dataset_measures(blocks):
 
 
 def get_precision(tp, fp):  # pair quality
-    return tp / (tp + fp) if (tp + fp) > 0 else 2
+    return tp / (tp + fp)
 
 
 def get_recall(tp, fn):  # pair completeness
-    return tp / (tp + fn) if (tp + fn) > 0 else 2
+    return tp / (tp + fn)
 
 
 def get_runtime(dataset, blocker, iterations):
     st = time.time()  # start time
     for run in range(iterations):
-        get_blocks(dataset, blocker)
+        run_blocker(dataset, blocker)
     et = time.time()  # end time
     return ((et - st) * 10**3) / iterations
 
@@ -87,6 +97,5 @@ def full_performance_scan(dataset):
 
 
 if __name__ == '__main__':
-    full_performance_scan('datasets/offers_corpus_english_v2_gs.json.gz')
+    full_performance_scan('datasets/offers_corpus_english_v2_gs_sorted_test.json.gz')
     # full_performance_scan('datasets/offers_corpus_english_v2_999k_sorted.json.gz')
-    

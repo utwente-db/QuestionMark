@@ -25,11 +25,11 @@ def get_distance(word1, word2):
 # The levenshtein algorithm from this library is faster than the one from textdistance.
 # Used in the paper of Yan et al. (2007) Adaptive Sorted Neighborhood Methods for Efficient Record Linkage.
 def levenshtein(word1, word2):
-    if not word1 and not word2:
+    if (not word1 and not word2) or (word1 == 'None' and word2 == 'None'):
         return 1  # could change to 0.
-    elif not word1:
+    elif not word1 or word1 == 'None':
         return 1
-    elif not word2:
+    elif not word2 or word2 == 'None':
         return 1
     else:
         dist = distance(word1, word2)
@@ -41,11 +41,11 @@ def levenshtein(word1, word2):
 # Retrieves the distance percentile based on the Jaro or Jaro-Winkler distance between two words.
 # Used in the paper of De Vries et al. (2011) Robust Record Linkage Blocking Using Suffix Arrays and Bloom Filters.
 def jarowinkler(word1, word2):
-    if not word1 and not word2:
+    if (not word1 and not word2) or (word1 == 'None' and word2 == 'None'):
         return 0
-    elif not word1:
+    elif not word1 or word1 == 'None':
         return 1
-    elif not word2:
+    elif not word2 or word2 == 'None':
         return 1
     else:
         sim = textdistance.jaro(word1, word2)  # Provides a similarity score from 0 to 1.
@@ -57,11 +57,11 @@ def jarowinkler(word1, word2):
 
 # Other word distance measures from: https://pypi.org/project/textdistance/
 def hamming(word1, word2):
-    if not word1 and not word2:
+    if (not word1 and not word2) or (word1 == 'None' and word2 == 'None'):
         return 0
-    elif not word1:
+    elif not word1 or word1 == 'None':
         return 1
-    elif not word2:
+    elif not word2 or word2 == 'None':
         return 1
     else:
         dist = textdistance.hamming(word1, word2)
@@ -72,11 +72,11 @@ def hamming(word1, word2):
 
 
 def jaccard(word1, word2):
-    if not word1 and not word2:
+    if (not word1 and not word2) or (word1 == 'None' and word2 == 'None'):
         return 0
-    elif not word1:
+    elif not word1 or word1 == 'None':
         return 1
-    elif not word2:
+    elif not word2 or word2 == 'None':
         return 1
     else:
         sim = textdistance.jaccard(word1, word2)  # Provides a similarity score from 0 to 1.
