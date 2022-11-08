@@ -1,7 +1,12 @@
 import gzip
 import json
 
-from parameters import MAX_INSERT, NON_BKV
+from parameters import DATASET_SIZE, NON_BKV
+
+
+# Resize the dataset by ...
+def resize_dataset(dataset, write_to):
+    pass
 
 
 # Sort offers, keep the original data structure.
@@ -12,7 +17,7 @@ def sort_offers(dataset, write_to):
         for line in data:
             # print(line)
             total += 1
-            if total > MAX_INSERT:
+            if total > DATASET_SIZE:
                 break
             offer = json.loads(line)
             for attribute in NON_BKV:  # Only keep BKVs, cluster_id and id of offer.
@@ -28,7 +33,7 @@ def sort_offers(dataset, write_to):
 
 
 # For improved lookup speed. Type of offers: {offer_id: {'title': ..., 'id': ..., ...}, ...}.
-def sort_offer_by_id(dataset, write_to):
+def offer_by_id(dataset, write_to):
     offers_raw = []
     offers = {}
     with gzip.open(dataset) as offers_file:  # Open the sorted dataset
@@ -50,14 +55,12 @@ def sort_offer_by_id(dataset, write_to):
 
 if __name__ == '__main__':
     # # #  Sorting the dataset   --> 50 000 records in 710 ms over 50 runs average.
-    # # #  NOTE: The generated dataset should be manually gzipped before use.
+    # NOTE: The generated datasets should be manually gzipped before running the next function.
 
-    sort_offers('datasets/offers_corpus_english_v2.json.gz', 'datasets/offers_corpus_english_v2_sorted.json')
-    # sort_offers('datasets/offers_corpus_english_v2_gs.json.gz',
-    #             'datasets/offers_corpus_english_v2_gs_sorted_test.json')
+    resize_dataset('datasets/offers_corpus_english_v2.json.gz', 'datasets/offers_corpus_english_v2_resized.json')
+    # sort_offers('datasets/offers_corpus_english_v2_resized.json.gz', 'datasets/offers_corpus_english_v2_sorted.json')
+    # offer_by_id('datasets/offers_corpus_english_v2_resized.json.gz', 'datasets/offers_corpus_english_v2_byID.json')
+
     # sort_offers('datasets/offers_corpus_english_v2_gs_50p.json.gz',
     #             'datasets/offers_corpus_english_v2_gs_50p_sorted.json')
     # sort_offers('datasets/offers_corpus_english_v2.json.gz', 'datasets/offers_corpus_english_v2_20k_sorted.json')
-
-    # sort_offer_by_id('datasets/offers_corpus_english_v2.json.gz', 'datasets/offers_corpus_english_v2_byID.json')
-

@@ -103,9 +103,9 @@ def timed(word1, word2):
 
 
 def test():
-    hamming('somethinginthisworldthatIhaveneverseen', 'somethingcompletelydifferentnobodyhaswitnessed')
-    hamming('hello', 'hello')
-    hamming('bla', 'ewo')
+    print(hamming('somethinginthisworldthatIhaveneverseen', 'somethingcompletelydifferentnobodyhaswitnessed'))
+    print(hamming('hello', 'hello'))
+    print(hamming('bla', 'ewo'))
 
     # timed('somethinginthisworldthatIhaveneverseen', 'somethingcompletelydifferentnobodyhaswitnessed')
     # timed('blabla', 'ewoewo')

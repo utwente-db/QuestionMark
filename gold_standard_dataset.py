@@ -33,7 +33,7 @@ def create_dataset(gold_standard):
             ids.append(offer['id'])
 
     # Write unique offers in the golden standard to file.
-    with open('datasets/offers_corpus_english_v2_gs.json', 'w', encoding='utf-8') as file:
+    with open('datasets/offers_corpus_gs.json', 'w', encoding='utf-8') as file:
         file.write('%s' % '\n'.join(map(json.dumps, offers_unique)))
 
 

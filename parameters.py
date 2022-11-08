@@ -24,12 +24,12 @@ DIST = 'levenshtein'  # from the asn paper, fastest
 # DIST = 'jaccard'
 
 
-# # =================
-# # SORTING ALGORITHM
-# # =================
+# # ===================
+# # DATASET PREPARATION
+# # ===================
 
 # The maximum size of the dataset. The full size is around 16 million offers.
-MAX_INSERT = 20000000  # no max
+DATASET_SIZE = 20000000  # no max
 
 # All attributes that are NOT a BKV (blocking key value). All attributes of an offer: ['brand', 'category',
 #   'cluster_id', 'description', 'id', 'identifiers', 'keyValuePairs', 'price', 'specTableContent', 'title']
@@ -40,7 +40,7 @@ NON_BKV = ['description', 'identifiers', 'keyValuePairs', 'price', 'specTableCon
 # # BLOCKING ALGORITHMS
 # # ===================
 
-# # Check runtimes_blocker.txt to see how the different parameters change the performance of the algorithms.
+# # Check performance.txt.txt to see how the different parameters change the performance of the algorithms.
 
 # # Choose the blocking algorithm to be applied. Uncomment one.
 BLOCK = 'asn'

@@ -5,6 +5,8 @@ from gold_standard_dataset import get_matches
 from parameters import ITERS
 
 
+# Could include performance measures: uncertainty density and decisiveness.
+
 # Generate dict of type {offer_id:[matches]} from clusters with type [{[offer_ids]: probability}]  # TODO: check type.
 #     to compare with the gold standard.
 def get_all_matches(clusters_raw):
@@ -100,14 +102,6 @@ def get_expected_recall(etp, tp, fn):
     return etp / (tp + fn) if (tp + fn) else 2
 
 
-def get_uncertainty_density():
-    return 0
-
-
-def get_decisiveness():
-    return 0
-
-
 def get_runtime(dataset, iterations):
     st = time.time()  # start time
     for run in range(iterations):
@@ -132,16 +126,12 @@ def full_performance_scan(blocks):
     etp, etn, efp, efn = get_expected_dataset_measures(matches)
     expected_precision = get_expected_precision(etp, efp)
     expected_recall = get_expected_recall(etp, tp, fn)
-    uncertainty_density = get_uncertainty_density()
-    decisiveness = get_decisiveness()
 
     print('The aer blocking algorithm has the following performance:')
     print('Precision:', precision)
     print('Recall:', recall)
     print('Expected precision:', expected_precision)
     print('Expected recall:', expected_recall)
-    print('Uncertainty density:', uncertainty_density)
-    print('Decisiveness:', decisiveness)
     print('Average runtime over', iterations, 'runs:', runtime)
 
 

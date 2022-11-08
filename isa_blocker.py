@@ -17,13 +17,6 @@ from offer_distance import *
 from parameters import MSL, MBS, PHI
 
 
-def write_to_file(blocks, file):
-    with open(file, 'w+') as f:
-        for block in blocks:
-            f.write(str(block))
-            f.write('\n')
-
-
 def get_suffixes(bkv):
     suffixes = []
     if bkv:
