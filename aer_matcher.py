@@ -1,44 +1,48 @@
+# TODO: (optional) allow for different similarity measure for each attribute.
+
 import gzip
 import json
+import pickle
 
 from offer_distance import get_distance
 from parameters import ATTRIBUTES, WEIGHTS, LOWER_PHI, UPPER_PHI
 from world_graph import WorldGraph
 
 
-# TODO: allow for different similarity measure for each attribute.
+def write_clusters_to_file(prob_clusters, cert_clusters, write_to_prob, write_to_cert):
+    print('clusters created, now writing...')
+    with open(write_to_prob, 'wb') as file:
+        pickle.dump(prob_clusters, file)
+    with open(write_to_cert, 'wb') as file:
+        pickle.dump(cert_clusters, file)
 
 
 def aer_matcher(blocks_file):
     # Get blocks from file. Type of blocks: [[offer_id, ...], ...]
     blocks = []
+    print('reading blocks file...')
     with open(blocks_file) as file:
-        count = 0
-        for block in file:  # TODO: remove break for only 6 blocks. Currently there for debugging.
-            count += 1
+        for block in file:
             block = block.strip('\n').strip('][').split(', ')
             block = list(map(int, block))
             blocks.append(block)
-            if count >= 6:
-                break
-
-    print('')
-    print('First six blocks:')
-    print(blocks)
-    print('So the lengths are 4, 3, 2, 1, 1, 2.')
-    print('')
 
     # Get all offer information from file. Type of offers: {offer_id: {'title': ..., 'id': ..., ...}, ...}
-    with gzip.open('datasets/offers_corpus_english_v2_gs_byID.json.gz', 'r') as id_file:
+    print('reading offers by ID file...')
+    with gzip.open('datasets/offers_corpus_byID.json.gz', 'r') as id_file:
         offers = json.loads(id_file.read())
 
     # Generate comparison vector. Type of block_matches: [{(offer_id_1, offer_id_2): [dist_float, ...], ...}, {...}]
-    clusters = []
+    # For each offer combination in a block we return the distance per attribute. (from 0 to 1)
+    cert_clusters = []
     block_matches = []
+    count = 0
+    print('Generating comparison vectors...')
     for block in blocks:
+        count += 1
         matching_scores = {}
         if len(block) == 1:
-            clusters.append(block)
+            cert_clusters.append(block)
             continue
         for i in range(len(block)):
             for j in range(i + 1, len(block)):
@@ -55,11 +59,10 @@ def aer_matcher(blocks_file):
                         matching_scores[(block[j], block[i])].append(distance * WEIGHTS[k])
 
         block_matches.append(matching_scores)
-    print('For each offer combination in a block we return the distance per attribute. (from 0 to 1).')
-    print(block_matches)
-    print('')
 
     # Input vector into decision model. Type of block_scores: [{(offer_id_1, offer_id_2): float, ...}, ...]
+    # The individual distances get combined to a single distance score. The weight of each attribute can be changed.
+    print('Putting vectors in decision model...')
     block_scores = []  # matching graph?
     for block in block_matches:
         block_score = {}
@@ -87,43 +90,63 @@ def aer_matcher(blocks_file):
 
     block_matches.clear()  # For space efficiency. Could comment out when space is not a problem.
 
-    print('The individual distances get combined to a single distance score.')
-    print('The weight of each attribute can be changed.')
-    print(block_scores)
-    print('')
-    print('For each block, this is fed to the WorldGraph class.')
-    print('')
-    print('')
-
-    # Creation of World Graphs.
+    # Creation of World Graphs. Each block is fed to the WorldGraph class.
     world_graphs_clusters = []
+    count = 0
     for matching_graph in block_scores:
-        tuple_count = 0
+        count += 1
+        print(round((count / len(block_scores)*100), 2), '% done with creating world graphs for uncertain clusters...')
+        created_graph = False
         for probability in matching_graph.values():
-            tuple_count += 1
             if 0 < probability < 1:  # If there is any tuple uncertain, create matching graph.
                 world_graphs = WorldGraph(matching_graph)
                 world_graphs_clusters.append(world_graphs.get_representation())
+
+                # Include offers that might have been removed due to multiple invalid world-graphs.
+                for offer in world_graphs.get_n():
+                    included = False
+                    for world in world_graphs.get_es():
+                        if included:
+                            break
+                        for offer_duo in world:
+                            if offer in offer_duo:
+                                included = True
+                                break
+                    if not included:
+                        cert_clusters.append([offer])
+                created_graph = True
                 break
-            if tuple_count == len(matching_graph):  # If there are no uncertain tuples, add cluster as certain.
-                cluster = []                        # TODO: what if [(1,2:1),(2,3:1),(1,3:0)] ?
-                for (offer1, offer2) in matching_graph.keys():
+
+        # If there are no uncertain tuples, add cluster separately.
+        if not created_graph:
+            cluster = []
+
+            # Matching graphs is invalid, or there are no matching items. Put each item in separate cluster.
+            # Could implement another solution for invalid M-graph.
+            if (1 in matching_graph.values() and 0 in matching_graph.values())\
+                    or 0 in matching_graph:
+                offers = []
+                for (offer1, offer2), probability in matching_graph.items():
+                    if offer1 not in offers:
+                        offers.append(offer1)
+                    if offer2 not in offers:
+                        offers.append(offer2)
+                for offer in offers:
+                    cert_clusters.append([offer])
+
+            else:  # All offers in the graph are a definite match.
+                for (offer1, offer2), probability in matching_graph.items():
                     if offer1 not in cluster:
                         cluster.append(offer1)
                     if offer2 not in cluster:
                         cluster.append(offer2)
-                clusters.append(cluster)
+                cert_clusters.append(cluster)
 
-    print('We now have the following certain clusters:')
-    print(clusters)
-    print('')
-    print('And the following clusters from possible worlds:')
-    print(world_graphs_clusters)
-    print('')
-    print('TODO: make this a single list to be inserted into a database.')
-    return world_graphs_clusters
+    return world_graphs_clusters, cert_clusters
 
 
 if __name__ == '__main__':
     # # #  Attribute-based Entity Resolution
-    aer_matcher('datasets/asn_gs_blocks')  # normal execution.
+    probabilistic_clusters, certain_clusters = aer_matcher('datasets/asn_gs_blocks')  # normal execution.
+    write_clusters_to_file(probabilistic_clusters, certain_clusters,
+                           'datasets/aer_clusters_prob', 'datasets/aer_clusters_cert')

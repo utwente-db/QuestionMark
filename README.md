@@ -1,6 +1,7 @@
 # prob-matcher
 
 prob-matcher is a Python program to create a dataset for probabilistic product matching. 
+This program is part of the benchmark for probabilistic database management systems (see Contributors).
 The dataset created by this program is an adaptation of the 
 [WDC Product Data Corpus for Large-Scale Product Matching](http://webdatacommons.org/largescaleproductcorpus/v2/index.html) 
 dataset. The clustering provided by this original dataset is removed and a new probabilistic
