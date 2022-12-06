@@ -1,0 +1,27 @@
+This file contains the pseudo-code that forms the basis of the benchmark queries.
+In this program, this pseudo-code can be found translated to the SQL dialects of MayBMS and DuBio.
+
+Please go to 'queries-dubio' to see how this pseudo-code translates to the dialect of DuBio.
+Please go to 'queries-maybms' to see how this pseudo-code translates to the dialect of MayBMS.
+
+The queries are divided into the following categories:
+    - basic queries (inc. insert, update, delete)
+    - probability centered queries
+    - conditional queries
+    - aggregation queries
+    - evidence addition
+
+
+# ====== TEST THE CONNECTION ==================================================================== #
+
+# == QUERY TEST 1 == #
+select all attributes
+from entity 'offers'
+return the first 10 records;
+
+
+# ====== BASIC QUERIES ========================================================================== #
+
+# == QUERY BASIC 1 == #
+select ...
+
