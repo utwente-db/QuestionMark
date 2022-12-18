@@ -235,17 +235,17 @@ def get_bdd_certain(offers, cluster, cluster_id):
     #    weighted separately resulting in more variables.
     attribute_probabilities = get_attr_prob(offers, cluster)
     bdds = []
-    w = 'w%s=1' % cluster_id
-    add = w + ':1;'
     global bulk_dict_query
-    bulk_dict_query += add
-    for i in range(len(cluster)):
-        a = 'a%s=%s' % (cluster_id, i)
-        bdd = "('%s&%s')" % (w, a)
-        bdds.append(bdd)
-        prob = str(math.floor(attribute_probabilities[i] * 100000) / 100000)    # To floor to 5 decimal places.
-        add = a + ':' + prob + ';'                                              # Otherwise when sum(prob) > 1
-        bulk_dict_query += add                                                  # DuBio might crash.
+    if len(cluster) == 1:
+        bdds.append("('1')")
+    else:
+        for i in range(len(cluster)):
+            a = 'a%s=%s' % (cluster_id, i)
+            bdd = "('%s')" % a
+            bdds.append(bdd)
+            prob = str(math.floor(attribute_probabilities[i] * 100000) / 100000)    # To floor to 5 decimal places.
+            add = a + ':' + prob + ';'                                              # Otherwise when sum(prob) > 1
+            bulk_dict_query += add                                                  # DuBio might crash.
 
     return bdds
 

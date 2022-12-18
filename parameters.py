@@ -1,21 +1,15 @@
 # Check runtimes_matcher.txt to see how the different parameters change the performance of the algorithm.
 
+# This file contains all parameters that can be changed to tweak the performance of the algorithms.
+
 # # ================
 # # GLOBAL VARIABLES
 # # ================
 
-# # This file contains all parameters that can be changed to tweak the performance of the algorithms.
 # # This section contains parameters used for both blocking and matching algorithms.
 
-# # Across the different files, different datasets get used. As this is not truly a parameter, and it is difficult
-# #   to keep track of all these datasets in one variable, it was chosen to keep these in the corresponding files
-# #   as hardcode variables. Please check the files for the dataset and change it when needed.
-
-# # Choose the amount of iterations for a timed run
-ITERS = 1
-
 # # Choose the distance algorithm to be applied. Uncomment one.
-# # Valid values (in case of a delete): levenshtein, jarowinkler, hamming, jaccard, lcsstr.
+# # Valid values (in case of a delete): levenshtein, jarowinkler, hamming, jaccard.
 # # Others can be added by defining a new function in offer_distance.py
 # #   and adding the case to asn_blocker.py / isn_blocker.py in the function get_distance().
 DIST = 'levenshtein'  # from the asn paper, fastest
@@ -70,3 +64,11 @@ LOWER_PHI = 0.35
 
 # Distance > UPPER_PHI? Definitely not the same product. Decrease value to obtain a more certain dataset.
 UPPER_PHI = 0.5
+
+
+# # ===========
+# # PERFORMANCE
+# # ===========
+
+# # Choose the amount of iterations for a timed run
+ITERS = 1

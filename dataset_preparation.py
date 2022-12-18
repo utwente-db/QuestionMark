@@ -81,8 +81,8 @@ if __name__ == '__main__':
     # resize_dataset('datasets/offers_corpus_english_v2.json.gz', 'datasets/offers_corpus_resized.json')
     # resize_dataset('datasets/offers_corpus_gs.json.gz', 'datasets/offers_corpus_resized.json')
     # sort_offers('datasets/offers_corpus_english_v2_resized.json.gz', 'datasets/offers_corpus_english_v2_sorted.json')
-    offer_by_id('datasets/offers_corpus_resized.json.gz', 'datasets/offers_corpus_byID.json')
+    # offer_by_id('datasets/offers_corpus_resized.json.gz', 'datasets/offers_corpus_byID.json')
 
     # sort_offers('datasets/offers_corpus_english_v2_gs_50p.json.gz',
     #             'datasets/offers_corpus_english_v2_gs_50p_sorted.json')
-    # sort_offers('datasets/offers_corpus_english_v2.json.gz', 'datasets/offers_corpus_english_v2_20k_sorted.json')
+    sort_offers('datasets/offers_corpus_english_v2.json.gz', 'datasets/offers_corpus_english_v2_20k_sorted.json')
