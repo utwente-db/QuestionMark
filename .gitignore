@@ -1,2 +1,5 @@
 database.ini
 benchmark_results.txt
+insert_dict.sql
+insert_offers.sql
+notepad.py

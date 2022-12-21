@@ -1,7 +1,11 @@
+import sys
 import time
 from configparser import ConfigParser
 import psycopg2
-from parameters import ITERATIONS, TIMED
+from parameters import ITERATIONS, DBMS
+from output_tui import format_result, write_time
+from queries_dubio import DUBIO_QUERIES_DICT
+from queries_maybms import MAYBMS_QUERIES_DICT
 
 conn_pg = None
 
@@ -65,51 +69,46 @@ def run_query(query, cur):
     cur.execute(query)
 
 
-def format_result(cur):
-    result = cur.fetchall()
+def execute_query(query_name):
+    if DBMS == 'MayBMS':
+        query_dict = MAYBMS_QUERIES_DICT
+    elif DBMS == 'DuBio':
+        query_dict = DUBIO_QUERIES_DICT
+    else:
+        sys.exit("Please input a valid DBMS in parameters.py. Choose either 'MayBMS' or 'DuBio'.")
 
-    widths = []
-    columns = []
-    tavnit = '|'
-    separator = '+'
-
-    index = 0
-    for cd in cur.description:
-        max_col_length = max(list(map(lambda x: len(str(x[index])), result)))
-        widths.append(max(max_col_length, len(cd[0])))
-        columns.append(cd[0])
-        index += 1
-
-    for w in widths:
-        tavnit += " %-" + "%ss |" % (w,)
-        separator += '-' * w + '--+'
-
-    printable_output = separator + '\n' + \
-                       tavnit % tuple(columns) + '\n' + \
-                       separator + '\n'
-
-    for row in result:
-        printable_output += tavnit % row + '\n'
-    printable_output += separator + '\n'
-
-    return printable_output
-
-
-def execute_query(query):
+    query = query_dict[query_name]
     global conn_pg
-    runtime = ''
     try:
         cur = conn_pg.cursor()
-        start_time = time.time()
-        for _ in range(ITERATIONS):
-            run_query(query, cur)
-        end_time = time.time()
-        if TIMED:
-            runtime = end_time - start_time
-        printable_output = format_result(cur)
+        run_query(query, cur)  # to create a hot run.
+        explain_analyse(query, cur)  # to obtain the average runtime.
+        run_query(query, cur)  # to obtain query output.
+        if query_name.__contains__('_view'):
+            inner_query = query.partition('AS')[2]
+            run_query(inner_query, cur)
+            printable_output = format_result(cur)
+        else:  # The query is just a basic query that returns a result.
+            printable_output = format_result(cur)
 
         cur.close()
         conn_pg.commit()
-        return runtime, printable_output
+        return printable_output
     except (Exception, psycopg2.DatabaseError) as error:
         print('Error:', error)
+
+
+def explain_analyse(query, cur):
+    query = "EXPLAIN ANALYSE" + query
+    planning_times = []
+    execution_times = []
+    for _ in range(ITERATIONS):
+        run_query(query, cur)
+        result = cur.fetchall()
+        planning_times.append(float(result[2][0][15:20]))
+        execution_times.append(float(result[3][0][16:21]))
+
+    average_planning = round(sum(planning_times) / len(planning_times), 3)
+    average_execution = round(sum(execution_times) / len(execution_times), 3)
+
+    write_time(average_planning, average_execution)
