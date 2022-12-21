@@ -21,8 +21,7 @@ def run_benchmark():
 
     for query in QUERIES:
         write_query_type(query)
-        result = execute_query(query)
-        write_results(result, query)
+        execute_query(query)
 
 
 if __name__ == '__main__':

@@ -4,7 +4,8 @@ from queries_dubio import DUBIO_QUERIES_DICT
 
 def create_result_file():
     with open('benchmark_results.txt', 'w+') as file:
-        file.write('This file contains the results of the benchmark test. \n\n')
+        file.write('This file contains the results of the benchmark test. \n'
+                   'The query plan and average run time are produced by PostgreSQL EXPLAIN ANALYSE.')
 
 
 def write_query_type(query_num):
@@ -14,21 +15,24 @@ def write_query_type(query_num):
 
 def write_time(planning_time, execution_time):
     with open('benchmark_results.txt', 'a') as file:
-        file.write("\n\nAverage planning time over " + str(ITERATIONS) + " iterations: " + str(planning_time) + " ms.")
+        file.write("Average planning time over " + str(ITERATIONS) + " iterations: " + str(planning_time) + " ms.")
         file.write("\nAverage execution time over " + str(ITERATIONS) + " iterations: " + str(execution_time) + " ms.")
+
+
+def write_explain_analyse(cur, result):
+    with open('benchmark_results.txt', 'a') as file:
+        file.write('\n' + format_result(cur, result) + '\n')
 
 
 def write_results(printable_output, query):
     with open('benchmark_results.txt', 'a') as file:
-        file.write('\n')
-        file.write(DUBIO_QUERIES_DICT[query])
-        file.write('\n')
-        file.write(printable_output)
-        file.write('\n')
+        file.write('\n' + DUBIO_QUERIES_DICT[query] + '\n')
+        file.write(str(printable_output) + '\n')
 
 
-def format_result(cur):
-    result = cur.fetchall()
+def format_result(cur, result=None):
+    if not result:
+        result = cur.fetchall()
 
     if not result:
         return '+---------------------------------+\n' \

@@ -3,7 +3,7 @@ import time
 from configparser import ConfigParser
 import psycopg2
 from parameters import ITERATIONS, DBMS
-from output_tui import format_result, write_time
+from output_tui import format_result, write_time, write_explain_analyse, write_results
 from queries_dubio import DUBIO_QUERIES_DICT
 from queries_maybms import MAYBMS_QUERIES_DICT
 
@@ -81,27 +81,29 @@ def execute_query(query_name):
     global conn_pg
     try:
         cur = conn_pg.cursor()
-        run_query(query, cur)  # to create a hot run.
-        explain_analyse(query, cur)  # to obtain the average runtime.
-        run_query(query, cur)  # to obtain query output.
+        run_query(query, cur)  # to create a hot run and get a query output.
         if query_name.__contains__('_view'):
             inner_query = query.partition('AS')[2]
             run_query(inner_query, cur)
-            printable_output = format_result(cur)
+            result = format_result(cur)
+            write_results(result, query)
         else:  # The query is just a basic query that returns a result.
-            printable_output = format_result(cur)
+            result = format_result(cur)
+            write_results(result, query_name)
 
+        explain_analyse(query, cur)  # to obtain the average runtime.
         cur.close()
         conn_pg.commit()
-        return printable_output
+
     except (Exception, psycopg2.DatabaseError) as error:
-        print('Error:', error)
+        print('Error from execute_query():', error)
 
 
 def explain_analyse(query, cur):
     query = "EXPLAIN ANALYSE" + query
     planning_times = []
     execution_times = []
+    result = ''
     for _ in range(ITERATIONS):
         run_query(query, cur)
         result = cur.fetchall()
@@ -112,3 +114,4 @@ def explain_analyse(query, cur):
     average_execution = round(sum(execution_times) / len(execution_times), 3)
 
     write_time(average_planning, average_execution)
+    write_explain_analyse(cur, result[0:2])
