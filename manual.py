@@ -47,16 +47,16 @@ if __name__ == '__main__':
     # write_clusters_to_file(prob_clust, cert_clust, 'datasets/aer_clusters_prob', 'datasets/aer_clusters_cert')
 
     # ====== STEP 5 ================================================================================= #
-    # # Connect to the database
+    # Connect to the database
     connect_pg(configname='database.ini')
 
     # # Write to MayBMS
-    # transfer_to_maybms('datasets/aer_clusters_prob', 'datasets/aer_clusters_cert')
+    transfer_to_maybms('datasets/aer_clusters_prob', 'datasets/aer_clusters_cert')
 
-    # # Write to DuBio
-    transfer_to_dubio('datasets/aer_clusters_prob', 'datasets/aer_clusters_cert')
+    # Write to DuBio
+    # transfer_to_dubio('datasets/aer_clusters_prob', 'datasets/aer_clusters_cert')
 
-    # # Close connection
+    # Close connection
     close_pg()
 
     # ====== STEP 6 ================================================================================= #
