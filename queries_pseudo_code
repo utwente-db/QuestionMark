@@ -4,6 +4,10 @@ In this program, this pseudo-code can be found translated to the SQL dialects of
 Please go to 'queries-dubio' to see how this pseudo-code translates to the dialect of DuBio.
 Please go to 'queries-maybms' to see how this pseudo-code translates to the dialect of MayBMS.
 
+Explain Analyse only works with the following statements:
+SELECT, INSERT, UPDATE, DELETE, VALUES, EXECUTE, DECLARE, CREATE TABLE AS, or CREATE MATERIALIZED VIEW AS.
+The use of any other statement will throw an error. Be wary of this when adding queries to this benchmark.
+
 The queries are divided into the following categories:
     - basic queries
     - probability centered queries
@@ -16,18 +20,18 @@ The queries are divided into the following categories:
 Comments about the use of the queries:
 # TODO: Add the queries.
 
-query_test_1:       Simple query to test the connection.
+test_1:       Simple query to test the connection.
 
-query_basic_1:      Provides insight into the dataset.
-query_basic_2:      Provides insight into the distribution of cluster volumes.
+basic_1:      Provides insight into the dataset.
+basic_2:      Provides insight into the distribution of cluster volumes.
 
-query_condition_1:  Returns all clusters that contain a product with 'ford'.
+condition_1:  Returns all clusters that contain a product with 'ford'.
 
-query_insert_1:     Inserts new offers into the database.
-query_insert_2:     Inserts the new sentences into the database.
-query_update_1:     Changes a selection of offers.
-query_update_2:     Adds new evidence to the database.
-query_delete_1:     Deletes a selection of offers from the database.
+insert_1:     Inserts new offers into the database.
+insert_2:     Inserts the new sentences into the database.
+update_1:     Changes a selection of offers.
+update_2:     Adds new evidence to the database.
+delete_1:     Deletes a selection of offers from the database.
 
 For the insert queries, the data file 'insert_offers.sql' and 'insert_dict.sql' will be run.
     These files are created by running the functions in insert_query.py in the prob-matcher program.
