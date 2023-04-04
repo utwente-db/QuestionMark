@@ -1,7 +1,7 @@
 from itertools import combinations
 import numpy
 
-# Definition of a world graph from paper of TODO.
+# Definition of a world graph from paper of Panse, van Keulen and Ritter (2013). DOI: 10.1145/2435221.2435225
 
 
 def set_all_offers(matching_graph):

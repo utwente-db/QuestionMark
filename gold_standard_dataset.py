@@ -60,12 +60,3 @@ def get_matches(gold_standard):
                     mismatches[offer_duo.get('id_right')] = []
                 mismatches[offer_duo.get('id_right')].append(offer_duo.get('id_left'))
     return matches, mismatches
-
-
-if __name__ == '__main__':
-    # create_dataset('datasets/all_gs.json.gz')
-
-    offer_matches, offer_mismatches = get_matches('datasets/all_gs.json.gz')
-    # print(offer_matches)
-    # print('============')
-    # print(offer_mismatches)

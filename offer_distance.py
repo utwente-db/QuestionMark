@@ -107,8 +107,8 @@ def test():
     print(hamming('hello', 'hello'))
     print(hamming('bla', 'ewo'))
 
-    # timed('somethinginthisworldthatIhaveneverseen', 'somethingcompletelydifferentnobodyhaswitnessed')
-    # timed('blabla', 'ewoewo')
+    timed('somethinginthisworldthatIhaveneverseen', 'somethingcompletelydifferentnobodyhaswitnessed')
+    timed('blabla', 'ewoewo')
 
 
 if __name__ == '__main__':

@@ -143,10 +143,3 @@ def aer_matcher(blocks_file):
                 cert_clusters.append(cluster)
 
     return world_graphs_clusters, cert_clusters
-
-
-if __name__ == '__main__':
-    # # #  Attribute-based Entity Resolution
-    probabilistic_clusters, certain_clusters = aer_matcher('datasets/asn_gs_blocks')  # normal execution.
-    write_clusters_to_file(probabilistic_clusters, certain_clusters,
-                           'datasets/aer_clusters_prob', 'datasets/aer_clusters_cert')

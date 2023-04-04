@@ -100,6 +100,9 @@ def execute_query(query):
 def setup_database_maybms():
     sql = """
         DROP TABLE IF EXISTS offers_setup CASCADE;
+        DROP TABLE IF EXISTS offers_rk_world CASCADE; 
+        DROP TABLE IF EXISTS offers_rk_attrs CASCADE; 
+        DROP TABLE IF EXISTS offers CASCADE;
         CREATE TABLE offers_setup (
             id               BIGINT,
             cluster_id       BIGINT,
@@ -227,6 +230,22 @@ def transfer_to_maybms(prob_cluster_file, cert_cluster_file):
     # commit the remaining records
     bulk_insert_maybms()
     print('100 % done with inserting offers in MayBMS.')
+
+    print('\n Making the offers table probabilistic ...')
+    query = """ CREATE TABLE offers_rk_world AS REPAIR KEY cluster_id IN offers_setup WEIGHT BY world_prob;  """
+    execute_query(query)
+    print(' 40% done ...')
+    query = """ CREATE TABLE offers_rk_attrs AS REPAIR KEY id IN offers_setup WEIGHT BY attribute_prob;  """
+    execute_query(query)
+    print(' 80% done ...')
+    query = """ CREATE TABLE offers AS (
+                    SELECT attrs.* 
+                    FROM offers_rk_attrs AS attrs, offers_rk_world AS world
+                    WHERE attrs.id = world.id 
+                );
+            """
+    execute_query(query)
+    print(' 100% done')
 
 
 # ======  DuBio  ====================================================================================================
@@ -495,16 +514,3 @@ def prepare_string_for_insert(value):
         value = value.replace("'", "''")
         value = "'" + value + "'"  # And wrap it in a string.
     return value
-
-
-def debug():
-    pass
-
-
-if __name__ == '__main__':
-    # connect_pg(configname='database.ini')
-    # # transfer_to_maybms('datasets/aer_clusters_prob', 'datasets/aer_clusters_cert')
-    # transfer_to_dubio('datasets/aer_clusters_prob', 'datasets/aer_clusters_cert')
-    # close_pg()
-
-    debug()

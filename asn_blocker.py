@@ -57,12 +57,3 @@ def asn_blocker(dataset):
                 window.last = window.first + WS - 1
                 break
     return blocks
-
-
-if __name__ == '__main__':
-    # # #  Incrementally Adaptive Sorted Neighborhood blocking
-    bls = asn_blocker('datasets/offers_corpus_english_v2_gs.json.gz')
-    # write_to_file(bls, 'datasets/asn_blocks')
-    # write_blocks_to_file(bls, 'datasets/asn_gs_blocks')
-
-    # To measure the performance of this blocking algorithm, use blocker_performance.py

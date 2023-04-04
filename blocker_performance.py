@@ -94,8 +94,3 @@ def full_performance_scan(dataset):
     print('Precision:', precision)
     print('Recall:', recall)
     print('Average runtime over', iterations, 'runs:', runtime)
-
-
-if __name__ == '__main__':
-    full_performance_scan('datasets/offers_corpus_english_v2_gs_sorted.json.gz')
-    # full_performance_scan('datasets/offers_corpus_english_v2_999k_sorted.json.gz')

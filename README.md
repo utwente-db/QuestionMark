@@ -1,14 +1,15 @@
-# prob-matcher
+# QUESTION MARK: the probabilistic benchmark - Dataset Generator
 
-prob-matcher is a Python program to create a dataset for probabilistic product matching. 
-This program is part of the benchmark for probabilistic database management systems (see Contributors).
+QUESTION MARK: the probabilistic benchmark - Dataset Generator is a Python program to create 
+a dataset for probabilistic product matching. This dataset is required to run the benchmark 
+test with the [QUESTION MARK: the probabilistic benchmark](https://gitlab.utwente.nl/s1981951/probabilistic-benchmark).
+
 The dataset created by this program is an adaptation of the 
-[WDC Product Data Corpus for Large-Scale Product Matching](http://webdatacommons.org/largescaleproductcorpus/v2/index.html) 
+[WDC [database.ini.tmpl](database.ini.tmpl)Product Data Corpus for Large-Scale Product Matching](http://webdatacommons.org/largescaleproductcorpus/v2/index.html) 
 dataset. The clustering provided by this original dataset is removed and a new probabilistic
-clustering is introduced. The dataset created by this program can be loaded into both 
-[DuBio](https://github.com/utwente-db/DuBio) and [MayBMS](http://maybms.sourceforge.net/).
+clustering is introduced. 
 
-```This project is still a WIP. Please do not yet use.```
+```This project is a WIP. Please do not yet use.```
 
 ## Use
 This project can be downloaded for use. Please check ```MANUAL.md``` for a roadmap on how

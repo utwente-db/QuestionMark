@@ -1,6 +1,7 @@
-# Prob-Matcher Manual
+# Manual
 
-This file contains the roadmap on how this project is to be used. 
+This file contains the roadmap on how 'QUESTION MARK: The Dataset Generator'
+ is to be used. 
 _Optional steps are displayed in italic_. 
 
 Note that you are allowed to make changes to this program. 
@@ -31,7 +32,7 @@ Please follow the rules as provided by the CC license.
 - Run ```write_to_file```
 
 ## 5 - Writing to a database
-- It is expected that a functioning database connection is set up.
+- It is expected that a functioning database connection is set up. _In case a probabilistic DBMS will be benchmarked that is non-PostgreSQL based, please see the instructions on the bottom of this manual._
 - Create a file called ```database.ini``` and fill in the credentials following the structure of ```database.ini.tmpl```.
 - Run ```connect_pg``` to establish the connection to the database.
 - For MayBMS, run ```transfer_to_maybms```. For DuBio, run ```transfer_to_dubio```.
@@ -45,3 +46,13 @@ Please follow the rules as provided by the CC license.
 - _To get the performance of the selected blocking algorithm, run ```blocker_performance.full_performance_scan```._
 - _To get the performance of the matching algorithm, run ```asn_blocker``` with the newly created dataset and write the blocks to a file with ```write_to_file```.
 - _Next, run ```blocker_performance.full_performance_scan```._
+
+## Supporting a non-PostgreSQL based DBMS.
+In case you want to benchmark a DBMS that is non-PostgreSQL based,
+you need to de a couple of extra steps to prepare the program. 
+Please adapt the following parts in this program:
+- ```database.ini.tmpl```.
+- ```database_filler.py```. Currently, psycopg2 is used to establish a connection with the database. Please read through the code and adapt the methods that do not support the other DMBS.
+- ```instert_query.py```. The ```create()``` method also uses psycopg2 to connect to the database. This method should thus be adapted.
+
+
