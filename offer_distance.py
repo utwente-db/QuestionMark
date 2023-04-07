@@ -102,6 +102,7 @@ def timed(word1, word2):
     print(((et - st) * 10**3) / 50000)
 
 
+# Can be used to test the functions here. Not used by another function.
 def test():
     print(hamming('somethinginthisworldthatIhaveneverseen', 'somethingcompletelydifferentnobodyhaswitnessed'))
     print(hamming('hello', 'hello'))

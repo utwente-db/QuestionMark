@@ -83,4 +83,5 @@ def isa_blocker(dataset):
 
 if __name__ == '__main__':
     # # #  Incrementally Adaptive Sorted Neighborhood blocking
-    isa_blocker('datasets/offer_corpus_english_v2_gs_sorted.json.gz')
+    # isa_blocker('datasets/offer_corpus_english_v2_gs_sorted.json.gz')
+    isa_blocker('datasets/offers_corpus_sorted.json.gz')

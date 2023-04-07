@@ -1,3 +1,4 @@
+# Class to create a sliding window for the ASN blocking algorithm. 
 class Window:
     size = 0
     current = 0

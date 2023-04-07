@@ -22,11 +22,11 @@ DIST = 'levenshtein'  # from the asn paper, fastest
 # # DATASET PREPARATION
 # # ===================
 
-# The percentage of the dataset to be used. The full size is around 16 million offers / 2.9 GB zipped.
-# For approximately 50% of the dataset, assign value 50.
-DATASET_SIZE = 0.01  # Works with up to two decimal points
-# All attributes that are NOT a BKV (blocking key value). All attributes of an offer: ['brand', 'category',
-#   'cluster_id', 'description', 'id', 'identifiers', 'keyValuePairs', 'price', 'specTableContent', 'title']
+# # The percentage of the dataset to be used. The full size is around 16 million offers / 2.9 GB zipped.
+# # For approximately 50% of the dataset, assign value 50.
+DATASET_SIZE = 0.01  # Works up to two decimal points
+# # All attributes that are NOT a BKV (blocking key value). All attributes of an offer: ['brand', 'category',
+# #   'cluster_id', 'description', 'id', 'identifiers', 'keyValuePairs', 'price', 'specTableContent', 'title']
 NON_BKV = ['description', 'identifiers', 'keyValuePairs', 'price', 'specTableContent']  # also keep id and cluster_id.
 
 
@@ -51,18 +51,18 @@ MSL = 3    # Minimum Suffix Length  (isa)
 # # MATCHING ALGORITHM
 # # ==================
 
-# List of attributes that are used to obtain a matching score. All attributes of an offer: ['brand', 'category',
-#   'cluster_id', 'description', 'id', 'identifiers', 'keyValuePairs', 'price', 'specTableContent', 'title']
+# # List of attributes that are used to obtain a matching score. All attributes of an offer: ['brand', 'category',
+# #   'cluster_id', 'description', 'id', 'identifiers', 'keyValuePairs', 'price', 'specTableContent', 'title']
 ATTRIBUTES = ['brand', 'category', 'description', 'identifiers', 'keyValuePairs', 'price', 'specTableContent', 'title']
 
-# The weight associated to the similarity score of an attribute.
-# Values from 0 to 1.  0 = exclude. len(WEIGHTS) = len(ATTRIBUTES).
-WEIGHTS = [0.8, 0.7, 1, 1, 1, 1, 1, 1]
+# # The weight associated to the similarity score of an attribute.
+# # Values from 0 to 1.  0 = exclude. len(WEIGHTS) = len(ATTRIBUTES).
+WEIGHTS = [1, 0.7, 0.8, 0.8, 0.8, 1, 0.7, 1]
 
-# Distance < LOWER_PHI? Definitely the same product. Increase value to obtain a more certain dataset.
+# # Distance < LOWER_PHI? Definitely the same product. Increase value to obtain a more certain dataset.
 LOWER_PHI = 0.35
 
-# Distance > UPPER_PHI? Definitely not the same product. Decrease value to obtain a more certain dataset.
+# # Distance > UPPER_PHI? Definitely not the same product. Decrease value to obtain a more certain dataset.
 UPPER_PHI = 0.5
 
 

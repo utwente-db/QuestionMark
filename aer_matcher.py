@@ -17,6 +17,8 @@ def write_clusters_to_file(prob_clusters, cert_clusters, write_to_prob, write_to
         pickle.dump(cert_clusters, file)
 
 
+# Based on the paper of Bhattacharya and Getoor (2007). Collective entity resolution in relational data.
+# Creates the final clustering for the dataset.
 def aer_matcher(blocks_file):
     # Get blocks from file. Type of blocks: [[offer_id, ...], ...]
     blocks = []

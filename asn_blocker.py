@@ -15,6 +15,7 @@ def write_blocks_to_file(blocks, write_to):
 
 
 # Based on the paper of Yan et al. (2007) Adaptive Sorted Neighborhood Methods for Efficient Record Linkage.
+# Creates blocks with possible clusters from the dataset.
 def asn_blocker(dataset):
     blocks = []
     offers = []
@@ -29,7 +30,7 @@ def asn_blocker(dataset):
             offers.append(json.loads(offer.decode('utf-8')))
 
     while window.last < len(offers):
-        # enlargement
+        # enlargement phase
         dist = get_distance(offers[window.first].get('title'), offers[window.last].get('title'))
         if dist <= PHI:
             if window.last + WS < len(offers):
@@ -39,8 +40,7 @@ def asn_blocker(dataset):
                 window.last = len(offers)
         if window.last - window.first >= MBS:
             window.last = window.first + MBS - 1
-        # retrenchment and create block
-        # else:
+        # retrenchment phase and create block
         for i in range(window.last, window.first - 1, -1):
             dist = get_distance(offers[window.first].get('title'), offers[i].get('title'))
             if dist <= PHI or offers[window.first].get('id') == offers[i].get('id'):

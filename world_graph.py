@@ -1,9 +1,8 @@
 from itertools import combinations
 import numpy
 
-# Definition of a world graph from paper of Panse, van Keulen and Ritter (2013). DOI: 10.1145/2435221.2435225
 
-
+# Gets a list of all offers present in the matching graphs.
 def set_all_offers(matching_graph):
     all_offers = []
     for offer_tuple in matching_graph.keys():
@@ -14,6 +13,7 @@ def set_all_offers(matching_graph):
     return all_offers
 
 
+# Gets the probabilities of the existence of each world in the set of possible worlds.
 def get_probabilities(possible_worlds, matching_graph):
     probabilities = []
     for possible_world in possible_worlds:
@@ -30,6 +30,7 @@ def get_probabilities(possible_worlds, matching_graph):
     return probabilities
 
 
+# Removes the inconsistent possible worlds from the generated worlds.
 def get_consistent_graphs(possible_worlds):
     consistent_worlds = []
     transitive = True
@@ -50,6 +51,7 @@ def get_consistent_graphs(possible_worlds):
     return consistent_worlds
 
 
+# Generates all possible worlds from a given matching graph.
 def generate_possible_worlds(matching_graph):
     include_list = []
     combination_list = []
@@ -93,6 +95,7 @@ def generate_possible_worlds(matching_graph):
     return consistent_worlds, probabilities
 
 
+# Definition of a world graph from paper of Panse, van Keulen and Ritter (2013). DOI: 10.1145/2435221.2435225.
 class WorldGraph:
     # M  = {}  # Matching graph. Dict with a tuple of offers as key and the probability of their edge as a value.
     N  = []  # all offers in the possible world. List of integers.

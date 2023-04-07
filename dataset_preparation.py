@@ -17,9 +17,10 @@ def resize_dataset(dataset, write_to):
             offer = json.loads(line)
             # Create a hash of the offer_id, so we can pseudo-randomly include an offer or exclude it.
             # This ensures that the same 'random' selection is made each time this function is run.
-            id_hash = hashlib.sha256(str(offer.get('id')).encode('utf-8')).hexdigest()
+            # Uncomment below when you wish to include more certainty / have smaller clusters.
+            # id_hash = hashlib.sha256(str(offer.get('id')).encode('utf-8')).hexdigest()
             # Uncomment below when you wish to include higher uncertainty / have larger clusters.
-            # id_hash = hashlib.sha256(str(offer.get('cluster_id')).encode('utf-8')).hexdigest()
+            id_hash = hashlib.sha256(str(offer.get('cluster_id')).encode('utf-8')).hexdigest()
             include = int(id_hash, 16) % 10000
             if include < (DATASET_SIZE * 100):
                 smaller_dataset.append(offer)
@@ -39,13 +40,12 @@ def sort_offers(dataset, write_to):
         offers = []
         total = 0
         for line in data:
-            # print(line)
             total += 1
             offer = json.loads(line)
             for attribute in NON_BKV:  # Only keep BKVs, cluster_id and id of offer.
                 offer.pop(attribute)
             offers.append(offer)
-        sorted_offers = sorted(offers,
+        sorted_offers = sorted(offers,  # Changing the order of sorting impacts the performance.
                                key=lambda k: (k['title'] is None, k['title'] == "", k['title'],
                                               k['brand'] is None, k['brand'] == "", k['brand'],
                                               k['category'] is None, k['category'] == "", k['category']))
@@ -59,7 +59,7 @@ def offer_by_id(dataset, write_to):
     print('generating offers by ID dictionary...')
     offers_raw = []
     offers = {}
-    with gzip.open(dataset) as offers_file:  # Open the sorted dataset
+    with gzip.open(dataset) as offers_file:
         for offer in offers_file:
             offers_raw.append(json.loads(offer.decode('utf-8')))
 
