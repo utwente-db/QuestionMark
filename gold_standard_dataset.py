@@ -8,8 +8,11 @@
 import gzip
 import json
 
+from cleantext import clean
 
-def create_dataset(gold_standard):
+
+def create_dataset(gold_standard, write_to):
+    print("\n   Generating dataset ...")
     offers = []
     with gzip.open(gold_standard) as gs_file:  # Open the sorted dataset
         for line in gs_file:
@@ -29,11 +32,17 @@ def create_dataset(gold_standard):
     ids = []
     for offer in offers:
         if offer['id'] not in ids:
-            offers_unique.append(offer)
+            offer_cleaned = {}
+            for key, value in offer.items():
+                if key == 'id' or key == 'cluster_id' or not value or type(value) == dict or type(value) == list:
+                    offer_cleaned[key] = value
+                else:  # Normalise data, as the golden standard is non-normalised.
+                    offer_cleaned[key] = clean(value, extra_spaces=True, stemming=True, stopwords=True, lowercase=True, punct=True)
+            offers_unique.append(offer_cleaned)
             ids.append(offer['id'])
 
     # Write unique offers in the golden standard to file.
-    with open('datasets/offers_corpus_gs.json', 'w', encoding='utf-8') as file:
+    with open(write_to, 'w', encoding='utf-8') as file:
         file.write('%s' % '\n'.join(map(json.dumps, offers_unique)))
 
 

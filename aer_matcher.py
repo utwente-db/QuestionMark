@@ -1,12 +1,23 @@
-# TODO: (optional) allow for different similarity measure for each attribute.
+# (optional addition) allow for different similarity measure for each attribute.
 
 import gzip
 import json
 import pickle
+from math import floor
 
 from offer_distance import get_distance
 from parameters import ATTRIBUTES, WEIGHTS, LOWER_PHI, UPPER_PHI
 from world_graph import WorldGraph
+
+progress_percentage = 0
+
+
+def print_progress(count, length):
+    global progress_percentage
+    percentage_done = round((count / length * 100), 2)
+    if floor(percentage_done) > floor(progress_percentage):
+        progress_percentage = floor(percentage_done)
+        print(floor(percentage_done), '% done with creating world graphs for uncertain clusters...')
 
 
 def write_clusters_to_file(prob_clusters, cert_clusters, write_to_prob, write_to_cert):
@@ -18,8 +29,9 @@ def write_clusters_to_file(prob_clusters, cert_clusters, write_to_prob, write_to
 
 
 # Based on the paper of Bhattacharya and Getoor (2007). Collective entity resolution in relational data.
+#       --> Attribute-Based Entity Resolution Matching Algorithm.
 # Creates the final clustering for the dataset.
-def aer_matcher(blocks_file):
+def aer_matcher(blocks_file, performance=False):  # Use different byID file for a performance run.
     # Get blocks from file. Type of blocks: [[offer_id, ...], ...]
     blocks = []
     print('reading blocks file...')
@@ -31,8 +43,12 @@ def aer_matcher(blocks_file):
 
     # Get all offer information from file. Type of offers: {offer_id: {'title': ..., 'id': ..., ...}, ...}
     print('reading offers by ID file...')
-    with gzip.open('datasets/offers_corpus_byID.json.gz', 'r') as id_file:
-        offers = json.loads(id_file.read())
+    if performance:
+        with gzip.open('datasets/offers_gs_byID.json.gz', 'r') as id_file:
+            offers = json.loads(id_file.read())
+    else:
+        with gzip.open('datasets/offers_corpus_byID.json.gz', 'r') as id_file:
+            offers = json.loads(id_file.read())
 
     # Generate comparison vector. Type of block_matches: [{(offer_id_1, offer_id_2): [dist_float, ...], ...}, {...}]
     # For each offer combination in a block we return the distance per attribute. (from 0 to 1)
@@ -97,7 +113,7 @@ def aer_matcher(blocks_file):
     count = 0
     for matching_graph in block_scores:
         count += 1
-        print(round((count / len(block_scores)*100), 2), '% done with creating world graphs for uncertain clusters...')
+        print_progress(count, len(block_scores))
         created_graph = False
         for probability in matching_graph.values():
             if 0 < probability < 1:  # If there is any tuple uncertain, create matching graph.

@@ -5,12 +5,24 @@ import sys
 
 from database_filler import execute_query, get_attr_prob, prepare_string_for_insert, load_content, connect_pg, close_pg
 
+# This file creates the representation for easy upload in the database.
+# This file is an extension of database_filler.py specialised for DuBio.
+
 # Global Variables
 bulk_dict_query = "'"
 bulk_insert_query = ""
+progress_percentage = 0
 
-# This file creates the representation for easy upload in the database.
-# This file is an extension of database_filler.py specialised for DuBio.
+
+def print_progress(count, length, text):
+    global progress_percentage
+    percentage_done = round((count / length * 100), 2)
+    if math.floor(percentage_done) > math.floor(progress_percentage):
+        progress_percentage = math.floor(percentage_done)
+        if text == 'cluster':
+            print(math.floor(percentage_done), '% done with processing probabilistic clusters.')
+        elif text == 'insert':
+            print(math.floor(percentage_done), '% done with inserting offers in DuBio.')
 
 
 # Creates the offers database table.
@@ -110,6 +122,13 @@ def get_bdd_possible(offers, cluster, cluster_id, probabilities, possible_world_
     return bdds
 
 
+def format_sentence(sentence_raw):
+    sentence = ""
+    for bdd in sentence_raw:
+        sentence += str(bdd) + '|'
+    return sentence[:-1]  # To remove last OR operator.
+
+
 # Creates a single record to be put into the database from an offer.
 def create_record_dubio(offers, offer, cluster_id, bdd):
     record = {}
@@ -125,7 +144,7 @@ def create_record_dubio(offers, offer, cluster_id, bdd):
         'identifiers': prepare_string_for_insert(offer_info.get('identifiers')),
         'keyValuePairs': prepare_string_for_insert(offer_info.get('keyValuePairs')),
         'specTableContent': prepare_string_for_insert(offer_info.get('specTableContent')),
-        '_sentence': str(bdd)
+        '_sentence': format_sentence(bdd)
     })
     return record
 
@@ -140,13 +159,14 @@ def transfer_to_dubio(prob_cluster_file, cert_cluster_file):
     with gzip.open('datasets/offers_corpus_byID.json.gz', 'r') as id_file:
         offers = json.loads(id_file.read())
     records = []  # Each record becomes a row in the database.
+    sentences = {}  # To store and build complex sentences per record before insert.
     cluster_id_start = 1
     cluster_id_end = 1
 
     count = 0
     for prob_cluster in prob_clusters:  # type prob_cluster:  [ [offers], [(possible_world), ...], [probabilities] ]
         count += 1
-        print(round((count / len(prob_clusters) * 100), 2), '% done with processing probabilistic clusters.')
+        print_progress(count, len(prob_clusters), 'cluster')
         cluster_id = cluster_id_start
         possible_world_number = 0
         for possible_world in prob_cluster[1]:  # type possible_world: ([offer_id, offer_id], ...)
@@ -165,14 +185,19 @@ def transfer_to_dubio(prob_cluster_file, cert_cluster_file):
 
             bdds = get_bdd_possible(offers, cluster, cluster_id_start, prob_cluster[2], possible_world_number)
             for i in range(len(cluster)):
-                record = create_record_dubio(offers, cluster[i], cluster_id, bdds[i])
+                if cluster[i] not in sentences:
+                    sentences[cluster[i]] = []
+                sentences[cluster[i]].append(bdds[i])
+
+            for offer, sentence in sentences.items():
+                record = create_record_dubio(offers, offer, cluster_id, sentence)
                 records.append(record)
 
             for i in range(len(individual_offers)):
                 cluster_id += 1
                 bdd = get_bdd_possible(offers, [individual_offers[i]], cluster_id, prob_cluster[2],
                                        possible_world_number)
-                record = create_record_dubio(offers, individual_offers[i], cluster_id, bdd[0])
+                record = create_record_dubio(offers, individual_offers[i], cluster_id, [bdd[0]])
                 records.append(record)
 
             bulk_insert_dubio('dict')
@@ -193,12 +218,14 @@ def transfer_to_dubio(prob_cluster_file, cert_cluster_file):
         cluster_count += 1
         bdds = get_bdd_certain(offers, cluster, cluster_id)
         for i in range(len(cluster)):
-            record = create_record_dubio(offers, cluster[i], cluster_id, bdds[i])
+            record = create_record_dubio(offers, cluster[i], cluster_id, [bdds[i]])
             records.append(record)
         if cluster_count >= 200:
             bulk_insert_dubio('dict')
             cluster_count = 0
 
+    global progress_percentage
+    progress_percentage = 0
     record_count = 0
     count = 0
     for record in records:
@@ -209,7 +236,7 @@ def transfer_to_dubio(prob_cluster_file, cert_cluster_file):
         bulk_insert_query += '( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, Bdd%s ), ' % tuple(vals)
         if record_count >= 1000:
             bulk_insert_dubio('insert')
-            print(round((count / len(records) * 100), 2), '% done with inserting offers in DuBio.')
+            print_progress(count, len(records), 'insert')
             record_count = 0
 
     # commit the remaining records

@@ -4,7 +4,7 @@ import time
 from asn_blocker import asn_blocker
 from gold_standard_dataset import get_matches
 from isa_blocker import isa_blocker
-from parameters import BLOCK, ITERS
+from parameters import BLOCK, ITERS, DECIMAL_PLACES
 
 
 def run_blocker(dataset, blocker):
@@ -39,11 +39,9 @@ def get_blocks(dataset, blocker):
     return blocks
 
 
+# Calculates the true positive (tp), true negative (tn), false positive (fp) and false negative (fn) matches.
 def get_dataset_measures(blocks):
-    tp = 0  # True Positive
-    tn = 0  # True Negative
-    fp = 0  # False Positive
-    fn = 0  # False Negative
+    tp, tn, fp, fn = 0, 0, 0, 0
     tm, tnm = get_matches('datasets/all_gs.json.gz')  # True Matches, True Non-Matches
 
     for offer, matches in tm.items():
@@ -62,7 +60,7 @@ def get_dataset_measures(blocks):
                 else:
                     tn += 1
 
-    print(tp, tn, fp, fn)
+    print('\ntp:', tp, 'tn:', tn, 'fp:', fp, 'fn:', fn)
     return tp, tn, fp, fn
 
 
@@ -74,23 +72,21 @@ def get_recall(tp, fn):  # pair completeness
     return tp / (tp + fn)
 
 
-def get_runtime(dataset, blocker, iterations):
-    st = time.time()  # start time
-    for run in range(iterations):
-        run_blocker(dataset, blocker)
-    et = time.time()  # end time
-    return ((et - st) * 10**3) / iterations
+def get_runtime(dataset):
+    start_time = time.time()
+    for run in range(ITERS):
+        run_blocker(dataset, BLOCK)
+    end_time = time.time()
+    return ((end_time - start_time) * 10**3) / ITERS
 
 
 def full_performance_scan(dataset):
-    blocker = BLOCK
-    iterations = ITERS
-    blocks = get_blocks(dataset, blocker)
+    blocks = get_blocks(dataset, BLOCK)
     tp, _, fp, fn = get_dataset_measures(blocks)
-    precision = get_precision(tp, fp)
-    recall    = get_recall(tp, fn)
-    runtime   = get_runtime(dataset, blocker, iterations)
-    print('The', blocker, 'blocking algorithm has the following performance:')
-    print('Precision:', precision)
-    print('Recall:', recall)
-    print('Average runtime over', iterations, 'runs:', runtime)
+    precision = round(get_precision(tp, fp), DECIMAL_PLACES)
+    recall    = round(get_recall(tp, fn), DECIMAL_PLACES)
+    runtime   = round(get_runtime(dataset), DECIMAL_PLACES)
+    print('\nThe', BLOCK.upper(), 'blocking algorithm has the following performance:')
+    print('  Precision:', precision)
+    print('  Recall:', recall)
+    print('  Average runtime over', ITERS, 'runs:', runtime, 'ms.')

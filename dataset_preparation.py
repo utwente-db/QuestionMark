@@ -35,7 +35,7 @@ def resize_dataset(dataset, write_to):
 
 # Sort offers, keep the original data structure.
 def sort_offers(dataset, write_to):
-    print('sorting offers...')
+    print('\n   sorting offers...')
     with gzip.open(dataset) as data:
         offers = []
         total = 0

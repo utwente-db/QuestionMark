@@ -39,11 +39,12 @@ Please follow the rules as provided by the CC license.
 
 ## 6 - Running performance tests
 - _Run ```create_dataset``` with the Golden Standard dataset._
-- _Open a terminal, ```cd``` to the datasets directory and run <nobr>```gzip offers_corpus_gs.json```.</nobr>_
+- _Open a terminal, ```cd``` to the datasets directory and run <nobr>```gzip offers_gs.json```.</nobr>_
 - _Run ```sort_offers``` with the newly created dataset.
+- _Return to the terminal and run <nobr>```gzip offers_gs_sorted.json```.</nobr>_
 - _To get the performance of the selected blocking algorithm, run ```blocker_performance.full_performance_scan```._
 - _To get the performance of the matching algorithm, run ```asn_blocker``` with the newly created dataset and write the blocks to a file with ```write_to_file```.
-- _Next, run ```blocker_performance.full_performance_scan```._
+- _Next, run ```matcher_performance.full_performance_scan```._
 
 ## Including a new DBMS.
 In case you want to benchmark a DBMS that is not yet included in this 

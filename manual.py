@@ -27,7 +27,7 @@ if __name__ == '__main__':
     # # The generated datasets should be manually gzipped before running the next function.
 
     # # Steps to take if a smaller dataset will be used.
-    resize_dataset('datasets/offers_corpus_english_v2.json.gz', 'datasets/offers_corpus_resized.json')
+    # resize_dataset('datasets/offers_corpus_english_v2.json.gz', 'datasets/offers_corpus_resized.json')
     # sort_offers('datasets/offers_corpus_resized.json.gz', 'datasets/offers_corpus_sorted.json')
     # offer_by_id('datasets/offers_corpus_resized.json.gz', 'datasets/offers_corpus_byID.json')
 
@@ -51,17 +51,20 @@ if __name__ == '__main__':
     # transfer_to_maybms('datasets/aer_clusters_prob', 'datasets/aer_clusters_cert')
 
     # # Write to DuBio
-    # transfer_to_dubio('datasets/aer_clusters_prob', 'datasets/aer_clusters_cert')
+    transfer_to_dubio('datasets/aer_clusters_prob', 'datasets/aer_clusters_cert')
 
     # # ====== STEP 6 ================================================================================= #
-    # create_dataset('datasets/all_gs.json.gz')
+    # create_dataset('datasets/all_gs.json.gz', 'datasets/offers_gs.json')
     # # gzip file.
-    # sort_offers('datasets/offers_corpus_gs.json.gz', 'datasets/offers_corpus_gs_sorted.json')
+    # sort_offers('datasets/offers_gs.json.gz', 'datasets/offers_gs_sorted.json')
+    # # gzip file.
 
     # # To get the performance of the blocking algorithm
-    # blocker_performance.full_performance_scan('datasets/offers_corpus_gs_sorted.json.gz')
+    # blocker_performance.full_performance_scan('datasets/offers_gs_sorted.json.gz')
 
     # # To get the performance of the matching algorithm.
-    # gs_blocks = asn_blocker('datasets/offers_corpus_gs_sorted.json.gz')
+    # offer_by_id('datasets/offers_gs_sorted.json.gz', 'datasets/offers_gs_byID.json')
+    # # gzip file
+    # gs_blocks = asn_blocker('datasets/offers_gs_sorted.json.gz')
     # write_blocks_to_file(gs_blocks, 'datasets/asn_gs_blocks')
     # matcher_performance.full_performance_scan('datasets/asn_gs_blocks')

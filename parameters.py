@@ -12,8 +12,8 @@
 # # Valid values (in case of a delete): levenshtein, jarowinkler, hamming, jaccard.
 # # Others can be added by defining a new function in offer_distance.py
 # #   and adding the case to asn_blocker.py / isn_blocker.py in the function get_distance().
-DIST = 'levenshtein'  # from the asn paper, fastest
-# DIST = 'jarowinkler'  # from the isa paper
+# DIST = 'levenshtein'  # from the asn paper, fastest
+DIST = 'jarowinkler'  # from the isa paper
 # DIST = 'hamming'  # relatively slow for longer words
 # DIST = 'jaccard'
 
@@ -41,10 +41,10 @@ BLOCK = 'asn'
 # BLOCK = 'isa'  # DO NOT USE. See isa_blocker.py for more info.
 
 # # Change these variables to adjust the settings of the blocking algorithms.
-WS = 2     # Window Size            (asn)
-PHI = 0.7  # similarity Threshold   (asn / isa)  # Distance!
-MBS = 6    # Maximum Block Size     (asn / isa)
-MSL = 3    # Minimum Suffix Length  (isa)
+WS = 2     # Window Size            (asn)                       # Default 2
+PHI = 0.36  # similarity Threshold   (asn / isa)  # Distance!   # Default 0.36
+MBS = 6    # Maximum Block Size     (asn / isa)                # Default 6
+MSL = 3    # Minimum Suffix Length  (isa)                       # Default 3
 
 
 # # ==================
@@ -60,15 +60,18 @@ ATTRIBUTES = ['brand', 'category', 'description', 'identifiers', 'keyValuePairs'
 WEIGHTS = [1, 0.7, 0.8, 0.8, 0.8, 1, 0.7, 1]
 
 # # Distance < LOWER_PHI? Definitely the same product. Increase value to obtain a more certain dataset.
-LOWER_PHI = 0.35
+LOWER_PHI = 0.12
 
 # # Distance > UPPER_PHI? Definitely not the same product. Decrease value to obtain a more certain dataset.
-UPPER_PHI = 0.5
+UPPER_PHI = 0.50
 
 
 # # ===========
 # # PERFORMANCE
 # # ===========
 
-# # Choose the amount of iterations for a timed run
+# # Choose the amount of iterations for a timed run.
 ITERS = 1
+
+# # Choose the precision the performance results are displayed in.
+DECIMAL_PLACES = 3

@@ -37,11 +37,12 @@ def asn_blocker(dataset):
                 window.last += WS
                 continue
             else:
-                window.last = len(offers)
+                window.last = len(offers) - 1
         if window.last - window.first >= MBS:
             window.last = window.first + MBS - 1
         # retrenchment phase and create block
         for i in range(window.last, window.first - 1, -1):
+            print('len:', len(offers), 'index window:', window.first, 'index i', i)
             dist = get_distance(offers[window.first].get('title'), offers[i].get('title'))
             if dist <= PHI or offers[window.first].get('id') == offers[i].get('id'):
                 window.last = i

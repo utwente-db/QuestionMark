@@ -7,6 +7,18 @@ from database_filler import execute_query, prepare_string_for_insert, load_conte
 # Global Variables
 bulk_dict_query = "'"
 bulk_insert_query = ""
+progress_percentage = 0
+
+
+def print_progress(count, length, text):
+    global progress_percentage
+    percentage_done = round((count / length * 100), 2)
+    if math.floor(percentage_done) > math.floor(progress_percentage):
+        progress_percentage = math.floor(percentage_done)
+        if text == 'cluster':
+            print(math.floor(percentage_done), '% done with processing probabilistic clusters.')
+        elif text == 'insert':
+            print(math.floor(percentage_done), '% done with inserting offers in MayBMS.')
 
 # This file creates the representation for easy upload in the database.
 # This file is an extension of database_filler.py specialised for DuBio.
@@ -86,7 +98,7 @@ def transfer_to_maybms(prob_cluster_file, cert_cluster_file):
     count = 0
     for prob_cluster in prob_clusters:  # type prob_cluster:  [ [offers], [(possible_world), ...], [probabilities] ]
         count += 1
-        print(round((count / len(prob_clusters) * 100), 2), '% done with processing probabilistic clusters.')
+        print_progress(count, len(prob_clusters), 'cluster')
         cluster_id = cluster_id_start
         possible_world_number = 0
         for possible_world in prob_cluster[1]:  # type possible_world: ([offer_id, offer_id], ...)
@@ -144,7 +156,7 @@ def transfer_to_maybms(prob_cluster_file, cert_cluster_file):
         bulk_insert_query += '( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s ), ' % tuple(vals)
         if record_count >= 1000:
             bulk_insert_maybms()
-            print(round((count / len(records) * 100), 2), '% done with inserting offers in MayBMS.')
+            print_progress(count, len(records), 'insert')
             record_count = 0
 
     # commit the remaining records
