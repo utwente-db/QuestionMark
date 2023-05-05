@@ -15,6 +15,7 @@ from parameters import ATTRIBUTES, WEIGHTS
 
 conn_pg = None
 
+
 def load_content(prob_cluster_file, cert_cluster_file):
     with open(prob_cluster_file, 'rb') as file:
         prob_clusters = pickle.load(file)

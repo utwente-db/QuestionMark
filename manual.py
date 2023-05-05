@@ -51,7 +51,7 @@ if __name__ == '__main__':
     # transfer_to_maybms('datasets/aer_clusters_prob', 'datasets/aer_clusters_cert')
 
     # # Write to DuBio
-    transfer_to_dubio('datasets/aer_clusters_prob', 'datasets/aer_clusters_cert')
+    # transfer_to_dubio('datasets/aer_clusters_prob', 'datasets/aer_clusters_cert')
 
     # # ====== STEP 6 ================================================================================= #
     # create_dataset('datasets/all_gs.json.gz', 'datasets/offers_gs.json')
@@ -67,4 +67,4 @@ if __name__ == '__main__':
     # # gzip file
     # gs_blocks = asn_blocker('datasets/offers_gs_sorted.json.gz')
     # write_blocks_to_file(gs_blocks, 'datasets/asn_gs_blocks')
-    # matcher_performance.full_performance_scan('datasets/asn_gs_blocks')
+    matcher_performance.full_performance_scan('datasets/asn_gs_blocks')
