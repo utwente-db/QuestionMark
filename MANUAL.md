@@ -36,11 +36,11 @@ is made between PostgreSQL-based Database Management Systems and non-PostgreSQL 
 systems. For a non-PostgreSQL based system, please also follow the steps listed under 
 the PostgreSQL based system.
 
-### Including a new PostgreSQL based DBMS.
-As this program was written with PostgreSQL based systems in mind, 
-no additional changes need to be made to the existing code base. For ease, a
-placeholder NAME will be used, which denotes the name of the newly added DBMS.
-Please add the following functions and variables to prepare the benchmark:
+### Including any new DBMS.
+When including any new DBMS, the following simple changes need to be
+made to this program. For ease, a placeholder NAME will be used, which 
+denotes the name of the newly added DBMS. Please add the following 
+functions and variables to prepare the benchmark:
 - ```queries_NAME.py``` and ```queries_NAME_prepare.py```. To include a new DBMS, the first step is to include the queries in the corresponding dialect. To do this, create two new files. The first file, ```queries_NAME.py```, contains the benchmark queries. The second file, ```queries_NAME_prepare.py```, contains queries needed to prepare the benchmark. To see what queries should be included, ```queries_pseudo_code```, ```queries_MayBMS.py``` and ```queries_DuBio.py``` can be used as a translation guide. Please stick to the structure used in these files.
 - ```connect_db.py```. This file is responsible for sending the queries to the DBMS. In this file, include ```from queries_NAME import NAME_QUERIES_DICT```. In ```execute_query()```, also include the DBMS in the first if-statement. Finally, check if the execution time returned by the DBMS follows the pattern from MayBMS or from DuBio. When the DBMS uses PostgreSQL 10 or higher, the default can be used.
 - ```output_tui.py```. This file prints the benchmark output. In ```create_result_file()```, add the new DBMS in the if-statement. 
@@ -48,9 +48,10 @@ Please add the following functions and variables to prepare the benchmark:
 - ```perpare_benchmark.py```. This file runs the preparatory queries. In this file, include ```from queries_NAME_prepare import NAME_PREPARE_DICT```. In ```prepare_benchmark()```, include the new DBMS in the if-statement. 
 
 ### Including a new non-PostgreSQL based DBMS. 
-As the database connection is established using the psycopg2 library, additional changes
-to the code need to be made when wanting to use a non-PostgreSQL based system. 
-The following adaptations to the code must be made:
+As the database connection is established using the psycopg2 library, 
+additional changes to the code need to be made when wanting to use a 
+non-PostgreSQL based system. The following adaptations to the code 
+must be made:
 - ```connect_db.py```. This file also establishes the connection with the database. Please read through all functions and change the code where needed. 
 - ```database.ini.tmpl```.
 - ```prepare_benchmark.py```. Also here psycopg2 is used for the database connection. Both functions need to be adapted.

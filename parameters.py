@@ -38,44 +38,29 @@ SHOW_QUERY_PLAN = True
 QUERIES = [
     # 'test_1',
 
-    # 'insight_1',  # fails with MayBMS
+    # 'insight_1',
 
-    # 'insight_2',  # fails with MayBMS
+    # 'insight_2',
 
-    # 'basic_1',
+    # 'insight_3',
 
-    # 'basic_2',
+    # 'insight_4',
 
-    # 'basic_3',  ## fails with MayBMS
+    # 'insight_5',
 
-    # 'basic_4',
+    # 'insight_6',
 
-    # 'basic_5',
+    # 'probabilistic_1',
 
-    # 'basic_6',  # fails with MayBMS
+    # 'probabilistic_2',
 
-    # 'basic_7',
+    # 'probabilistic_3',
 
-    # 'basic_8',  # fails with MayBMS
+    # 'probabilistic_4',
 
-    # 'basic_9',  # fails with MayBMS
+    # 'probabilistic_5',
 
-    # 'basic_10',  # fails with MayBMS
-
-    # 'basic_11_view',  # fails with MayBMS
-
-    # 'complex_1',
-
-    # 'complex_2',
-
-    # 'probabilistic_1',  # fails with MayBMS
-    #
-    # 'probabilistic_2',  # fails with MayBMS
-
-    # TODO: next queries
-    # 'probabilistic_3',  # fails with MayBMS
-    #
-    # 'probabilistic_4',  # fails with MayBMS
+    # 'probabilistic_6',
 
     # 'IUD_1_rollback',
 
@@ -87,9 +72,9 @@ QUERIES = [
 
     # 'IUD_5_rollback',
 
-    'IUD_6_rollback',
+    # 'IUD_6_rollback',
 
-    # 'IUD_7_rollback',  # Does not work in DuBio yet.
+    # 'IUD_7_rollback',
 
     # 'IUD_8_rollback',
 
