@@ -2,7 +2,7 @@ import gzip
 import hashlib
 import json
 
-from parameters import DATASET_SIZE, NON_BKV
+from parameters import DATASET_SIZE, NON_BKV, WHOLE_CLUSTERS
 
 
 # Resize the dataset pseudo-randomly.
@@ -17,10 +17,10 @@ def resize_dataset(dataset, write_to):
             offer = json.loads(line)
             # Create a hash of the offer_id, so we can pseudo-randomly include an offer or exclude it.
             # This ensures that the same 'random' selection is made each time this function is run.
-            # Uncomment below when you wish to include more certainty / have smaller clusters.
-            # id_hash = hashlib.sha256(str(offer.get('id')).encode('utf-8')).hexdigest()
-            # Uncomment below when you wish to include higher uncertainty / have larger clusters.
-            id_hash = hashlib.sha256(str(offer.get('cluster_id')).encode('utf-8')).hexdigest()
+            if WHOLE_CLUSTERS:
+                id_hash = hashlib.sha256(str(offer.get('cluster_id')).encode('utf-8')).hexdigest()
+            else:
+                id_hash = hashlib.sha256(str(offer.get('id')).encode('utf-8')).hexdigest()
             include = int(id_hash, 16) % 10000
             if include < (DATASET_SIZE * 100):
                 smaller_dataset.append(offer)

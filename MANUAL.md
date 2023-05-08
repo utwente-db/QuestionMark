@@ -1,6 +1,6 @@
 # Manual
 
-This file contains the roadmap on how QUESTION MARK: The Dataset Generator
+This file contains the roadmap on how QuestionMark: The Dataset Generator
  is to be used. 
 _Optional steps are displayed in italic_. 
 
@@ -10,7 +10,7 @@ Please follow the rules as provided by the CC license.
 ## 1 - Downloading the WDC datasets
 - Create an empty folder ```datasets``` in the main project repo.
 - Go to the [WDC website](http://webdatacommons.org/largescaleproductcorpus/v2/index.html) and scroll to the bottom of the page.
-- Download ```offers_corpus_english_v2.json.gz``` and ```all_gs.json.gz```, and include these in the newly created datasets folder.
+- Download ```offers_corpus_english_v2.json.gz``` and include this in the newly created datasets folder.
 - _Download the samples to get an impression of the dataset structure._
 
 ## 2 - Preparing the dataset
@@ -22,22 +22,20 @@ Please follow the rules as provided by the CC license.
 - Open a terminal and ```cd``` to the datasets directory. Run <nobr>```gzip offers_corpus_sorted.json```</nobr> and <nobr>```gzip offers_corpus_byID.json```.</nobr>
 
 ## 3 - Running the blocking algorithm
-- Verify the parameters set in ```parameters.py```.
-- Depending on the choice of blocking algorithm, run ```asn_blocker``` or ```isa_blocker```.
-- Run ```write_to_file```.
+- Run ```asn_blocker``` and ```write_to_file```.
 
 ## 4 - Running the matching algorithm
-- Verify the parameters set in ```parameters.py```.
-- Run ```aer_matcher```.
-- Run ```write_to_file```
+- Run ```aer_matcher``` and ```write_to_file```.
 
 ## 5 - Writing to a database
 - It is expected that a functioning database connection is set up. _In case a probabilistic DBMS will be benchmarked that is non-PostgreSQL based, please see the instructions on the bottom of this manual._
 - Create a file called ```database.ini``` and fill in the credentials following the structure of ```database.ini.tmpl```.
 - For MayBMS, run ```transfer_to_maybms```. For DuBio, run ```transfer_to_dubio```.
-- You now have your dataset prepared!
+- You now have your dataset prepared! You can continue with the benchmarking. Go to [QuestionMark: The Probabilistic Benchmark](https://gitlab.utwente.nl/s1981951/probabilistic-benchmark) and follow the indicated steps.
 
 ## 6 - Running performance tests
+- _Go again to the [WDC website](http://webdatacommons.org/largescaleproductcorpus/v2/index.html) and scroll to the bottom of the page._
+- _Download the normalized ```all_gs.json.gz``` and include this in the datasets folder._
 - _Run ```create_dataset``` with the Golden Standard dataset._
 - _Open a terminal, ```cd``` to the datasets directory and run <nobr>```gzip offers_gs.json```.</nobr>_
 - _Run ```sort_offers``` with the newly created dataset.

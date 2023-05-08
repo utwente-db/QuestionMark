@@ -1,8 +1,8 @@
-# QUESTION MARK: The Dataset Generator
+# QuestionMark: The Dataset Generator
 
-QUESTION MARK: The Dataset Generator is a Python program to create 
+QuestionMark: The Dataset Generator is a Python program to create 
 a dataset for probabilistic product matching. This dataset is required to run the benchmark 
-test with [QUESTION MARK: The Probabilistic Benchmark](https://gitlab.utwente.nl/s1981951/probabilistic-benchmark).
+test with [QuestionMark: The Probabilistic Benchmark](https://gitlab.utwente.nl/s1981951/probabilistic-benchmark).
 
 The dataset created by this program is an adaptation of the 
 [WDC Product Data Corpus for Large-Scale Product Matching](http://webdatacommons.org/largescaleproductcorpus/v2/index.html) 

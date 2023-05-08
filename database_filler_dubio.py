@@ -53,9 +53,9 @@ def print_progress(count, length, text):
     if math.floor(percentage_done) > math.floor(progress_percentage):
         progress_percentage = math.floor(percentage_done)
         if text == 'cluster':
-            print(math.floor(percentage_done), '% done with processing probabilistic clusters.')
+            print(math.floor(percentage_done), '% done with processing probabilistic clusters...')
         elif text == 'insert':
-            print(math.floor(percentage_done), '% done with inserting offers in DuBio.')
+            print(math.floor(percentage_done), '% done with inserting offers in DuBio...')
 
 
 # Creates the offers database table.

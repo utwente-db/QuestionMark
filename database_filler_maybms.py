@@ -16,9 +16,9 @@ def print_progress(count, length, text):
     if math.floor(percentage_done) > math.floor(progress_percentage):
         progress_percentage = math.floor(percentage_done)
         if text == 'cluster':
-            print(math.floor(percentage_done), '% done with processing probabilistic clusters.')
+            print(math.floor(percentage_done), '% done with processing probabilistic clusters...')
         elif text == 'insert':
-            print(math.floor(percentage_done), '% done with inserting offers in MayBMS.')
+            print(math.floor(percentage_done), '% done with inserting offers in MayBMS...')
 
 # This file creates the representation for easy upload in the database.
 # This file is an extension of database_filler.py specialised for DuBio.

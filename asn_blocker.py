@@ -1,9 +1,21 @@
 import gzip
 import json
+from math import floor
 
 from window import Window
 from offer_distance import get_distance
 from parameters import PHI, WS, MBS
+
+# Global variables.
+progress_percentage = 0
+
+
+def print_progress(count, length):
+    global progress_percentage
+    percentage_done = round((count / length * 100), 2)
+    if floor(percentage_done) > floor(progress_percentage):
+        progress_percentage = floor(percentage_done)
+        print(floor(percentage_done), '% of the offers put in a block...')
 
 
 def write_blocks_to_file(blocks, write_to):
@@ -42,7 +54,6 @@ def asn_blocker(dataset):
             window.last = window.first + MBS - 1
         # retrenchment phase and create block
         for i in range(window.last, window.first - 1, -1):
-            print('len:', len(offers), 'index window:', window.first, 'index i', i)
             dist = get_distance(offers[window.first].get('title'), offers[i].get('title'))
             if dist <= PHI or offers[window.first].get('id') == offers[i].get('id'):
                 window.last = i
@@ -52,9 +63,11 @@ def asn_blocker(dataset):
                     pass
                     print(window.first, window.last)
                 blocks.append(block)
+                print(block)
                 block = []
-                print(round(window.last/(len(offers)) * 100, 2), '% done')
+                print_progress(window.last, len(offers))
                 window.first = i + 1
                 window.last = window.first + WS - 1
                 break
+    print("Done. All of the offers are put in a block.")
     return blocks

@@ -22,9 +22,14 @@ DIST = 'jarowinkler'  # from the isa paper
 # # DATASET PREPARATION
 # # ===================
 
+# Uncomment below when you wish to include more certainty / have smaller clusters.
+# Uncomment below when you wish to include higher uncertainty / have larger clusters.
+
 # # The percentage of the dataset to be used. The full size is around 16 million offers / 2.9 GB zipped.
 # # For approximately 50% of the dataset, assign value 50.
 DATASET_SIZE = 0.01  # Works up to two decimal points
+# # For a resized dataset, indicate if whole clusters need to be picked from the dataset or individual offers.
+WHOLE_CLUSTERS = False
 # # All attributes that are NOT a BKV (blocking key value). All attributes of an offer: ['brand', 'category',
 # #   'cluster_id', 'description', 'id', 'identifiers', 'keyValuePairs', 'price', 'specTableContent', 'title']
 NON_BKV = ['description', 'identifiers', 'keyValuePairs', 'price', 'specTableContent']  # also keep id and cluster_id.
@@ -43,7 +48,7 @@ BLOCK = 'asn'
 # # Change these variables to adjust the settings of the blocking algorithms.
 WS = 2     # Window Size            (asn)                       # Default 2
 PHI = 0.36  # similarity Threshold   (asn / isa)  # Distance!   # Default 0.36
-MBS = 6    # Maximum Block Size     (asn / isa)                # Default 6
+MBS = 5    # Maximum Block Size     (asn / isa)                # Default 6
 MSL = 3    # Minimum Suffix Length  (isa)                       # Default 3
 
 
@@ -53,11 +58,11 @@ MSL = 3    # Minimum Suffix Length  (isa)                       # Default 3
 
 # # List of attributes that are used to obtain a matching score. All attributes of an offer: ['brand', 'category',
 # #   'cluster_id', 'description', 'id', 'identifiers', 'keyValuePairs', 'price', 'specTableContent', 'title']
-ATTRIBUTES = ['brand', 'category', 'description', 'identifiers', 'keyValuePairs', 'price', 'specTableContent', 'title']
+ATTRIBUTES = ['brand', 'category', 'cluster_id', 'description', 'identifiers', 'keyValuePairs', 'price', 'specTableContent', 'title']
 
 # # The weight associated to the similarity score of an attribute.
 # # Values from 0 to 1.  0 = exclude. len(WEIGHTS) = len(ATTRIBUTES).
-WEIGHTS = [1, 0.7, 0.8, 0.8, 0.8, 1, 0.7, 1]
+WEIGHTS = [1, 0.7, 1, 0.8, 0.8, 0.8, 1, 0.7, 1]
 
 # # Distance < LOWER_PHI? Definitely the same product. Increase value to obtain a more certain dataset.
 LOWER_PHI = 0.12

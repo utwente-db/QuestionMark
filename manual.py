@@ -19,31 +19,35 @@ import matcher_performance
 
 
 if __name__ == '__main__':
+    # # Uncomment and run whole blocks in order.
+    # # ====== SETUP  ================================================================================= #
+    # In a terminal, run: pip install textdistance
+
     # # ====== STEP 1 ================================================================================= #
     # # No functions required.
 
     # # ====== STEP 2 ================================================================================= #
-    # # Uncomment and run in order.
-    # # The generated datasets should be manually gzipped before running the next function.
-
     # # Steps to take if a smaller dataset will be used.
-    # resize_dataset('datasets/offers_corpus_english_v2.json.gz', 'datasets/offers_corpus_resized.json')
+    resize_dataset('datasets/offers_corpus_english_v2.json.gz', 'datasets/offers_corpus_resized.json')
+    # # Gzip offers_corpus_resized.json.
+
     # sort_offers('datasets/offers_corpus_resized.json.gz', 'datasets/offers_corpus_sorted.json')
     # offer_by_id('datasets/offers_corpus_resized.json.gz', 'datasets/offers_corpus_byID.json')
+    # # Gzip offers_corpus_sorted.json and offers_corpus_byID.json.
 
     # # Steps to take if the full dataset will be used.
     # sort_offers('datasets/offers_corpus_english_v2.json.gz', 'datasets/offers_corpus_sorted.json')
     # offer_by_id('datasets/offers_corpus_english_v2.json.gz', 'datasets/offers_corpus_byID.json')
+    # # Gzip offers_corpus_sorted.json and offers_corpus_byID.json.
 
     # # ====== STEP 3 ================================================================================= #
     # # When using the Incrementally Adaptive Sorted Neighborhood (asn) blocker.
     # blocks = asn_blocker('datasets/offers_corpus_sorted.json.gz')
-    # write_blocks_to_file(blocks, 'datasets/asn_blocks')  # Writing the blocks to file.
+    # write_blocks_to_file(blocks, 'datasets/asn_blocks')
 
     # # ====== STEP 4 ================================================================================= #
     # # Creating the clusters
     # prob_clust, cert_clust = aer_matcher('datasets/asn_blocks')
-    # # Writing clusters to file.
     # write_clusters_to_file(prob_clust, cert_clust, 'datasets/aer_clusters_prob', 'datasets/aer_clusters_cert')
 
     # # ====== STEP 5 ================================================================================= #
@@ -54,6 +58,8 @@ if __name__ == '__main__':
     # transfer_to_dubio('datasets/aer_clusters_prob', 'datasets/aer_clusters_cert')
 
     # # ====== STEP 6 ================================================================================= #
+    # # Only execute when you want to measure the performance of the dataset generation.
+
     # create_dataset('datasets/all_gs.json.gz', 'datasets/offers_gs.json')
     # # gzip file.
     # sort_offers('datasets/offers_gs.json.gz', 'datasets/offers_gs_sorted.json')
@@ -67,4 +73,4 @@ if __name__ == '__main__':
     # # gzip file
     # gs_blocks = asn_blocker('datasets/offers_gs_sorted.json.gz')
     # write_blocks_to_file(gs_blocks, 'datasets/asn_gs_blocks')
-    matcher_performance.full_performance_scan('datasets/asn_gs_blocks')
+    # matcher_performance.full_performance_scan('datasets/asn_gs_blocks')
