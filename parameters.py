@@ -36,49 +36,49 @@ SHOW_QUERY_PLAN = True
 
 # Queries that are grouped together should also be run together. Please uncomment full blocks.
 QUERIES = [
-    # 'test_1',
+    'test_1',
 
-    # 'insight_1',
+    'insight_1',
 
-    # 'insight_2',
+    'insight_2',
 
-    # 'insight_3',
+    'insight_3',
 
-    # 'insight_4',
+    'insight_4',
 
-    # 'insight_5',
+    'insight_5',
 
-    # 'insight_6',
+    'insight_6',
 
-    # 'probabilistic_1',
+    'probabilistic_1',
 
-    # 'probabilistic_2',
+    'probabilistic_2',
 
-    # 'probabilistic_3',
+    'probabilistic_3',
 
-    # 'probabilistic_4',
+    'probabilistic_4',
 
-    # 'probabilistic_5',
+    'probabilistic_5',
 
-    # 'probabilistic_6',
+    'probabilistic_6',
 
-    # 'IUD_1_rollback',
+    'IUD_1_rollback',
 
-    # 'IUD_2_rollback',
+    'IUD_2_rollback',
 
-    # 'IUD_3_rollback',
+    'IUD_3_rollback',
 
-    # 'IUD_4_rollback',
+    'IUD_4_rollback',
 
-    # 'IUD_5_rollback',
+    'IUD_5_rollback',
 
-    # 'IUD_6_rollback',
+    'IUD_6_rollback',
 
-    # 'IUD_7_rollback',
+    'IUD_7_rollback',
 
-    # 'IUD_8_rollback',
+    'IUD_8_rollback',
 
-    # 'IUD_9_rollback'
+    'IUD_9_rollback'
 ]
 
 

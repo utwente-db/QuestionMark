@@ -8,7 +8,7 @@ Please follow the rules as provided by the CC license.
 
 ## 1 - Prepare the dataset
 - _In case no dataset has been prepared yet, go to 
-[prob-matcher](https://gitlab.utwente.nl/s1981951/prob-matcher) and follow the manual to 
+[QuestionMark: The Dataset Generator](https://gitlab.utwente.nl/s1981951/prob-matcher) and follow the manual to 
 prepare the dataset that is to be used for this benchmark._
 
 ## 2 - Prepare the benchmark
@@ -17,8 +17,6 @@ prepare the dataset that is to be used for this benchmark._
 - Open ```parameters.py``` and indicate the DBMS that is used. _In case a DBMS is benchmarked that is not yet included in this list, see the required steps to take at the bottom of this manual._
 - Go to ```manual.py```.
 - To test the connection, run ```test_connection```.
-- To ensure that all benchmark queries can be run, some additional preparatory queries
-should be executed. To do this, run ```prepare_benchmark```.
 
 ## 3 - Run the benchmark
 - Open ```parameters.py``` and change the present parameters to the desired values. The file provides information on what the parameters are used for. 

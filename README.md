@@ -1,7 +1,7 @@
-# QUESTION MARK: the probabilistic benchmark
+# QuestionMark: the probabilistic benchmark
 
 
-QUESTION MARK: the probabilistic benchmark is the Python program to benchmark any
+QuestionMark: the probabilistic benchmark is the Python program to benchmark any
 probabilistic database management system. 
 
 Currently, this program provides queries in the dialects of
@@ -19,7 +19,7 @@ to run the benchmark tests.
 This project may be adapted for own use. It is planned to release this work under a CC license.
 
 Additional dialects could be added to wish. The ```queries-pseudo-code.txt``` can be used for convenient 
-translation to any other dialect. Currently, QUESTION MARK is built with PostgreSQL-based databases in mind. 
+translation to any other dialect. Currently, QuestionMark is built with PostgreSQL-based databases in mind. 
 Additional changes need to be made to this program in case another database system needs to be supported.
 
 ## Contributors

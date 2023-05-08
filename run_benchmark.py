@@ -3,6 +3,13 @@ from parameters import QUERIES
 from output_tui import create_result_file, write_query_type
 
 
+def test_connection():
+    connect_pg(configname='database.ini')
+    execute_query('test_1')
+    print('\nIf no error is shown, the connection is working! :)')
+    close_pg()
+
+
 def run_benchmark():
     create_result_file()
 
@@ -16,7 +23,3 @@ def run_benchmark():
         print(str(count) + " out of " + str(len(QUERIES)) + " queries done.")
 
     close_pg()
-
-
-if __name__ == '__main__':
-    pass
