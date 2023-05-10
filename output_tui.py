@@ -3,24 +3,24 @@ from queries_dubio import DUBIO_QUERIES_DICT
 
 
 def create_result_file():
-    with open('benchmark_results.txt', 'w+') as file:
-        if DBMS == 'MayBMS':
-            file.write('The QUESTION MARK benchmark test. Run on MayBMS.\n')
-        elif DBMS == 'DuBio':
-            file.write('The QUESTION MARK benchmark test. Run on DuBio.\n')
-        elif DBMS == 'PostgreSQL':
-            file.write('The QUESTION MARK benchmark test. Run on PostgreSQL.\n')
-        file.write('This file contains the results of this benchmark test. \n'
-                   'The query plan and average run time are produced by PostgreSQL EXPLAIN ANALYSE.')
+    with open('benchmark_results_query.txt', 'w+') as file:
+        file.write('\n      # ============================================= #'
+                   '\n      # ==============   QuestionMark  ============== #'
+                   '\n      # ============================================= #'
+                   '\n      # The query results file.'
+                   '\n      # Run on ' + str(DBMS) + '.\n\n'
+                   'This file contains the query results and runtimes of this benchmark test.\n'
+                   'The query plan and average run time are produced by PostgreSQL EXPLAIN ANALYSE.\n'
+                   'Please see \'benchmark_results_metrics\' for the results of the metrics.')
 
 
 def write_query_type(query_num):
-    with open('benchmark_results.txt', 'a') as file:
+    with open('benchmark_results_query.txt', 'a') as file:
         file.write("\n\n\n# ============== " + query_num + " ============== #")
 
 
 def write_time(planning_time, execution_time, total_time):
-    with open('benchmark_results.txt', 'a') as file:
+    with open('benchmark_results_query.txt', 'a') as file:
         if planning_time:
             file.write("Average planning time over " + str(ITERATIONS) + " iterations:  " + str(planning_time) + " ms.")
         if execution_time:
@@ -30,17 +30,22 @@ def write_time(planning_time, execution_time, total_time):
 
 
 def write_explain_analyse(cur, result):
-    with open('benchmark_results.txt', 'a') as file:
+    with open('benchmark_results_query.txt', 'a') as file:
         file.write('\n' + format_result(cur, result) + '\n')
 
 
+def write_error(error):
+    with open('benchmark_results_query.txt', 'a') as file:
+        file.write('\nThe following error occurred while executing this query:\n' + str(error))
+
+
 def write_query(query):
-    with open('benchmark_results.txt', 'a') as file:
+    with open('benchmark_results_query.txt', 'a') as file:
         file.write('\n' + DUBIO_QUERIES_DICT[query] + '\n')
 
 
 def write_results(printable_output):
-    with open('benchmark_results.txt', 'a') as file:
+    with open('benchmark_results_query.txt', 'a') as file:
         file.write(str(printable_output) + '\n')
 
 
@@ -83,3 +88,36 @@ def format_result(cur, result=None):
         printable_output += 'The first 20 out of ' + str(count) + ' rows are shown. \n'
 
     return printable_output
+
+
+def create_metrics_file():
+    with open('benchmark_results_metrics.txt', 'w+') as file:
+        file.write('\n      # ============================================= #'
+                   '\n      # ==============   QuestionMark  ============== #'
+                   '\n      # ============================================= #'
+                   '\n      # The metrics file.'
+                   '\n      # Run on ' + str(DBMS) + '.\n\n'
+                   'This file contains the metrics of this benchmark test.\n'
+                   'Please see \'benchmark_results_queries.txt\' for the results and runtimes of the queries.\n\n')
+
+
+def write_metric(metric, value):
+    with open('benchmark_results_metrics.txt', 'a') as file:
+        if metric == 'char':
+            file.write('\nThe total amount of characters needed for all queries:     ' + str(value) + ' characters')
+        if metric == 'error':
+            file.write('\nThe percentage of successful queries is:                   ' + str(value) + '%')
+        if metric == 'runtime':  # value is of type [total time, planning time, execution time]
+            if value[0]:
+                file.write('\nThe total average runtime of all queries is:               ' + str(value[0]) + ' ms')
+            if value[1]:
+                file.write('\nThe total average planning time of all queries is:         ' + str(value[1]) + ' ms')
+            if value[2]:
+                file.write('\nThe total average execution time of all queries is:        ' + str(value[2]) + ' ms')
+
+
+def write_errors(errors):
+    with open('benchmark_results_metrics.txt', 'a') as file:
+        file.write('\n\n\n\n# === Overview of all errors thrown === #\n')
+        for error in errors:
+            file.write('\n' + str(error))

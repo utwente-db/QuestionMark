@@ -1,8 +1,10 @@
 import sys
 from configparser import ConfigParser
 import psycopg2
+
+from metrics import add_failed, add_runtime
 from parameters import ITERATIONS, DBMS, SHOW_QUERY_PLAN
-from output_tui import format_result, write_time, write_explain_analyse, write_results, write_query
+from output_tui import format_result, write_time, write_explain_analyse, write_results, write_query, write_error
 from queries_dubio import DUBIO_QUERIES_DICT
 from queries_maybms import MAYBMS_QUERIES_DICT
 
@@ -27,14 +29,15 @@ def config(configname='database.ini', section='postgresql'):
     return db
 
 
-def connect_pg(configname='database.ini'):
+def connect_pg(configname='database.ini', verbose=True):
     # Connect to the PostgreSQL database server
     try:
         # read connection parameters
         params = config(configname=configname)
 
         # connect to the PostgreSQL server
-        print('\nConnecting to the PostgreSQL database...\n')
+        if verbose:
+            print('\nConnecting to the PostgreSQL database...\n')
         global conn_pg
         conn_pg = psycopg2.connect(**params)
 
@@ -42,42 +45,31 @@ def connect_pg(configname='database.ini'):
         cur = conn_pg.cursor()
 
         # execute a statement
-        print('  PostgreSQL database version:')
-        cur.execute('SELECT version()')
-
-        # display the PostgreSQL database server version
-        db_version = cur.fetchone()
-        print('  ' + str(db_version) + '\n')
+        if verbose:
+            print('  PostgreSQL database version:')
+            cur.execute('SELECT version()')
+            # display the PostgreSQL database server version
+            db_version = cur.fetchone()
+            print('  ' + str(db_version) + '\n')
     except (Exception, psycopg2.DatabaseError) as error:
-        print('Error:', error)
+        print('Error from connect_pg:', error)
         exit()  # pretty fatal
 
 
-def close_pg():
+def close_pg(verbose=True):
     # Close connection to the PostgreSQL database server
     global conn_pg
     try:
         if conn_pg is not None:
             conn_pg.close()
-            print('\nDatabase connection closed.')
+            if verbose:
+                print('\nDatabase connection closed.')
     except (Exception, psycopg2.DatabaseError) as error:
         print('Error:', error)
 
 
 def run_query(query, cur):
     cur.execute(query)
-
-
-def execute_preparation(query):
-    global conn_pg
-    try:
-        cur = conn_pg.cursor()
-        run_query(query, cur)
-        cur.close()
-        conn_pg.commit()
-
-    except (Exception, psycopg2.DatabaseError) as error:
-        print('Error from execute_preparation():', error)
 
 
 def execute_query(query_name):
@@ -109,10 +101,14 @@ def execute_query(query_name):
 
         explain_analyse_each(query, cur, query_name)  # to obtain the average runtime.
         cur.close()
-        # conn_pg.commit()
 
     except (Exception, psycopg2.DatabaseError) as error:
         print('Error from execute_query():', error)
+        add_failed(error)
+        write_error(error)
+        if conn_pg is not None:
+            close_pg(verbose=False)
+            connect_pg(verbose=False)
 
 
 def explain_analyse(query, cur, query_name):
@@ -136,10 +132,12 @@ def explain_analyse(query, cur, query_name):
     if DBMS == 'MayBMS':
         average_total = round(sum(total_times) / len(total_times), 3)
         write_time(None, None, average_total)
+        add_runtime(average_total, 0, 0)
     else:
         average_planning = round(sum(planning_times) / len(planning_times), 3)
         average_execution = round(sum(execution_times) / len(execution_times), 3)
         write_time(average_planning, average_execution, None)
+        add_runtime(0, average_planning, average_execution)
 
     if SHOW_QUERY_PLAN:
         if query_name.__contains__('_rollback'):

@@ -1,6 +1,7 @@
 from connect_db import execute_query, connect_pg, close_pg
 from parameters import QUERIES
-from output_tui import create_result_file, write_query_type
+from output_tui import create_result_file, create_metrics_file, write_query_type
+from metrics import get_metrics
 
 
 def test_connection():
@@ -12,9 +13,8 @@ def test_connection():
 
 def run_benchmark():
     create_result_file()
-
+    create_metrics_file()
     connect_pg(configname='database.ini')
-
     count = 0
     for query in QUERIES:
         count += 1
@@ -22,4 +22,5 @@ def run_benchmark():
         execute_query(query)
         print(str(count) + " out of " + str(len(QUERIES)) + " queries done.")
 
+    get_metrics()
     close_pg()
