@@ -86,9 +86,10 @@ def create_record_maybms(offers, offer, cluster_id, probability_world, probabili
 def transfer_to_maybms(prob_cluster_file, cert_cluster_file):
     connect_pg(configname='database.ini')  # Connect to the database
     setup_database_maybms()
-    print('reading cluster file...')
+    print('\n database connected and set up.')
+    print(' reading cluster file...')
     prob_clusters, cert_clusters = load_content(prob_cluster_file, cert_cluster_file)
-    print('reading offers by ID file... \n')
+    print(' reading offers by ID file...\n')
     with gzip.open('datasets/offers_corpus_byID.json.gz', 'r') as id_file:
         offers = json.loads(id_file.read())
     records = []  # Each record becomes a row in the database.
@@ -106,9 +107,8 @@ def transfer_to_maybms(prob_cluster_file, cert_cluster_file):
             cluster = []
             for products in possible_world:  # only clustered offers are presented.
                 for offer in products:
-                    if offer in products:
-                        if offer not in cluster:
-                            cluster.append(offer)
+                    if offer not in cluster:
+                        cluster.append(offer)
 
             # Put all offers not present in the cluster of the possible world in a separate cluster.
             individual_offers = []
@@ -137,7 +137,7 @@ def transfer_to_maybms(prob_cluster_file, cert_cluster_file):
     # Continue with certain clusters.
     cluster_id = cluster_id_end + 1
     cluster_count = 0
-    print("\n Processing certain clusters for MayBMS \n")
+    print("\nProcessing certain clusters for MayBMS...")
     for cluster in cert_clusters:
         cluster_id += 1
         cluster_count += 1
@@ -145,6 +145,10 @@ def transfer_to_maybms(prob_cluster_file, cert_cluster_file):
         for i in range(len(cluster)):
             record = create_record_maybms(offers, cluster[i], cluster_id, 1, probability_attributes[i])
             records.append(record)
+
+    print("100 % done with processing certain clusters.\n")
+    global progress_percentage
+    progress_percentage = 0
 
     record_count = 0
     count = 0
@@ -165,13 +169,13 @@ def transfer_to_maybms(prob_cluster_file, cert_cluster_file):
 
     # To generate a probability space over two attributes, first two tables need to be created with each a probability
     #     space over a single attribute. Next, these tables can be merged.
-    print('\n Making the offers table probabilistic ...')
+    print('\n Making the offers table probabilistic...')
     query = """ CREATE TABLE offers_rk_world AS REPAIR KEY cluster_id IN offers_setup WEIGHT BY world_prob;  """
     execute_query(query)
-    print(' 40% done ...')
+    print(' 40 % done...')
     query = """ CREATE TABLE offers_rk_attrs AS REPAIR KEY id IN offers_setup WEIGHT BY attribute_prob;  """
     execute_query(query)
-    print(' 80% done ...')
+    print(' 80 % done...')
     query = """ CREATE TABLE offers AS (
                     SELECT attrs.* 
                     FROM offers_rk_attrs AS attrs, offers_rk_world AS world
@@ -179,6 +183,6 @@ def transfer_to_maybms(prob_cluster_file, cert_cluster_file):
                 );
             """
     execute_query(query)
-    print(' 100% done')
+    print(' 100 % done')
 
     close_pg()  # Close connection

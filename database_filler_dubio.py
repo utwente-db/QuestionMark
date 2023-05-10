@@ -187,13 +187,15 @@ def run_preparatory_queries():
     global prep_queries
     execute_query(prep_queries)
 
+
 # Digests the clusters and puts the offers with the corresponding uncertainty into the database.
 def transfer_to_dubio(prob_cluster_file, cert_cluster_file):
     connect_pg(configname='database.ini')  # Connect to the database
     setup_database_dubio()
-    print('reading cluster files...')
+    print('\n database connected and set up.')
+    print(' reading cluster files...')
     prob_clusters, cert_clusters = load_content(prob_cluster_file, cert_cluster_file)
-    print('reading offers by ID file...')
+    print(' reading offers by ID file...\n')
     with gzip.open('datasets/offers_corpus_byID.json.gz', 'r') as id_file:
         offers = json.loads(id_file.read())
     records = []  # Each record becomes a row in the database.
@@ -227,23 +229,26 @@ def transfer_to_dubio(prob_cluster_file, cert_cluster_file):
                     sentences[cluster[i]] = []
                 sentences[cluster[i]].append(bdds[i])
 
-            for offer, sentence in sentences.items():
-                record = create_record_dubio(offers, offer, cluster_id, sentence)
-                records.append(record)
-
             for i in range(len(individual_offers)):
                 cluster_id += 1
                 bdd = get_bdd_possible(offers, [individual_offers[i]], cluster_id, prob_cluster[2],
                                        possible_world_number)
-                record = create_record_dubio(offers, individual_offers[i], cluster_id, [bdd[0]])
-                records.append(record)
-
-            bulk_insert_dubio('dict')
+                if individual_offers[i] not in sentences:
+                    sentences[individual_offers[i]] = []
+                sentences[individual_offers[i]].append(bdd[0])
 
             if cluster_id > cluster_id_end:
                 cluster_id_end = cluster_id
 
             cluster_id = cluster_id_start
+
+        for offer, sentence in sentences.items():
+            record = create_record_dubio(offers, offer, cluster_id, sentence)
+            records.append(record)
+
+        bulk_insert_dubio('dict')
+
+        sentences.clear()
 
         cluster_id_start = cluster_id_end + 1
 

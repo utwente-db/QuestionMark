@@ -63,7 +63,6 @@ def asn_blocker(dataset):
                     pass
                     print(window.first, window.last)
                 blocks.append(block)
-                print(block)
                 block = []
                 print_progress(window.last, len(offers))
                 window.first = i + 1
