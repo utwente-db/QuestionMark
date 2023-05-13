@@ -41,7 +41,7 @@ Please follow the rules as provided by the CC license.
 - _Run ```sort_offers``` with the newly created dataset.
 - _Return to the terminal and run <nobr>```gzip offers_gs_sorted.json```.</nobr>_
 - _To get the performance of the selected blocking algorithm, run ```blocker_performance.full_performance_scan```._
-- _To get the performance of the matching algorithm, run ```asn_blocker``` with the newly created dataset and write the blocks to a file with ```write_to_file```.
+- _To get the performance of the matching algorithm, run the blocking algorithm again with the newly created dataset and write the blocks to a file with ```write_to_file```.
 - _Next, run ```matcher_performance.full_performance_scan```._
 
 ## Including a new DBMS.

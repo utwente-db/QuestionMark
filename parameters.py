@@ -42,14 +42,14 @@ NON_BKV = ['description', 'identifiers', 'keyValuePairs', 'price', 'specTableCon
 # # Check performance.txt.txt to see how the different parameters change the performance of the algorithms.
 
 # # Choose the blocking algorithm to be applied. Uncomment one.
-BLOCK = 'asn'
-# BLOCK = 'isa'  # DO NOT USE. See isa_blocker.py for more info.
+# BLOCK = 'asn'
+BLOCK = 'isa'  # is very slow
 
 # # Change these variables to adjust the settings of the blocking algorithms.
-WS = 2     # Window Size            (asn)                       # Default 2
+WS = 2      # Window Size            (asn)                      # Default 2
 PHI = 0.36  # similarity Threshold   (asn / isa)  # Distance!   # Default 0.36
-MBS = 5    # Maximum Block Size     (asn / isa)                # Default 6
-MSL = 3    # Minimum Suffix Length  (isa)                       # Default 3
+MBS = 6     # Maximum Block Size     (asn / isa)                # Default 6
+MSL = 3     # Minimum Suffix Length  (isa)                      # Default 3
 
 
 # # ==================
@@ -65,10 +65,10 @@ ATTRIBUTES = ['brand', 'category', 'cluster_id', 'description', 'identifiers', '
 WEIGHTS = [1, 0.7, 1, 0.8, 0.8, 0.8, 1, 0.7, 1]
 
 # # Distance < LOWER_PHI? Definitely the same product. Increase value to obtain a more certain dataset.
-LOWER_PHI = 0.12
+LOWER_PHI = 0.12  # Default 0.12
 
 # # Distance > UPPER_PHI? Definitely not the same product. Decrease value to obtain a more certain dataset.
-UPPER_PHI = 0.50
+UPPER_PHI = 0.36  # Default 0.36
 
 
 # # ===========
@@ -76,7 +76,7 @@ UPPER_PHI = 0.50
 # # ===========
 
 # # Choose the amount of iterations for a timed run.
-ITERS = 1
+ITERS = 10
 
 # # Choose the precision the performance results are displayed in.
 DECIMAL_PLACES = 3

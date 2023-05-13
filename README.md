@@ -7,9 +7,7 @@ test with [QuestionMark: The Probabilistic Benchmark](https://gitlab.utwente.nl/
 The dataset created by this program is an adaptation of the 
 [WDC Product Data Corpus for Large-Scale Product Matching](http://webdatacommons.org/largescaleproductcorpus/v2/index.html) 
 dataset. The clustering provided by this original dataset is removed and a new probabilistic
-clustering is introduced. 
-
-```This project is a WIP. Please do not yet use.```
+clustering is introduced.
 
 ## Use
 This project can be downloaded for use. Please check ```MANUAL.md``` for a roadmap on how

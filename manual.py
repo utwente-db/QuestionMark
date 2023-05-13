@@ -16,7 +16,7 @@ from database_filler_maybms import transfer_to_maybms
 from gold_standard_dataset import create_dataset
 import blocker_performance
 import matcher_performance
-
+from parameters import BLOCK
 
 if __name__ == '__main__':
     # # Uncomment and run whole blocks in order.
@@ -41,21 +41,25 @@ if __name__ == '__main__':
     # # Gzip offers_corpus_sorted.json and offers_corpus_byID.json.
 
     # # ====== STEP 3 ================================================================================= #
-    # # When using the Incrementally Adaptive Sorted Neighborhood (asn) blocker.
-    # blocks = asn_blocker('datasets/offers_corpus_sorted.json.gz')
-    # write_blocks_to_file(blocks, 'datasets/asn_blocks')
+    # if BLOCK == 'asn':
+    #     blocks = asn_blocker('datasets/offers_corpus_sorted.json.gz')
+    # elif BLOCK == 'isa':
+    #     blocks = isa_blocker('datasets/offers_corpus_sorted.json.gz')
+    # else:
+    #     raise Exception("Please input either 'asn' or 'isa' as value of BLOCK in parameters.py")
+    # write_blocks_to_file(blocks, 'datasets/blocks')
 
     # # ====== STEP 4 ================================================================================= #
     # # Creating the clusters
-    # prob_clust, cert_clust = aer_matcher('datasets/asn_blocks')
-    # write_clusters_to_file(prob_clust, cert_clust, 'datasets/aer_clusters_prob', 'datasets/aer_clusters_cert')
+    # prob_clust, cert_clust = aer_matcher('datasets/blocks')
+    # write_clusters_to_file(prob_clust, cert_clust, 'datasets/clusters_prob', 'datasets/clusters_cert')
 
     # # ====== STEP 5 ================================================================================= #
     # # Write to MayBMS
-    # transfer_to_maybms('datasets/aer_clusters_prob', 'datasets/aer_clusters_cert')
+    # transfer_to_maybms('datasets/clusters_prob', 'datasets/clusters_cert')
 
     # # Write to DuBio
-    # transfer_to_dubio('datasets/aer_clusters_prob', 'datasets/aer_clusters_cert')
+    # transfer_to_dubio('datasets/clusters_prob', 'datasets/clusters_cert')
 
     # # ====== STEP 6 ================================================================================= #
     # # Only execute when you want to measure the performance of the dataset generation.
@@ -70,7 +74,13 @@ if __name__ == '__main__':
 
     # # To get the performance of the matching algorithm.
     # offer_by_id('datasets/offers_gs_sorted.json.gz', 'datasets/offers_gs_byID.json')
-    # # gzip file
-    # gs_blocks = asn_blocker('datasets/offers_gs_sorted.json.gz')
-    # write_blocks_to_file(gs_blocks, 'datasets/asn_gs_blocks')
-    # matcher_performance.full_performance_scan('datasets/asn_gs_blocks')
+    # gzip file
+    # if BLOCK == 'asn':
+    #     gs_blocks = asn_blocker('datasets/offers_gs_sorted.json.gz')
+    # elif BLOCK == 'isa':
+    #     gs_blocks = isa_blocker('datasets/offers_gs_sorted.json.gz')
+    # else:
+    #     raise Exception("Please input either 'asn' or 'isa' as value of BLOCK in parameters.py")
+    # write_blocks_to_file(gs_blocks, 'datasets/gs_blocks')
+
+    # matcher_performance.full_performance_scan('datasets/gs_blocks')

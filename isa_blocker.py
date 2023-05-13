@@ -1,14 +1,3 @@
-# =================================================================================================================== #
-# ========= PLEASE NOTE ======== PLEASE NOTE ======== PLEASE NOTE ======== PLEASE NOTE ======== PLEASE NOTE ========= #
-# This blocking algorithm was set up as a test to verify its performance and suitability for use in the probabilistic #
-# benchmark that this dataset generator supports.  It was found that the type of data present in the original dataset #
-# used for this benchmark does not fit this blocking algorithm well. The blocking algorithm takes too long to process #
-# this data and provides an output which is suboptimal for the purpose of this benchmark. Altering this output to the #
-# desired formal would provide an even higher processing time. Therefore, it was decided to not finish this algorithm #
-# and focus on the Adaptive Sorted Neighborhood blocking algorithm,  as this showed to be more fitting.  This code is #
-# kept available,  so it can be adapted and used when deemed necessary for a testing specific real-world application. #
-# =================================================================================================================== #
-
 import gzip
 import json
 import collections
@@ -67,7 +56,8 @@ def isa_blocker(dataset):
         if dist < PHI:
             block = fill_block(block, offers)
         else:
-            blocks.append(block)
+            if block:
+                blocks.append(block)
             block = []
             block = fill_block(block, offers)
         prev_suffix = suffix
@@ -79,9 +69,3 @@ def isa_blocker(dataset):
     # expensive to do for all offers and implementing this is deemed out of scope for this research.
 
     return blocks
-
-
-if __name__ == '__main__':
-    # # #  Incrementally Adaptive Sorted Neighborhood blocking
-    # isa_blocker('datasets/offer_corpus_english_v2_gs_sorted.json.gz')
-    isa_blocker('datasets/offers_corpus_sorted.json.gz')

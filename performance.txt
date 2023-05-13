@@ -1,5 +1,3 @@
-# These runtimes and the corresponding performance are outdated. Updated values coming soon.
-
 # Information on run times:
 
 The provided time is the average over the amount of runs (iterations).
@@ -7,57 +5,104 @@ The provided time is the average over the amount of runs (iterations).
 
 # # Adaptive Sorted Neighborhood blocking
 
-time, precision, recall: dataset size,  distance,     parameters,         # iterations
-121 ms,   0.692, 0.934:  4 687 records, Levenshtein,  phi = 0.2, wz = 2.  20 runs
-178 ms,   0.671, 0.934:  4 687 records, Jaro,         phi = 0.2, wz = 2.  20 runs
-182 ms,   0.595, 0.931:  4 687 records, Jaro-Winkler, phi = 0.2, wz = 2.  20 runs
-676 ms,   0.712, 0.935:  4 687 records, Hamming,      phi = 0.2, wz = 2.  20 runs
-599 ms,   0.680, 0.934:  4 687 records, Jaccard,      phi = 0.2, wz = 2.  20 runs
+time, precision, recall: dataset size,  distance,     parameters,              # iterations
+ 31 ms,   0.360, 0.239:  4 687 records, Levenshtein,  mbs = 30, phi = 0.4, ws = 6.  10 runs
+ 22 ms,   0.392, 0.521:  4 687 records, Jaro,         mbs = 30, phi = 0.4, ws = 6.  10 runs
+ 20 ms,   0.392, 0.521:  4 687 records, Jaro-Winkler, mbs = 30, phi = 0.4, ws = 6.  10 runs
+436 ms,   0.496, 0.148:  4 687 records, Hamming,      mbs = 30, phi = 0.4, ws = 6.  10 runs
+150 ms,   0.390, 0.367:  4 687 records, Jaccard,      mbs = 30, phi = 0.4, ws = 6.  10 runs
 
-140 ms,   0.721, 0.935:  4 687 records, Levenshtein,  phi = 0.01,wz = 2.  20 runs
-140 ms,   0.715, 0.935:  4 687 records, Levenshtein,  phi = 0.05,wz = 2.  20 runs
-134 ms,   0.707, 0.935:  4 687 records, Levenshtein,  phi = 0.1, wz = 2.  20 runs
-133 ms,   0.678, 0.934:  4 687 records, Levenshtein,  phi = 0.3, wz = 2.  20 runs
-139 ms,   0.645, 0.933:  4 687 records, Levenshtein,  phi = 0.4, wz = 2.  20 runs
+ 47 ms,   0.553, 0.109:  4 687 records, Jaro,         mbs = 30, phi = 0.1, ws = 2.  10 runs
+ 34 ms,   0.396, 0.403:  4 687 records, Jaro,         mbs = 30, phi = 0.3, ws = 2.  10 runs
+ 28 ms,   0.392, 0.512:  4 687 records, Jaro,         mbs = 30, phi = 0.4, ws = 2.  10 runs
+ 56 ms,   0.384, 0.512:  4 687 records, Jaro,         mbs = 30, phi = 0.5, ws = 2.  10 runs
 
-122 ms,   0.754, 0.760:  4 687 records, Levenshtein,  phi = 0.2, wz = 1.  20 runs
-167 ms,   0.589, 0.932:  4 687 records, Levenshtein,  phi = 0.2, wz = 3.  20 runs
-133 ms,   0.678, 0.934:  4 687 records, Levenshtein,  phi = 0.2, wz = 4.  20 runs  # WHY DOES THIS CRASH??
-139 ms,   0.645, 0.933:  4 687 records, Levenshtein,  phi = 0.2, wz = 5.  20 runs
+ 36 ms,   0.388, 0.496:  4 687 records, Jaro,         mbs = 30, phi = 0.4, ws = 1.  10 runs
+ 25 ms,   0.391, 0.517:  4 687 records, Jaro,         mbs = 30, phi = 0.4, ws = 3.  10 runs
+ 28 ms,   0.392, 0.521:  4 687 records, Jaro,         mbs = 30, phi = 0.4, ws = 6.  10 runs
+ 21 ms,   0.386, 0.519:  4 687 records, Jaro,         mbs = 30, phi = 0.4, ws = 10. 10 runs
 
-19 ms,      N/A:         1 171 records, Levenshtein,  phi = 0.2, wz = 2.  40 runs
-33 ms,      N/A:         2 343 records, Levenshtein,  phi = 0.2, wz = 2.  40 runs
-410 ms,     N/A:        20 000 records, Levenshtein,  phi = 0.2, wz = 2.  10 runs
-7532 ms,    N/A:        80 000 records, Levenshtein,  phi = 0.2, wz = 2.  10 runs
-42778 ms,   N/A:       200 000 records, Levenshtein,  phi = 0.2, wz = 2.  5  runs
-2276543 ms, N/A:       999 000 records, Levenshtein,  phi = 0.2, wz = 2.  1  runs
+ 33 ms,   0.458, 0.329:  4 687 records, Jaro,         mbs = 6,  phi = 0.4, ws = 6.  10 runs
+ 24 ms,   0.400, 0.471:  4 687 records, Jaro,         mbs = 20, phi = 0.4, ws = 6.  10 runs
+ 21 ms,   0.374, 0.563:  4 687 records, Jaro,         mbs = 50, phi = 0.4, ws = 6.  10 runs
+ 19 ms,   0.364, 0.570:  4 687 records, Jaro,         mbs = 80, phi = 0.4, ws = 6.  10 runs
 
-
-
-599 ms,   0.680, 0.934:   4 687 records, Jaccard,      phi = 0.5, wz = 2.  20 runs  # WHY DOES THIS CRASH??
+ 19 ms,       N/A:       1 171 records, Levenshtein,  mbs = 30, phi = 0.2, ws = 2.  10 runs
+ 33 ms,       N/A:       2 343 records, Levenshtein,  mbs = 30, phi = 0.2, ws = 2.  10 runs
+410 ms,       N/A:      20 000 records, Levenshtein,  mbs = 30, phi = 0.2, ws = 2.  10 runs
+7532 ms,      N/A:      80 000 records, Levenshtein,  mbs = 30, phi = 0.2, ws = 2.  10 runs
+42778 ms,     N/A:     200 000 records, Levenshtein,  mbs = 30, phi = 0.2, ws = 2.  5  runs
+2276543 ms,   N/A:     999 000 records, Levenshtein,  mbs = 30, phi = 0.2, ws = 2.  1  runs
 
 
 
 
 # # Improved Suffix Array blocking
 
-For the content of the selected dataset, the Improved Suffix Array blocking technique does not fit.
+Although the ISA algorithm has a good performance, it is rather slow.
 This algorithm works best when comparing complete data of small strings.
 
-time, precision, recall:  dataset size,   distance,     parameters,                   # iterations
-2857 ms,  0.207, 0.186:   4 687 records, Levenshtein,  msl = 3, mbs = 30, phi = 0.2.  10 runs
-2857 ms,  0.234, 0.250:   4 687 records, Levenshtein,  msl = 3, mbs = 30, phi = 0.3.  10 runs
-2801 ms,  0.259, 0.319:   4 687 records, Levenshtein,  msl = 3, mbs = 30, phi = 0.4.  10 runs
+time, precision, recall:  dataset size,  distance,     parameters,               # iterations
+1679 ms,  0.311, 0.425:   4 687 records, Jaro,         msl = 3, mbs = 30, phi = 0.2.  10 runs
+1669 ms,  0.374, 0.845:   4 687 records, Jaro,         msl = 3, mbs = 30, phi = 0.3.  10 runs
+1609 ms,  0.324, 0.994:   4 687 records, Jaro,         msl = 3, mbs = 30, phi = 0.4.  10 runs
+ >3 min,      -,     -:   4 687 records, Jaro,         msl = 3, mbs = 30, phi = 0.5.  1  runs
 
-2836 ms,  0.293, 0.408:   4 687 records, Levenshtein,  msl = 3, mbs = 10, phi = 0.5.  10 runs
-3046 ms,  0.276, 0.411:   4 687 records, Levenshtein,  msl = 3, mbs = 50, phi = 0.5.  10 runs
-3262 ms,  0.267, 0.412:   4 687 records, Levenshtein,  msl = 3, mbs = 80, phi = 0.5.  10 runs
-3681 ms,  0.259, 0.412:   4 687 records, Levenshtein,  msl = 3, mbs = 120,phi = 0.5.  10 runs
+1631 ms,  0.331, 0.993:   4 687 records, Jaro,         msl = 3, mbs = 6,  phi = 0.4.  10 runs
+1695 ms,  0.329, 0.994:   4 687 records, Jaro,         msl = 3, mbs = 10, phi = 0.4.  10 runs
+1560 ms,  0.328, 0.994:   4 687 records, Jaro,         msl = 3, mbs = 20, phi = 0.4.  10 runs
+1593 ms,  0.322, 0.994:   4 687 records, Jaro,         msl = 3, mbs = 50, phi = 0.4.  10 runs
 
-2873 ms,  0.282, 0.410:   4 687 records, Levenshtein,  msl = 1, mbs = 30, phi = 0.5.  10 runs
-2863 ms,  0.283, 0.410:   4 687 records, Levenshtein,  msl = 5, mbs = 30, phi = 0.5.  10 runs
-2573 ms,  0.288, 0.403:   4 687 records, Levenshtein,  msl = 15,mbs = 30, phi = 0.5.  10 runs
+1616 ms,  0.324, 0.994:   4 687 records, Jaro,         msl = 1, mbs = 30, phi = 0.5.  10 runs
+1565 ms,  0.324, 0.994:   4 687 records, Jaro,         msl = 5, mbs = 30, phi = 0.5.  10 runs
+1386 ms,  0.330, 0.981:   4 687 records, Jaro,         msl = 15,mbs = 30, phi = 0.5.  10 runs
 
-660 ms,   N/A:            1 171 records, Levenshtein,  msl = 3, mbs = 30, phi = 0.5.  10 runs
-1401 ms,  N/A:            2 343 records, Levenshtein,  msl = 3, mbs = 30, phi = 0.5.  10 runs
+1339 ms,  0.267, 0.314:   4 687 records, Levenshtein,  msl = 3, mbs = 30, phi = 0.4.  10 runs
+1609 ms,  0.292, 0.401:   4 687 records, Levenshtein,  msl = 3, mbs = 30, phi = 0.5.  10 runs
+1316 ms,  0.320, 0.542:   4 687 records, Levenshtein,  msl = 3, mbs = 30, phi = 0.6.  10 runs
+4051 ms,  0.278, 0.224:   4 687 records, Hamming,      msl = 3, mbs = 30, phi = 0.4.  10 runs
+4167 ms,  0.310, 0.301:   4 687 records, Hamming,      msl = 3, mbs = 30, phi = 0.5.  10 runs
+4031 ms,  0.330, 0.390:   4 687 records, Hamming,      msl = 3, mbs = 30, phi = 0.6.  10 runs
+3929 ms,  0.347, 0.481:   4 687 records, Jaccard,      msl = 3, mbs = 30, phi = 0.4.  10 runs
+4486 ms,  0.370, 0.698:   4 687 records, Jaccard,      msl = 3, mbs = 30, phi = 0.5.  10 runs
+3993 ms,  0.359, 0.881:   4 687 records, Jaccard,      msl = 3, mbs = 30, phi = 0.6.  10 runs
+1471 ms,  0.375, 0.800:   4 687 records, Jaro-Winkler, msl = 3, mbs = 30, phi = 0.3.  10 runs
+1434 ms,  0.330, 0.981:   4 687 records, Jaro-Winkler, msl = 3, mbs = 30, phi = 0.4.  10 runs
+
+
+
+
+# # Attribute-Based Entity Resolution Matching Algorithm
+# # Run on blocks created by ASN with parameters WS = 2, PHI = 0.36, MBS = 6.
+
+# The attributes used are the ones that are in the default benchmark. Which are:
+# brand, category, cluster_id, description, identifiers, keyValuePairs, price, specTableContent, title
+# with weights 1, 0.7, 1, 0.8, 0.8, 0.8, 1, 0.7, 1 respectively.
+
+# The deterministic calculation of the precision and recall were always 0.495 and 0.359 respectively,
+      meaning that the creation of possible worlds functions properly. Each match included in a block
+      is also included as a match in one of the created possible worlds.
+
+time,   exp. prec., exp. rec.:  dataset size, distance, parameters,                # iterations
+2588 ms,     0.073,     0.133: 4 687 records, Jaro,     low_phi = 0.08, upp_phi = 0.5.  10 runs
+162 ms,      0.061,     0.313: 4 687 records, Jaro,     low_phi = 0.12, upp_phi = 0.5.  10 runs
+115 ms,      0.061,     0.349: 4 687 records, Jaro,     low_phi = 0.15, upp_phi = 0.5.  10 runs
+117 ms,      0.060,     0.358: 4 687 records, Jaro,     low_phi = 0.20, upp_phi = 0.5.  10 runs
+114 ms,      0.060,     0.358: 4 687 records, Jaro,     low_phi = 0.30, upp_phi = 0.5.  10 runs
+
+114 ms,      0.060,     0.358: 4 687 records, Jaro,     low_phi = 0.20, upp_phi = 0.22. 10 runs
+114 ms,      0.061,     0.313: 4 687 records, Jaro,     low_phi = 0.20, upp_phi = 0.3.  10 runs
+114 ms,      0.061,     0.302: 4 687 records, Jaro,     low_phi = 0.20, upp_phi = 0.7.  10 runs
+
+
+
+
+# # Attribute-Based Entity Resolution Matching Algorithm
+# # Run on blocks created by ISA with parameters PHI = 0.36, MBS = 6, MSL = 3.
+
+time,   exp. prec., exp. rec.:  dataset size, distance, parameters,                # iterations
+ > 5 min,    0.005,     0.978: 4 687 records, Jaro,     low_phi = 0.22, upp_phi = 0.25. 1 run
+21104 ms,    0.005,     0.978: 4 687 records, Jaro,     low_phi = 0.25, upp_phi = 0.30. 10 runs
+21594 ms,    0.005,     0.977: 4 687 records, Jaro,     low_phi = 0.30, upp_phi = 0.35. 5  runs
+
 
