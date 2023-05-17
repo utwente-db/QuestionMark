@@ -1,20 +1,21 @@
 # Probabilistic-benchmark Manual
 
 This file contains the roadmap on how this project is to be used. 
-_Optional steps are displayed in italic_. 
+_Explanation is displayed in italics_. 
 
 Note that you are allowed to make changes to this program. 
 Please follow the rules as provided by the CC license. 
 
 ## 1 - Prepare the dataset
-- _In case no dataset has been prepared yet, go to 
+- In case no dataset has been prepared yet, go to 
 [QuestionMark: The Dataset Generator](https://gitlab.utwente.nl/s1981951/prob-matcher) and follow the manual to 
-prepare the dataset that is to be used for this benchmark._
+prepare the dataset that is to be used for this benchmark.
 
 ## 2 - Prepare the benchmark
 - It is expected that a functioning database connection is set up.
 - Create a file called ```database.ini``` and fill in the credentials following the structure of ```database.ini.tmpl```.
-- Open ```parameters.py``` and indicate the DBMS that is used. _In case a DBMS is benchmarked that is not yet included in this list, see the required steps to take at the bottom of this manual._
+- Open ```parameters.py``` and indicate the DBMS that is used. 
+- In case a DBMS is benchmarked that is not yet included in this list, see the required steps to take at the bottom of this manual.
 - Go to ```manual.py```.
 - To test the connection, run ```test_connection```.
 
@@ -25,7 +26,8 @@ Also take a good look at what queries you want to include in the benchmark execu
 
 ## 4 - Reading the results
 - Go to ```benchmark_results.txt``` to see how the DBMS performed over the different queries.
-- You have now finished the benchmarking procedure.
+- The manual of QuestionMark: The Probabilistic Benchmark provides clear instructions on how to interpret the results. You can find this manual in the README.
+- You have now finished the benchmarking procedure!
 
 ## Including a new DBMS.
 In case you want to benchmark a DBMS that is not yet included in this program,

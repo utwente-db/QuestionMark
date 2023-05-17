@@ -1,4 +1,4 @@
-from connect_db import execute_query, connect_pg, close_pg
+from execute_query import connect_pg, close_pg, execute_query
 from parameters import QUERIES
 from output_tui import create_result_file, create_metrics_file, write_query_type
 from metrics import get_metrics
@@ -20,7 +20,7 @@ def run_benchmark():
         count += 1
         write_query_type(query)
         execute_query(query)
-        print(str(count) + " out of " + str(len(QUERIES)) + " queries done.")
+        print(query + " finished. Currently " + str(count) + " out of " + str(len(QUERIES)) + " queries done.")
 
     get_metrics()
     close_pg()

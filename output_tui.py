@@ -90,6 +90,20 @@ def format_result(cur, result=None):
     return printable_output
 
 
+def get_raw_result(cur, result=None):
+    if not result:
+        result = cur.fetchall()
+
+    if not result:
+        return 'This query returned no records.'
+
+    output = ''
+    for row in result:
+        for content in row:
+            output += content + ' '
+    return output
+
+
 def create_metrics_file():
     with open('benchmark_results_metrics.txt', 'w+') as file:
         file.write('\n      # ============================================= #'
@@ -104,20 +118,28 @@ def create_metrics_file():
 def write_metric(metric, value):
     with open('benchmark_results_metrics.txt', 'a') as file:
         if metric == 'char':
-            file.write('\nThe total amount of characters needed for all queries:     ' + str(value) + ' characters')
+            file.write('\nThe total amount of characters needed for all queries:         ' + str(value) + ' characters')
         if metric == 'error':
-            file.write('\nThe percentage of successful queries is:                   ' + str(value) + '%')
+            file.write('\nThe percentage of successful queries is:                       ' + str(value) + '%')
         if metric == 'runtime':  # value is of type [total time, planning time, execution time]
             if value[0]:
-                file.write('\nThe total average runtime of all queries is:               ' + str(value[0]) + ' ms')
+                file.write('\nThe total average runtime of all queries is:                   ' + str(value[0]) + ' ms')
             if value[1]:
-                file.write('\nThe total average planning time of all queries is:         ' + str(value[1]) + ' ms')
+                file.write('\nThe total average planning time of all queries is:             ' + str(value[1]) + ' ms')
             if value[2]:
-                file.write('\nThe total average execution time of all queries is:        ' + str(value[2]) + ' ms')
+                file.write('\nThe total average execution time of all queries is:            ' + str(value[2]) + ' ms')
+        if metric == 'size':
+            for relation, size in value.items():
+                if relation == 'total':
+                    file.write('\nThe percentage of data used for probabilistic representation:  ' + str(size) + '%')
+                else:
+                    file.write('\nThe total size of the ' + relation + size)
 
 
 def write_errors(errors):
     with open('benchmark_results_metrics.txt', 'a') as file:
-        file.write('\n\n\n\n# === Overview of all errors thrown === #\n')
-        for error in errors:
-            file.write('\n' + str(error))
+        file.write('\n\n\n\n# ==== Overview of all errors thrown ==== #\n'
+                   "# If a memory allocation error is thrown, you can alter the query to run it \n"
+                   "# on the 'part' table to see if the functionality of the query is supported.")
+        for name, error in errors.items():
+            file.write('\n' + str(name) + '\n' + str(error))
