@@ -15,7 +15,7 @@ progress_percentage = 0
 def print_progress(count, length):
     global progress_percentage
     percentage_done = round((count / length * 100), 2)
-    if floor(percentage_done) > floor(progress_percentage):
+    if floor(percentage_done) >= floor(progress_percentage) + 5:
         progress_percentage = floor(percentage_done)
         print(floor(percentage_done), '% done with creating world graphs for uncertain clusters...')
 

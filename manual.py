@@ -16,71 +16,83 @@ from database_filler_maybms import transfer_to_maybms
 from gold_standard_dataset import create_dataset
 import blocker_performance
 import matcher_performance
-from parameters import BLOCK
+from parameters import BLOCK, SMALLER_DATASET, DBMS, PERFORMANCE, MEASURE
 
 if __name__ == '__main__':
-    # # Uncomment and run whole blocks in order.
-    # # ====== SETUP  ================================================================================= #
-    # In a terminal, run: pip install textdistance
+    if not PERFORMANCE:
+        # # ====== SETUP  ================================================================================= #
+        # In a terminal, run: pip install textdistance
 
-    # # ====== STEP 1 ================================================================================= #
-    # # No functions required.
+        # # ====== STEP 1 ================================================================================= #
+        # # No functions required.
 
-    # # ====== STEP 2 ================================================================================= #
-    # # Steps to take if a smaller dataset will be used.
-    resize_dataset('datasets/offers_corpus_english_v2.json.gz', 'datasets/offers_corpus_resized.json')
-    # # Gzip offers_corpus_resized.json.
+        # # ====== STEP 2 ================================================================================= #
+        print("Welcome to QuestionMark: The Dataset Generator.")
 
-    # sort_offers('datasets/offers_corpus_resized.json.gz', 'datasets/offers_corpus_sorted.json')
-    # offer_by_id('datasets/offers_corpus_resized.json.gz', 'datasets/offers_corpus_byID.json')
-    # # Gzip offers_corpus_sorted.json and offers_corpus_byID.json.
+        if SMALLER_DATASET:
+            print("Now working on step 2: creating a smaller dataset.")
+            resize_dataset('datasets/offers_corpus_english_v2.json.gz', 'datasets/offers_corpus_resized.json')
+            done = input("Before continuing, gzip offers_corpus_resized.json. When finished, press enter.")
 
-    # # Steps to take if the full dataset will be used.
-    # sort_offers('datasets/offers_corpus_english_v2.json.gz', 'datasets/offers_corpus_sorted.json')
-    # offer_by_id('datasets/offers_corpus_english_v2.json.gz', 'datasets/offers_corpus_byID.json')
-    # # Gzip offers_corpus_sorted.json and offers_corpus_byID.json.
+        # # ====== STEP 3 ================================================================================= #
+        print("Now working on step 3: sorting the dataset and creating an index.")
 
-    # # ====== STEP 3 ================================================================================= #
-    # if BLOCK == 'asn':
-    #     blocks = asn_blocker('datasets/offers_corpus_sorted.json.gz')
-    # elif BLOCK == 'isa':
-    #     blocks = isa_blocker('datasets/offers_corpus_sorted.json.gz')
-    # else:
-    #     raise Exception("Please input either 'asn' or 'isa' as value of BLOCK in parameters.py")
-    # write_blocks_to_file(blocks, 'datasets/blocks')
+        if SMALLER_DATASET:
+            sort_offers('datasets/offers_corpus_resized.json.gz', 'datasets/offers_corpus_sorted.json')
+            offer_by_id('datasets/offers_corpus_resized.json.gz', 'datasets/offers_corpus_byID.json')
+        else:
+            sort_offers('datasets/offers_corpus_english_v2.json.gz', 'datasets/offers_corpus_sorted.json')
+            offer_by_id('datasets/offers_corpus_english_v2.json.gz', 'datasets/offers_corpus_byID.json')
 
-    # # ====== STEP 4 ================================================================================= #
-    # # Creating the clusters
-    # prob_clust, cert_clust = aer_matcher('datasets/blocks')
-    # write_clusters_to_file(prob_clust, cert_clust, 'datasets/clusters_prob', 'datasets/clusters_cert')
+        done = input("Before continuing, gzip offers_corpus_sorted.json and offers_corpus_byID.json. "
+                     "When finished, press enter.")
 
-    # # ====== STEP 5 ================================================================================= #
-    # # Write to MayBMS
-    # transfer_to_maybms('datasets/clusters_prob', 'datasets/clusters_cert')
+        # # ====== STEP 4 ================================================================================= #
+        print("Now working on step 4: creating the blocks.")
+        if BLOCK == 'asn':
+            blocks = asn_blocker('datasets/offers_corpus_sorted.json.gz')
+        elif BLOCK == 'isa':
+            blocks = isa_blocker('datasets/offers_corpus_sorted.json.gz')
+        else:
+            raise Exception("Please input either 'asn' or 'isa' as value of BLOCK in parameters.py")
+        write_blocks_to_file(blocks, 'datasets/blocks')
 
-    # # Write to DuBio
-    # transfer_to_dubio('datasets/clusters_prob', 'datasets/clusters_cert')
+        # # ====== STEP 5 ================================================================================= #
+        print("Now working on step 5: creating the clusters.")
+        prob_clust, cert_clust = aer_matcher('datasets/blocks')
+        write_clusters_to_file(prob_clust, cert_clust, 'datasets/clusters_prob', 'datasets/clusters_cert')
 
-    # # ====== STEP 6 ================================================================================= #
-    # # Only execute when you want to measure the performance of the dataset generation.
+        # # ====== STEP 6 ================================================================================= #
+        print("Now working on step 6: inserting the clusters in " + DBMS + ".")
+        if DBMS == 'MayBMS':
+            transfer_to_maybms('datasets/clusters_prob', 'datasets/clusters_cert')
+        elif DBMS == 'DuBio':
+            transfer_to_dubio('datasets/clusters_prob', 'datasets/clusters_cert')
+        else:
+            raise Exception("Please choose a valid value of DBMS in parameters.py")
 
-    # create_dataset('datasets/all_gs.json.gz', 'datasets/offers_gs.json')
-    # # gzip file.
-    # sort_offers('datasets/offers_gs.json.gz', 'datasets/offers_gs_sorted.json')
-    # # gzip file.
+    else:  # if PERFORMANCE == True
+        # # ====== STEP 7 ================================================================================= #
+        # # Only executes when you want to measure the performance of the dataset generation.
 
-    # # To get the performance of the blocking algorithm
-    # blocker_performance.full_performance_scan('datasets/offers_gs_sorted.json.gz')
+        create_dataset('datasets/all_gs.json.gz', 'datasets/offers_gs.json')
+        done = input("Before continuing, gzip offers_gs.json. When finished, press enter.")
+        sort_offers('datasets/offers_gs.json.gz', 'datasets/offers_gs_sorted.json')
+        done = input("Before continuing, gzip offers_gs_sorted.json. When finished, press enter.")
 
-    # # To get the performance of the matching algorithm.
-    # offer_by_id('datasets/offers_gs_sorted.json.gz', 'datasets/offers_gs_byID.json')
-    # gzip file
-    # if BLOCK == 'asn':
-    #     gs_blocks = asn_blocker('datasets/offers_gs_sorted.json.gz')
-    # elif BLOCK == 'isa':
-    #     gs_blocks = isa_blocker('datasets/offers_gs_sorted.json.gz')
-    # else:
-    #     raise Exception("Please input either 'asn' or 'isa' as value of BLOCK in parameters.py")
-    # write_blocks_to_file(gs_blocks, 'datasets/gs_blocks')
+        if MEASURE == 'block':
+            blocker_performance.full_performance_scan('datasets/offers_gs_sorted.json.gz')
 
-    # matcher_performance.full_performance_scan('datasets/gs_blocks')
+        if MEASURE == 'match':
+            offer_by_id('datasets/offers_gs_sorted.json.gz', 'datasets/offers_gs_byID.json')
+            done = input("Before continuing, gzip offers_gs_byID.json. When finished, press enter.")
+
+            if BLOCK == 'asn':
+                gs_blocks = asn_blocker('datasets/offers_gs_sorted.json.gz')
+            elif BLOCK == 'isa':
+                gs_blocks = isa_blocker('datasets/offers_gs_sorted.json.gz')
+            else:
+                raise Exception("Please input either 'asn' or 'isa' as value of BLOCK in parameters.py")
+            write_blocks_to_file(gs_blocks, 'datasets/gs_blocks')
+
+            matcher_performance.full_performance_scan('datasets/gs_blocks')

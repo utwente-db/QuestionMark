@@ -2,7 +2,7 @@
 
 This file contains the roadmap on how QuestionMark: The Dataset Generator
  is to be used. 
-_Optional steps are displayed in italic_. 
+_Explanation is displayed in italics_. 
 
 Note that you are allowed to make changes to this program. 
 Please follow the rules as provided by the CC license. 
@@ -11,38 +11,34 @@ Please follow the rules as provided by the CC license.
 - Create an empty folder ```datasets``` in the main project repo.
 - Go to the [WDC website](http://webdatacommons.org/largescaleproductcorpus/v2/index.html) and scroll to the bottom of the page.
 - Download ```offers_corpus_english_v2.json.gz``` and include this in the newly created datasets folder.
-- _Download the samples to get an impression of the dataset structure._
+- Optional: Download the samples to get an impression of the dataset structure.
 
-## 2 - Preparing the dataset
+## 2 - Preparing and running the dataset generator
 - Open ```parameters.py``` and change the present parameters to the desired values. The file provides information on what the parameters are used for. Please check ```performance.txt``` to get an impression of how changing the parameters changes the performance.
-- Go to ```manual.py```. 
-- _If a smaller dataset will be used:_ Run ```resize_dataset```. 
-- _If a smaller dataset will be used:_ Open a terminal, ```cd``` to the datasets directory and run <nobr>```gzip offers_corpus_resized.json```.</nobr>
-- Uncomment and run ```sort_offers``` and ```offer_by_id```.
-- Open a terminal and ```cd``` to the datasets directory. Run <nobr>```gzip offers_corpus_sorted.json```</nobr> and <nobr>```gzip offers_corpus_byID.json```.</nobr>
-
-## 3 - Running the blocking algorithm
-- Run ```asn_blocker``` and ```write_to_file```.
-
-## 4 - Running the matching algorithm
-- Run ```aer_matcher``` and ```write_to_file```.
-
-## 5 - Writing to a database
-- It is expected that a functioning database connection is set up. _In case a probabilistic DBMS will be benchmarked that is non-PostgreSQL based, please see the instructions on the bottom of this manual._
 - Create a file called ```database.ini``` and fill in the credentials following the structure of ```database.ini.tmpl```.
-- For MayBMS, run ```transfer_to_maybms```. For DuBio, run ```transfer_to_dubio```.
+- Set up a functioning database connection to the probabilistic database management system of choice. 
+- In case a probabilistic DBMS will be benchmarked that is non-PostgreSQL based, please see the instructions on the bottom of this manual.
+- Go to ```manual.py``` and run the script.
+- During the execution, the process will be stopped several times to ask you to manually gzip produced filed. To do this, open a terminal and ```cd``` to the datasets directory. Then, run <nobr>```gzip [file]```</nobr>. Return to the benchmark and press Enter to continue.
+
+## 3 - What the benchmark does
+- _If it is indicated that a smaller dataset will be used, this new dataset is produced first. To do this, a pseudo-random selection of offers is chosen from the dataset. This ensures that the same dataset will be produced each time the benchmark is run on a specific size._
+- _Next, this dataset is sorted and a dictionary is created for easy lookup._
+- _The offers present in the dataset are then put in blocks. For this, two blocking algorithms are available. First creating blocks reduces the time required to evaluate if offers should be put in the same cluster._
+- _After the blocks are created, all offers in a block are matched and provided with a probability score. This probability indicates the likelihood that the offer belongs in a cluster, and whether its attributes are likely the correct ones._
+- _When the clusters are created, a database representation is created and the offers are added to a probabilistic DBMS._
+
+## 4 - Continue with benchmarking
 - You now have your dataset prepared! You can continue with the benchmarking. Go to [QuestionMark: The Probabilistic Benchmark](https://gitlab.utwente.nl/s1981951/probabilistic-benchmark) and follow the indicated steps.
+- You can also decide to measure the performance of QuestionMark: The Dataset Generator. In that case, go to step 5.
 
 ## 6 - Running performance tests
-- _Go again to the [WDC website](http://webdatacommons.org/largescaleproductcorpus/v2/index.html) and scroll to the bottom of the page._
-- _Download the normalized ```all_gs.json.gz``` and include this in the datasets folder._
-- _Run ```create_dataset``` with the Golden Standard dataset._
-- _Open a terminal, ```cd``` to the datasets directory and run <nobr>```gzip offers_gs.json```.</nobr>_
-- _Run ```sort_offers``` with the newly created dataset.
-- _Return to the terminal and run <nobr>```gzip offers_gs_sorted.json```.</nobr>_
-- _To get the performance of the selected blocking algorithm, run ```blocker_performance.full_performance_scan```._
-- _To get the performance of the matching algorithm, run the blocking algorithm again with the newly created dataset and write the blocks to a file with ```write_to_file```.
-- _Next, run ```matcher_performance.full_performance_scan```._
+- Go again to the [WDC website](http://webdatacommons.org/largescaleproductcorpus/v2/index.html) and scroll to the bottom of the page.
+- Download the normalized ```all_gs.json.gz``` and include this in the datasets folder.
+- Go to ```parameters.py``` and set PERFORMANCE to True and set MEASURE to the correct value.
+- Go to ```manual.py``` and run the script.
+- Also here the execution is stopped to manually gzip the indicated file.
+- The results of earlier performance tests can be found in ```performance.txt```.
 
 ## Including a new DBMS.
 In case you want to benchmark a DBMS that is not yet included in this 

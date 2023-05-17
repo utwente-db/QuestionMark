@@ -27,6 +27,7 @@ DIST = 'jarowinkler'  # from the isa paper
 
 # # The percentage of the dataset to be used. The full size is around 16 million offers / 2.9 GB zipped.
 # # For approximately 50% of the dataset, assign value 50.
+SMALLER_DATASET = True
 DATASET_SIZE = 0.01  # Works up to two decimal points
 # # For a resized dataset, indicate if whole clusters need to be picked from the dataset or individual offers.
 WHOLE_CLUSTERS = False
@@ -42,13 +43,13 @@ NON_BKV = ['description', 'identifiers', 'keyValuePairs', 'price', 'specTableCon
 # # Check performance.txt.txt to see how the different parameters change the performance of the algorithms.
 
 # # Choose the blocking algorithm to be applied. Uncomment one.
-# BLOCK = 'asn'
-BLOCK = 'isa'  # is very slow
+BLOCK = 'asn'
+# BLOCK = 'isa'  # is very slow
 
 # # Change these variables to adjust the settings of the blocking algorithms.
 WS = 2      # Window Size            (asn)                      # Default 2
 PHI = 0.36  # similarity Threshold   (asn / isa)  # Distance!   # Default 0.36
-MBS = 6     # Maximum Block Size     (asn / isa)                # Default 6
+MBS = 5     # Maximum Block Size     (asn / isa)                # Default 6
 MSL = 3     # Minimum Suffix Length  (isa)                      # Default 3
 
 
@@ -71,9 +72,26 @@ LOWER_PHI = 0.12  # Default 0.12
 UPPER_PHI = 0.36  # Default 0.36
 
 
+# # ==========================
+# # DATABASE MANAGEMENT SYSTEM
+# # ==========================
+
+# # Choose the probabilistic DBMS that will be used to run the benchmark on. Uncomment one.
+# # ALSO CHANGE THE VALUE IN DATABASE.INI.
+# DBMS = 'MayBMS'
+DBMS = 'DuBio'
+
+
 # # ===========
 # # PERFORMANCE
 # # ===========
+
+# # Set to True when you want to run the performance measures.
+PERFORMANCE = False
+
+# # Choose whether to run the performance tests over the blocking or the matching algorithm.
+MEASURE = 'block'
+# MEASURE = 'match'
 
 # # Choose the amount of iterations for a timed run.
 ITERS = 10
