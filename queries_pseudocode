@@ -9,7 +9,6 @@ SELECT, INSERT, UPDATE, DELETE, VALUES, EXECUTE, DECLARE, CREATE TABLE AS, or CR
 The use of any other statement will throw an error. Be wary of this when adding queries to this benchmark.
 
 
-
 Comments about the use of the queries:
 
 test_1:    Simple query to test the connection.

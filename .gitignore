@@ -1,6 +1,6 @@
 database.ini
-benchmark_results_query.txt
-benchmark_results_metrics.txt
+results/QuestionMark_metrics_results.txt
+results/QuestionMark_query_results.txt
 insert_dict.sql
 insert_offers.sql
 notepad.py

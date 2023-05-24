@@ -123,12 +123,12 @@ MAYBMS_QUERIES_DICT = {
 
     # Returns all offers with high uncertainty for human check
     'probabilistic_6': """
-    SELESELECT id, cluster_id, brand, category, identifiers
+    SELECT id, cluster_id, brand, category, identifiers
     FROM offers
     WHERE title LIKE '%ford%' 
     OR description LIKE '%ford%'
     AND tconf() > 0.45
-    AND tconf() < 0.55;ict, _sentence) < 0.55;
+    AND tconf() < 0.55;
     """,
 
 
@@ -150,14 +150,14 @@ MAYBMS_QUERIES_DICT = {
     'IUD_3_rollback': """
     UPDATE offers 
     SET category = 'Clothing',
-        identifiers = '[{"/sku": "[cwkbcw004]"}]',
+        identifiers = '[{"/sku": "[cwkbcw004]"}]'
         -- Verify how to set a new probability and update probability space
     WHERE cluster_id = 103
     AND id = 3283478;
     
     UPDATE offers 
     SET cluster_id = 468,
-        brand = 'chef works',
+        brand = 'chef works'
             -- Verify how to set a new probability and update probability space
     WHERE cluster_id = 103
     and id = 13989780;
@@ -165,7 +165,7 @@ MAYBMS_QUERIES_DICT = {
 
     'IUD_4_rollback': """
     UPDATE offers 
-    SET cluster_id = max_cluster.max_id,
+    SET cluster_id = max_cluster.max_id
         -- verify how to set the probability to certain
     FROM (
         SELECT max(cluster_id) + 1 AS max_id
@@ -174,7 +174,7 @@ MAYBMS_QUERIES_DICT = {
     WHERE id = 12071001;
     
     UPDATE offers 
-    SET cluster_id = max_cluster.max_id,
+    SET cluster_id = max_cluster.max_id
         -- verify how to set the probability to certain
     FROM (
         SELECT max(cluster_id) + 1 AS max_id

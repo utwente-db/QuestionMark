@@ -1,9 +1,10 @@
 from parameters import ITERATIONS, DBMS
 from queries_dubio import DUBIO_QUERIES_DICT
+from queries_maybms import MAYBMS_QUERIES_DICT
 
 
 def create_result_file():
-    with open('benchmark_results_query.txt', 'w+') as file:
+    with open('results/QuestionMark_query_results.txt', 'w+') as file:
         file.write('\n      # ============================================= #'
                    '\n      # ==============   QuestionMark  ============== #'
                    '\n      # ============================================= #'
@@ -15,37 +16,40 @@ def create_result_file():
 
 
 def write_query_type(query_num):
-    with open('benchmark_results_query.txt', 'a') as file:
+    with open('results/QuestionMark_query_results.txt', 'a') as file:
         file.write("\n\n\n# ============== " + query_num + " ============== #")
 
 
 def write_time(planning_time, execution_time, total_time):
-    with open('benchmark_results_query.txt', 'a') as file:
+    with open('results/QuestionMark_query_results.txt', 'a') as file:
         if planning_time:
-            file.write("Average planning time over " + str(ITERATIONS) + " iterations:  " + str(planning_time) + " ms.")
+            file.write("\nAverage planning time over " + str(ITERATIONS) + " iterations:  " + str(planning_time) + " ms.")
         if execution_time:
-            file.write("\nAverage execution time over " + str(ITERATIONS) + " iterations: " + str(execution_time) + " ms.")
+            file.write("\nAverage execution time over " + str(ITERATIONS) + " iterations: " + str(execution_time) + " ms.\n")
         if total_time:
             file.write("Average total time over " + str(ITERATIONS) + " iterations: " + str(total_time) + " ms.")
 
 
 def write_explain_analyse(cur, result):
-    with open('benchmark_results_query.txt', 'a') as file:
+    with open('results/QuestionMark_query_results.txt', 'a') as file:
         file.write('\n' + format_result(cur, result) + '\n')
 
 
 def write_error(error):
-    with open('benchmark_results_query.txt', 'a') as file:
+    with open('results/QuestionMark_query_results.txt', 'a') as file:
         file.write('\nThe following error occurred while executing this query:\n' + str(error))
 
 
 def write_query(query):
-    with open('benchmark_results_query.txt', 'a') as file:
-        file.write('\n' + DUBIO_QUERIES_DICT[query] + '\n')
+    with open('results/QuestionMark_query_results.txt', 'a') as file:
+        if DBMS == 'DuBio':
+            file.write('\n' + DUBIO_QUERIES_DICT[query] + '\n')
+        elif DBMS == 'MayBMS':
+            file.write('\n' + MAYBMS_QUERIES_DICT[query] + '\n')
 
 
 def write_results(printable_output):
-    with open('benchmark_results_query.txt', 'a') as file:
+    with open('results/QuestionMark_query_results.txt', 'a') as file:
         file.write(str(printable_output) + '\n')
 
 
@@ -65,7 +69,7 @@ def format_result(cur, result=None):
 
     index = 0
     for cd in cur.description:
-        max_col_length = max(list(map(lambda x: len(str(x[index])), result)))
+        max_col_length = min(max(list(map(lambda x: len(str(x[index])), result))), 50)
         widths.append(max(max_col_length, len(cd[0])))
         columns.append(cd[0])
         index += 1
@@ -79,13 +83,21 @@ def format_result(cur, result=None):
                        separator + '\n'
 
     count = 0
+    too_long = False
     for row in result:
         count += 1
-        if count < 20:
-            printable_output += tavnit % row + '\n'
+        for col in row:
+            if isinstance(col, str) and len(col) > 50:
+                too_long = True
+        if not too_long:
+            if count < 20:
+                printable_output += tavnit % row + '\n'
+
     printable_output += separator + '\n'
     if count >= 20:
         printable_output += 'The first 20 out of ' + str(count) + ' rows are shown. \n'
+    if too_long:
+        printable_output += 'Some returned records were too large to display. This query returned ' + str(count) + ' rows.\n'
 
     return printable_output
 
@@ -105,7 +117,7 @@ def get_raw_result(cur, result=None):
 
 
 def create_metrics_file():
-    with open('benchmark_results_metrics.txt', 'w+') as file:
+    with open('results/QuestionMark_metrics_results.txt', 'w+') as file:
         file.write('\n      # ============================================= #'
                    '\n      # ==============   QuestionMark  ============== #'
                    '\n      # ============================================= #'
@@ -116,7 +128,7 @@ def create_metrics_file():
 
 
 def write_metric(metric, value):
-    with open('benchmark_results_metrics.txt', 'a') as file:
+    with open('results/QuestionMark_metrics_results.txt', 'a') as file:
         if metric == 'char':
             file.write('\nThe total amount of characters needed for all queries:         ' + str(value) + ' characters')
         if metric == 'error':
@@ -137,7 +149,7 @@ def write_metric(metric, value):
 
 
 def write_errors(errors):
-    with open('benchmark_results_metrics.txt', 'a') as file:
+    with open('results/QuestionMark_metrics_results.txt', 'a') as file:
         file.write('\n\n\n\n# ==== Overview of all errors thrown ==== #\n'
                    "# If a memory allocation error is thrown, you can alter the query to run it \n"
                    "# on the 'part' table to see if the functionality of the query is supported.")

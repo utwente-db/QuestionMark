@@ -7,8 +7,8 @@ probabilistic database management system.
 Currently, this program provides queries in the dialects of
 [DuBio](https://github.com/utwente-db/DuBio) and [MayBMS](http://maybms.sourceforge.net/). 
 
-To run this benchmark a dataset should be generated using the 
-[prob-matcher program](https://gitlab.utwente.nl/s1981951/prob-matcher).
+To run this benchmark a dataset should be generated using
+[QuestionMark: The Dataset Generator](https://gitlab.utwente.nl/s1981951/prob-matcher).
 
 ```This project is still a WIP. Please do not yet use.```
 

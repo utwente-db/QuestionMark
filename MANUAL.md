@@ -14,19 +14,17 @@ prepare the dataset that is to be used for this benchmark.
 ## 2 - Prepare the benchmark
 - It is expected that a functioning database connection is set up.
 - Create a file called ```database.ini``` and fill in the credentials following the structure of ```database.ini.tmpl```.
-- Open ```parameters.py``` and indicate the DBMS that is used. 
-- In case a DBMS is benchmarked that is not yet included in this list, see the required steps to take at the bottom of this manual.
+Open ```parameters.py``` and change the present parameters to the desired values. The file provides information on what the parameters are used for. 
+Also take a good look at what queries you want to include in the benchmark execution.
 - Go to ```manual.py```.
 - To test the connection, run ```test_connection```.
 
 ## 3 - Run the benchmark
-- Open ```parameters.py``` and change the present parameters to the desired values. The file provides information on what the parameters are used for. 
-Also take a good look at what queries you want to include in the benchmark execution.
 - Go to ```manual.py``` and run ```run_benchmark```.
 
 ## 4 - Reading the results
-- Go to ```benchmark_results.txt``` to see how the DBMS performed over the different queries.
-- The manual of QuestionMark: The Probabilistic Benchmark provides clear instructions on how to interpret the results. You can find this manual in the README.
+- _The benchmark produces two result sheets: ```QuestionMark_metrics_results.txt``` and ```QuestionMark_query_results.txt```. The first file contains all information on the metric data collected. The second file provides an overview of all the query results and runtimes._
+- The manual of QuestionMark: The Probabilistic Benchmark provides clear instructions on how to interpret the results. You can find this manual in the results folder.
 - You have now finished the benchmarking procedure!
 
 ## Including a new DBMS.

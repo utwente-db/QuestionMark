@@ -42,6 +42,21 @@ def char_count():
         query = query_dict[query_name]
         count += len(query)
 
+        # For some insert, update, delete queries, large text inputs are included. These skew the results.
+        # The character count of that is manually determined and subtracted here.
+        # Be critical of what you want to delete and what you want to include.
+        if DBMS == 'DuBio':
+            if query_name == 'IUD_1_rollback':
+                count -= 1704
+            if query_name == 'IUD_2_rollback':
+                count -= 37388
+
+        if DBMS == 'MayBMS':
+            if query_name == 'IUD_1_rollback':
+                count -= 1  # to be determined
+            if query_name == 'IUD_2_rollback':
+                count -= 1  # to be determined
+
     write_metric('char', count)
 
 
@@ -75,7 +90,21 @@ def prob_size():
         sizes['total'] = percentage
 
     elif DBMS == 'MayBMS':
-        pass
+        setup_size = "SELECT pg_size_pretty(pg_total_relation_size('offers_setup'));"
+        total_size = "SELECT pg_size_pretty(pg_total_relation_size('offers'));"
+
+        size_setup = run_any_query(setup_size)
+        size_total = run_any_query(total_size)
+        size_total_int = int(size_total[:-4])
+        size_total_quantity = size_total[-4:]
+        size_setup_int = int(size_setup[:-4])
+        size_setup_quantity = size_setup[-4:]
+        if size_setup_quantity != size_total_quantity:
+            print('The size metric displayed is incorrect. Sorry for the inconvenience.')
+        prob_space_size = size_total_int - size_setup_int
+        sizes['probability space is:                    '] = str(prob_space_size) + size_setup_quantity
+        percentage = round((prob_space_size / size_total_int) * 100, 2)
+        sizes['total'] = percentage
     else:
         sys.exit("Please input a valid DBMS in parameters.py. Choose either 'MayBMS' or 'DuBio'.")
 

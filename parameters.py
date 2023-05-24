@@ -5,9 +5,8 @@
 # # ==========================
 
 # # Don't forget to change the database.ini as well!
-# DBMS = 'MayBMS'
-DBMS = 'DuBio'
-# DBMS = 'PostgreSQL'
+DBMS = 'MayBMS'
+# DBMS = 'DuBio'
 
 
 # # =============
@@ -17,24 +16,24 @@ DBMS = 'DuBio'
 # The amount of times a query is run to obtain the average run time.
 ITERATIONS = 2
 
+# The maximum time a query may run before it is aborted. Increase drastically to enforce 'no' timeout.
+# Not yet in use.
+TIMEOUT = 60
+
 
 # # ================
 # # OTHER PARAMETERS
 # # ================
 
 # If true, the query plan of each query is also provided with the benchmark results.
-SHOW_QUERY_PLAN = True
+SHOW_QUERY_PLAN = False
 
 
 # # =======
 # # QUERIES
 # # =======
 
-# The list of queries to include. The following queries exist (see queries_pseudo_code.txt):
-# Test queries:    query_test_1
-# Basic queries:   query_basic_1, ...
-
-# Queries that are grouped together should also be run together. Please uncomment full blocks.
+# For the purpose of each query, please see queries_pseudocode.txt
 QUERIES = [
     'test_1',
 
@@ -70,15 +69,7 @@ QUERIES = [
 
     'IUD_4_rollback',
 
-    'IUD_5_rollback',
-
-    'IUD_6_rollback',
-
-    'IUD_7_rollback',
-
-    'IUD_8_rollback',
-
-    'IUD_9_rollback'
+    'IUD_5_rollback'
 ]
 
 
