@@ -15,11 +15,11 @@ def print_progress(count, length):
     percentage_done = round((count / length * 100), 2)
     if floor(percentage_done) >= floor(progress_percentage) + 5:
         progress_percentage = floor(percentage_done)
-        print(floor(percentage_done), '% of the offers put in a block...')
+        print(' ', floor(percentage_done), '% of the offers put in a block...')
 
 
 def write_blocks_to_file(blocks, write_to):
-    print('blocks created, now writing.')
+    print(' Blocks created, now writing...')
     with open(write_to, 'w+') as f:
         for block in blocks:
             f.write(str(block))
@@ -35,7 +35,7 @@ def asn_blocker(dataset):
     window = Window(WS, 0)
     block = []
 
-    print('reading offers file...')
+    print(' Reading offers file...\n')
 
     with gzip.open(dataset) as offers_file:  # Open the sorted dataset
         for offer in offers_file:
@@ -68,5 +68,5 @@ def asn_blocker(dataset):
                 window.first = i + 1
                 window.last = window.first + WS - 1
                 break
-    print("Done. All of the offers are put in a block.")
+    print(" Done. All of the offers are put in a block.\n")
     return blocks

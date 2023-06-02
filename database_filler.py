@@ -50,7 +50,7 @@ def connect_pg(configname='database.ini'):
         params = config(configname=configname)
 
         # connect to the PostgreSQL server
-        print('Connecting to the PostgreSQL database...')
+        print(' Connecting to the PostgreSQL database...')
         global conn_pg
         conn_pg = psycopg2.connect(**params)
 
@@ -58,7 +58,7 @@ def connect_pg(configname='database.ini'):
         cur = conn_pg.cursor()
 
         # execute a statement
-        print('PostgreSQL database version:')
+        print(' PostgreSQL database version:')
         cur.execute('SELECT version()')
 
         # display the PostgreSQL database server version

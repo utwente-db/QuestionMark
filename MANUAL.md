@@ -32,7 +32,7 @@ Please follow the rules as provided by the CC license.
 - You now have your dataset prepared! You can continue with the benchmarking. Go to [QuestionMark: The Probabilistic Benchmark](https://gitlab.utwente.nl/s1981951/probabilistic-benchmark) and follow the indicated steps.
 - You can also decide to measure the performance of QuestionMark: The Dataset Generator. In that case, go to step 5.
 
-## 6 - Running performance tests
+## Running performance tests
 - Go again to the [WDC website](http://webdatacommons.org/largescaleproductcorpus/v2/index.html) and scroll to the bottom of the page.
 - Download the normalized ```all_gs.json.gz``` and include this in the datasets folder.
 - Go to ```parameters.py``` and set PERFORMANCE to True and set MEASURE to the correct value.

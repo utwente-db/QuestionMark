@@ -17,11 +17,11 @@ def print_progress(count, length):
     percentage_done = round((count / length * 100), 2)
     if floor(percentage_done) >= floor(progress_percentage) + 5:
         progress_percentage = floor(percentage_done)
-        print(floor(percentage_done), '% done with creating world graphs for uncertain clusters...')
+        print(' ', floor(percentage_done), '% done with creating world graphs for uncertain clusters...')
 
 
 def write_clusters_to_file(prob_clusters, cert_clusters, write_to_prob, write_to_cert):
-    print('clusters created, now writing...')
+    print(' Clusters created, now writing...\n')
     with open(write_to_prob, 'wb') as file:
         pickle.dump(prob_clusters, file)
     with open(write_to_cert, 'wb') as file:
@@ -34,7 +34,7 @@ def write_clusters_to_file(prob_clusters, cert_clusters, write_to_prob, write_to
 def aer_matcher(blocks_file, performance=False):  # Use different byID file for a performance run.
     # Get blocks from file. Type of blocks: [[offer_id, ...], ...]
     blocks = []
-    print('reading blocks file...')
+    print(' Reading blocks file...')
     with open(blocks_file) as file:
         for block in file:
             block = block.strip('\n').strip('][').split(', ')
@@ -42,7 +42,7 @@ def aer_matcher(blocks_file, performance=False):  # Use different byID file for 
             blocks.append(block)
 
     # Get all offer information from file. Type of offers: {offer_id: {'title': ..., 'id': ..., ...}, ...}
-    print('reading offers by ID file...')
+    print(' Reading offers by ID file...')
     if performance:
         with gzip.open('datasets/offers_gs_byID.json.gz', 'r') as id_file:
             offers = json.loads(id_file.read())
@@ -55,7 +55,7 @@ def aer_matcher(blocks_file, performance=False):  # Use different byID file for 
     cert_clusters = []
     block_matches = []
     count = 0
-    print('Generating comparison vectors...')
+    print(' Generating comparison vectors...')
     for block in blocks:
         count += 1
         matching_scores = {}
@@ -80,7 +80,7 @@ def aer_matcher(blocks_file, performance=False):  # Use different byID file for 
 
     # Input vector into decision model. Type of block_scores: [{(offer_id_1, offer_id_2): float, ...}, ...]
     # The individual distances get combined to a single distance score. The weight of each attribute can be changed.
-    print('Putting vectors in decision model...')
+    print(' Putting vectors in decision model...\n')
     block_scores = []  # matching graph?
     for block in block_matches:
         block_score = {}

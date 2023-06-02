@@ -12,7 +12,7 @@ from cleantext import clean
 
 
 def create_dataset(gold_standard, write_to):
-    print("\n   Generating dataset ...")
+    print("\n Generating dataset...")
     offers = []
     with gzip.open(gold_standard) as gs_file:  # Open the sorted dataset
         for line in gs_file:

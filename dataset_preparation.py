@@ -7,7 +7,7 @@ from parameters import DATASET_SIZE, NON_BKV, WHOLE_CLUSTERS
 
 # Resize the dataset pseudo-randomly.
 def resize_dataset(dataset, write_to):
-    print('resizing the dataset...')
+    print(' Resizing the dataset...')
     all_lines = 0
     included_lines = 0
     with gzip.open(dataset) as data:
@@ -25,9 +25,9 @@ def resize_dataset(dataset, write_to):
             if include < (DATASET_SIZE * 100):
                 smaller_dataset.append(offer)
                 included_lines += 1
-        print('total offers count:', all_lines)
-        print('included offers count:', included_lines)
-        print('Percentage:', (included_lines / all_lines) * 100)
+        print(' Total offers count:', all_lines)
+        print(' Included offers count:', included_lines)
+        print(' Percentage:', (included_lines / all_lines) * 100)
 
     with open(write_to, 'w', encoding='utf-8') as file:
         file.write('%s' % '\n'.join(map(json.dumps, smaller_dataset)))
@@ -35,7 +35,7 @@ def resize_dataset(dataset, write_to):
 
 # Sort offers, keep the original data structure.
 def sort_offers(dataset, write_to):
-    print('\n   sorting offers...')
+    print('\n Sorting offers...')
     with gzip.open(dataset) as data:
         offers = []
         total = 0
@@ -56,7 +56,7 @@ def sort_offers(dataset, write_to):
 
 # For improved lookup speed. Type of offers: {offer_id: {'title': ..., 'id': ..., ...}, ...}.
 def offer_by_id(dataset, write_to):
-    print('generating offers by ID dictionary...')
+    print(' Generating offers by ID dictionary...')
     offers_raw = []
     offers = {}
     with gzip.open(dataset) as offers_file:

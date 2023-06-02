@@ -53,9 +53,9 @@ def print_progress(count, length, text):
     if math.floor(percentage_done) >= math.floor(progress_percentage) + 5:
         progress_percentage = math.floor(percentage_done)
         if text == 'cluster':
-            print(math.floor(percentage_done), '% done with processing probabilistic clusters...')
+            print(' ', math.floor(percentage_done), '% done with processing probabilistic clusters...')
         elif text == 'insert':
-            print(math.floor(percentage_done), '% done with inserting offers in MayBMS...')
+            print(' ', math.floor(percentage_done), '% done with inserting offers in MayBMS...')
 
 # This file creates the representation for easy upload in the database.
 # This file is an extension of database_filler.py specialised for DuBio.
@@ -129,10 +129,10 @@ def run_preparatory_queries():
 def transfer_to_maybms(prob_cluster_file, cert_cluster_file):
     connect_pg(configname='database.ini')  # Connect to the database
     setup_database_maybms()
-    print('\n database connected and set up.')
-    print(' reading cluster file...')
+    print('\n Database connected and set up.')
+    print(' Reading cluster file...')
     prob_clusters, cert_clusters = load_content(prob_cluster_file, cert_cluster_file)
-    print(' reading offers by ID file...\n')
+    print(' Reading offers by ID file...\n')
     with gzip.open('datasets/offers_corpus_byID.json.gz', 'r') as id_file:
         offers = json.loads(id_file.read())
     records = []  # Each record becomes a row in the database.
@@ -180,7 +180,7 @@ def transfer_to_maybms(prob_cluster_file, cert_cluster_file):
     # Continue with certain clusters.
     cluster_id = cluster_id_end + 1
     cluster_count = 0
-    print("\nProcessing certain clusters for MayBMS...")
+    print("\n Processing certain clusters for MayBMS...")
     for cluster in cert_clusters:
         cluster_id += 1
         cluster_count += 1
@@ -189,7 +189,7 @@ def transfer_to_maybms(prob_cluster_file, cert_cluster_file):
             record = create_record_maybms(offers, cluster[i], cluster_id, 1, probability_attributes[i])
             records.append(record)
 
-    print("100 % done with processing certain clusters.\n")
+    print(" 100 % done with processing certain clusters.\n")
     global progress_percentage
     progress_percentage = 0
 
@@ -208,7 +208,7 @@ def transfer_to_maybms(prob_cluster_file, cert_cluster_file):
 
     # commit the remaining records
     bulk_insert_maybms()
-    print('100 % done with inserting offers in MayBMS.')
+    print(' 100 % done with inserting offers in MayBMS.')
 
     # To generate a probability space over two attributes, first two tables need to be created with each a probability
     #     space over a single attribute. Next, these tables can be merged.
@@ -226,9 +226,9 @@ def transfer_to_maybms(prob_cluster_file, cert_cluster_file):
                 );
             """
     execute_query(query)
-    print(' 100 % done')
+    print(' 100 % done.')
 
-    print('Running preparatory queries...')
+    print(' Running preparatory queries...')
     run_preparatory_queries()
 
     close_pg()  # Close connection
