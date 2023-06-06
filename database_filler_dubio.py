@@ -259,6 +259,8 @@ def transfer_to_dubio(prob_cluster_file, cert_cluster_file):
 
         cluster_id_start = cluster_id_end + 1
 
+    print(' 100 % done with processing probabilistic clusters.')
+
     # Continue with the certain clusters.
     cluster_id = cluster_id_end + 1
     cluster_count = 0
@@ -291,9 +293,9 @@ def transfer_to_dubio(prob_cluster_file, cert_cluster_file):
 
     # commit the remaining records
     bulk_insert_dubio('insert')
-    print('100 % done with inserting offers in DuBio.')
+    print(' 100 % done with inserting offers in DuBio.')
 
-    print('Running preparatory queries...')
+    print(' Running preparatory queries...')
     run_preparatory_queries()
 
     close_pg()  # Close connection

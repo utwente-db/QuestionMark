@@ -1,8 +1,21 @@
 import gzip
 import hashlib
 import json
+from math import floor
 
 from parameters import DATASET_SIZE, NON_BKV, WHOLE_CLUSTERS
+
+progress_percentage = 0
+dataset_length = 16451499
+
+
+def print_progress(count):
+    global progress_percentage
+    global dataset_length
+    percentage_done = round((count / dataset_length * 100), 2)
+    if floor(percentage_done) >= floor(progress_percentage) + 5:
+        progress_percentage = floor(percentage_done)
+        print(' ', floor(percentage_done), '% done with resizing the dataset...')
 
 
 # Resize the dataset pseudo-randomly.
@@ -25,12 +38,13 @@ def resize_dataset(dataset, write_to):
             if include < (DATASET_SIZE * 100):
                 smaller_dataset.append(offer)
                 included_lines += 1
+            print_progress(all_lines)
         print(' Total offers count:', all_lines)
         print(' Included offers count:', included_lines)
         print(' Percentage:', (included_lines / all_lines) * 100)
 
-    with open(write_to, 'w', encoding='utf-8') as file:
-        file.write('%s' % '\n'.join(map(json.dumps, smaller_dataset)))
+    with gzip.open(write_to, 'wb') as file:
+        file.write(bytearray('%s' % '\n'.join(map(json.dumps, smaller_dataset)), 'utf-8'))
 
 
 # Sort offers, keep the original data structure.
@@ -50,8 +64,8 @@ def sort_offers(dataset, write_to):
                                               k['brand'] is None, k['brand'] == "", k['brand'],
                                               k['category'] is None, k['category'] == "", k['category']))
 
-    with open(write_to, 'w', encoding='utf-8') as file:
-        file.write('%s' % '\n'.join(map(json.dumps, sorted_offers)))
+    with gzip.open(write_to, 'wb') as file:
+        file.write(bytearray('%s' % '\n'.join(map(json.dumps, sorted_offers)), 'utf-8'))
 
 
 # For improved lookup speed. Type of offers: {offer_id: {'title': ..., 'id': ..., ...}, ...}.
@@ -69,6 +83,6 @@ def offer_by_id(dataset, write_to):
     offers_raw.clear()  # For memory efficiency. Could comment out when space is not an issue.
 
     # write one line with the whole dict.
-    with open(write_to, 'w', encoding='utf-8') as file:
+    with gzip.open(write_to, 'wb') as file:
         for chunk in json.JSONEncoder().iterencode(offers):
-            file.write(chunk)
+            file.write(bytearray(chunk, 'utf-8'))

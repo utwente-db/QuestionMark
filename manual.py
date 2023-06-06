@@ -26,24 +26,17 @@ if __name__ == '__main__':
         # # ====== DATASET GENERATION ===================================================================== #
         print("\n == Welcome to QuestionMark: The Dataset Generator. == \n")
 
-        # if SMALLER_DATASET:
-        #     print("Creating a smaller dataset...")
-        #     resize_dataset('datasets/offers_corpus_english_v2.json.gz', 'datasets/offers_corpus_resized.json')
-        #     done = input("\n == MANUAL ACTION REQUIRED == \n"
-        #                  "Before continuing, gzip offers_corpus_resized.json. When finished, press enter.\n")
+        if SMALLER_DATASET:
+            print(" Creating a smaller dataset...")
+            resize_dataset('datasets/offers_corpus_english_v2.json.gz', 'datasets/offers_corpus_resized.json')
 
         print(" Sorting the dataset and creating an index...")
-
         if SMALLER_DATASET:
             sort_offers('datasets/offers_corpus_resized.json.gz', 'datasets/offers_corpus_sorted.json')
             offer_by_id('datasets/offers_corpus_resized.json.gz', 'datasets/offers_corpus_byID.json')
         else:
             sort_offers('datasets/offers_corpus_english_v2.json.gz', 'datasets/offers_corpus_sorted.json')
             offer_by_id('datasets/offers_corpus_english_v2.json.gz', 'datasets/offers_corpus_byID.json')
-
-        done = input("\n == MANUAL ACTION REQUIRED == \n"
-                     " Before continuing, gzip offers_corpus_sorted.json and offers_corpus_byID.json. "
-                     " When finished, press enter.\n")
 
         print(" Creating the blocks...")
         if BLOCK == 'asn':

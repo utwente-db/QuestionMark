@@ -19,7 +19,6 @@ Please follow the rules as provided by the CC license.
 - Set up a functioning database connection to the probabilistic database management system of choice. 
 - In case a probabilistic DBMS will be benchmarked that is non-PostgreSQL based, please see the instructions on the bottom of this manual.
 - Go to ```manual.py``` and run the script.
-- During the execution, the process will be stopped several times to ask you to manually gzip produced filed. To do this, open a terminal and ```cd``` to the datasets directory. Then, run <nobr>```gzip [file]```</nobr>. Return to the benchmark and press Enter to continue.
 
 ## 3 - What the benchmark does
 - _If it is indicated that a smaller dataset will be used, this new dataset is produced first. To do this, a pseudo-random selection of offers is chosen from the dataset. This ensures that the same dataset will be produced each time the benchmark is run on a specific size._

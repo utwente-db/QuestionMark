@@ -78,8 +78,8 @@ UPPER_PHI = 0.36  # Default 0.36
 
 # # Choose the probabilistic DBMS that will be used to run the benchmark on. Uncomment one.
 # # ALSO CHANGE THE VALUE IN DATABASE.INI.
-DBMS = 'MayBMS'
-# DBMS = 'DuBio'
+# DBMS = 'MayBMS'
+DBMS = 'DuBio'
 
 
 # # ===========
