@@ -28,15 +28,15 @@ if __name__ == '__main__':
 
         if SMALLER_DATASET:
             print(" Creating a smaller dataset...")
-            resize_dataset('datasets/offers_corpus_english_v2.json.gz', 'datasets/offers_corpus_resized.json')
+            resize_dataset('datasets/offers_corpus_english_v2.json.gz', 'datasets/offers_corpus_resized.json.gz')
 
         print(" Sorting the dataset and creating an index...")
         if SMALLER_DATASET:
-            sort_offers('datasets/offers_corpus_resized.json.gz', 'datasets/offers_corpus_sorted.json')
-            offer_by_id('datasets/offers_corpus_resized.json.gz', 'datasets/offers_corpus_byID.json')
+            sort_offers('datasets/offers_corpus_resized.json.gz', 'datasets/offers_corpus_sorted.json.gz')
+            offer_by_id('datasets/offers_corpus_resized.json.gz', 'datasets/offers_corpus_byID.json.gz')
         else:
-            sort_offers('datasets/offers_corpus_english_v2.json.gz', 'datasets/offers_corpus_sorted.json')
-            offer_by_id('datasets/offers_corpus_english_v2.json.gz', 'datasets/offers_corpus_byID.json')
+            sort_offers('datasets/offers_corpus_english_v2.json.gz', 'datasets/offers_corpus_sorted.json.gz')
+            offer_by_id('datasets/offers_corpus_english_v2.json.gz', 'datasets/offers_corpus_byID.json.gz')
 
         print(" Creating the blocks...")
         if BLOCK == 'asn':
