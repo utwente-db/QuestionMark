@@ -66,7 +66,7 @@ parameters.py.
 
 ## 3 - Continue with benchmarking
 - You now have your dataset prepared! You can continue with the benchmarking. Go to [QuestionMark: The Probabilistic Benchmark](https://gitlab.utwente.nl/s1981951/probabilistic-benchmark) and follow the indicated steps.
-- You can also decide to measure the performance of QuestionMark: The Dataset Generator. In that case, go to step 5.
+- You can also decide to measure the performance of QuestionMark: The Dataset Generator. In that case, please read the instructions below.
 
 ## Running performance tests
 _To obtain a dataset that is nearing the specifications of any real-world dataset as much as possible, the parameters provided 
