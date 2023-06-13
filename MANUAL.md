@@ -38,6 +38,18 @@ To obtain a dataset suited for use in this benchmark, the English offers subset 
     <li>When the clusters are created, a database representation is created and the offers are added to a probabilistic DBMS.</li></ul>
 </details>
 
+<details>
+<summary<b>Parameter explanation</b></summary>
+The following parameters are included in QuestionMark: The Dataset Generator. Their value can be changes in
+parameters.py.
+<ul><li><i>DBMS.</i> Determines the Database Management System that will be used for the execution of the benchmark. Additional systems can be added when support for them is also added to the benchmark program.</li>
+    <li><i>Iterations.</i> Denotes the amount of times a query is run to obtain a run time average from the queries. This is a global variable that is used for all queries. Increasing this number will provide a more precise outcome of the average run time, but at the cost of a longer benchmark execution time. The total amount of iterations is always +1 to create a warm start.</li>
+    <li><i>Show Query Plan.</i> Boolean value. If true, the query plan for each query is also provided with the benchmark result. Enabling this variable does not influence the execution time of the queries.</li>
+    <li><i>Timeout.</i> Ensures that queries that take too long to return an answer will be aborted. Once a query times out, this will be noted in the benchmark result and the next query is started. </li>
+    <li><i>Queries.</i> A list that contains all queries from the benchmark. Depending on the goal with which the benchmark is run, queries that are not relevant can be removed from the benchmark run. Removing queries lowers the total time required to run the benchmark.</li>
+</ul>
+</details>
+
 
 ## 1 - Downloading the WDC datasets
 - Create an empty folder ```datasets``` in the main project repo.
