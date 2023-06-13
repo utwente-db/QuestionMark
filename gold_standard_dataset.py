@@ -42,8 +42,8 @@ def create_dataset(gold_standard, write_to):
             ids.append(offer['id'])
 
     # Write unique offers in the golden standard to file.
-    with open(write_to, 'w', encoding='utf-8') as file:
-        file.write('%s' % '\n'.join(map(json.dumps, offers_unique)))
+    with gzip.open(write_to, 'wb') as file:
+        file.write(bytearray('%s' % '\n'.join(map(json.dumps, offers_unique)), 'utf-8'))
 
 
 def get_matches(gold_standard):

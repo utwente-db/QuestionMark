@@ -62,21 +62,14 @@ if __name__ == '__main__':
     else:
         # # ====== PERFORMANCE MEASURES =================================================================== #
         # # Only executes when you want to measure the performance of the dataset generation.
-
-        create_dataset('datasets/all_gs.json.gz', 'datasets/offers_gs.json')
-        done = input("\n == MANUAL ACTION REQUIRED == \n"
-                     " Before continuing, gzip offers_gs.json. When finished, press enter.\n")
-        sort_offers('datasets/offers_gs.json.gz', 'datasets/offers_gs_sorted.json')
-        done = input("\n == MANUAL ACTION REQUIRED == \n"
-                     " Before continuing, gzip offers_gs_sorted.json. When finished, press enter.\n")
+        create_dataset('datasets/all_gs.json.gz', 'datasets/offers_gs.json.gz')
+        sort_offers('datasets/offers_gs.json.gz', 'datasets/offers_gs_sorted.json.gz')
 
         if MEASURE == 'block':
             blocker_performance.full_performance_scan('datasets/offers_gs_sorted.json.gz')
 
         if MEASURE == 'match':
-            offer_by_id('datasets/offers_gs_sorted.json.gz', 'datasets/offers_gs_byID.json')
-            done = input("\n == MANUAL ACTION REQUIRED == \n"
-                         " Before continuing, gzip offers_gs_byID.json. When finished, press enter.\n")
+            offer_by_id('datasets/offers_gs_sorted.json.gz', 'datasets/offers_gs_byID.json.gz')
 
             if BLOCK == 'asn':
                 gs_blocks = asn_blocker('datasets/offers_gs_sorted.json.gz')
