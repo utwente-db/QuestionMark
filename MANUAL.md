@@ -39,14 +39,20 @@ To obtain a dataset suited for use in this benchmark, the English offers subset 
 </details>
 
 <details>
-<summary<b>Parameter explanation</b></summary>
-The following parameters are included in QuestionMark: The Dataset Generator. Their value can be changes in
+<summary><b>Parameter explanation</b></summary>
+The following parameters are included in QuestionMark: The Probabilistic Benchmark. Their value can be changes in
 parameters.py.
-<ul><li><i>DBMS.</i> Determines the Database Management System that will be used for the execution of the benchmark. Additional systems can be added when support for them is also added to the benchmark program.</li>
-    <li><i>Iterations.</i> Denotes the amount of times a query is run to obtain a run time average from the queries. This is a global variable that is used for all queries. Increasing this number will provide a more precise outcome of the average run time, but at the cost of a longer benchmark execution time. The total amount of iterations is always +1 to create a warm start.</li>
-    <li><i>Show Query Plan.</i> Boolean value. If true, the query plan for each query is also provided with the benchmark result. Enabling this variable does not influence the execution time of the queries.</li>
-    <li><i>Timeout.</i> Ensures that queries that take too long to return an answer will be aborted. Once a query times out, this will be noted in the benchmark result and the next query is started. </li>
-    <li><i>Queries.</i> A list that contains all queries from the benchmark. Depending on the goal with which the benchmark is run, queries that are not relevant can be removed from the benchmark run. Removing queries lowers the total time required to run the benchmark.</li>
+<ul><li><i>DBMS.</i> Determines into which database management system the generated dataset should be loaded and what preparatory queries need to be run.</li>
+    <li><i>Dataset Size.</i> Determines the amount of offers included in the dataset. A percentage of the dataset can be determined with up to two decimal places. The offers for the new smaller dataset are pseudo-randomly chosen, so that the same dataset is returned for multiple runs. This ensures reproducibility of the results. The full dataset contains 16451499 offers. The smallest dataset that can be generated is 0.01% of the full dataset, which produces an initial dataset of 1653 offers. The final probabilistic dataset that is generated from these offers contains 11\:807 records. This value should be carefully chosen, as this influences to what extent the produced dataset imitates the data being digested by the real-world application.</li>
+    <li><i>Whole Clusters.</i> Determines whether the offers chosen from the larger dataset to include in the new smaller dataset are pulled from entire clusters or not. Including entire clusters increases the uncertainty of the data.</li>
+    <li><i>Word Distance Measure.</i> Determines the way the distance between two words or sentences is calculated. This measure is used during the blocking phase on the attributes determined as Blocking Key Values and on all suitable attributes during the matching phase. The implemented distance measures are Levenshtein, Jaro, Jaro-Winkler, Hamming and Jaccard. </li>
+    <li><i>Blocking Key Values.</i> Determines the attributes that are included to determine the similarity of two offers during the blocking phase. Including more attributes provides a better blocking performance, but at the cost of a higher run time.</li>
+    <li><i>Blocking Similarity Threshold.</i> Value between 0 and 1 that represents the distance between two offers. Evaluated offers with a distance lower than the threshold are included in the same block.</li>
+    <li><i>Blocking Window Size.</i> Determines the size of the sliding window. Within a window, the distance between the first and last offer is determined. This value influences the run time. </li>
+    <li><i>Maximum Block Size.</i> Poses a restriction on the block size. Increasing this value improves the performance. As the matching phase includes a calculation with factorial time complexity, this size should not exceed seven. Six is advised.</li>
+    <li><i>Matching Attributes.</i> Determines the attributes that are used to determine the distance between two offers during the matching phase. Including more attributes improves the performance, but increases the run time.</li>
+    <li><i>Matching Attribute Weights.</i> Determines the weight of each attribute to calculate the final distance score. This can be tweaked to improve the performance. It has no effect on the run time. </li>
+    <li><i>Upper Phi and Lower Phi.</i> Determines the upper and lower threshold of the distance measure. If the distance between two offers is greater than the upper phi, the two offers are certainly not the same product. If the distance is smaller than the lower phi, the two offers are certainly the same. Increasing the gap between the values ensures less false matches or non-matches, but increases the computational complexity in later phases and during querying. A smaller gap can be used to artificially reduce the uncertainty in the dataset. This value should be carefully chosen, as this influences to what extent the produced dataset imitates the data being digested by the real-world application.</li>
 </ul>
 </details>
 
