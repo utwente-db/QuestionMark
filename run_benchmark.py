@@ -14,13 +14,13 @@ def test_connection():
 def run_benchmark():
     create_result_file()
     create_metrics_file()
-    connect_pg(configname='database.ini')
     count = 0
     for query in QUERIES:
+        connect_pg(configname='database.ini')
         count += 1
         write_query_type(query)
         execute_query(query)
         print(query + " finished. Currently " + str(count) + " out of " + str(len(QUERIES)) + " queries done.")
+        close_pg()
 
     get_metrics()
-    close_pg()

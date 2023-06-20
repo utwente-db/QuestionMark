@@ -161,22 +161,10 @@ insert_update_delete_5:    Deletes a cluster.
     if required update the probability space;
 
 # == INSERT, UPDATE, DELETE 3 == #
-    update entity 'offers'
-    set attribute 'category' with value 'clothing',
-        attribute 'identifiers' with value '[{"/sku": "[cwkbcw004]"}]',
-        the variable/sentence attribute with any value
-    satisfying that attribute 'cluster_id' has value 103
-        and the attribute 'id' has value 3283478;
+    update the entity containing the probabilities.
+    alter half of the probabilities of the cluster with cluster_id 10;
 
-    update entity 'offers'
-    set attribute 'cluster_id' with value 468,
-        attribute 'brand' with value 'chef works',
-        the variable/sentence attribute with any value
-    satisfying that attribute 'cluster_id' has value 103
-        and the attribute 'id' has value 13989780;
-
-    if required update the probabilities in the corresponding entity
-    if required update the probability space;
+    if required manually repair the probability space;
 
 # == INSERT, UPDATE, DELETE 4 == #
     update entity 'offers'

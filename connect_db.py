@@ -27,28 +27,19 @@ def config(configname='database.ini', section='postgresql'):
     return db
 
 
-def connect_pg(configname='database.ini', verbose=True):
+def connect_pg(configname='database.ini'):
     # Connect to the PostgreSQL database server
     try:
         # read connection parameters
         params = config(configname=configname)
 
         # connect to the PostgreSQL server
-        if verbose:
-            print('\nConnecting to the PostgreSQL database...\n')
         global conn_pg
         conn_pg = psycopg2.connect(**params)
 
         # create a cursor
         cur = conn_pg.cursor()
 
-        # execute a statement
-        if verbose:
-            print('  PostgreSQL database version:')
-            cur.execute('SELECT version()')
-            # display the PostgreSQL database server version
-            db_version = cur.fetchone()
-            print('  ' + str(db_version) + '\n')
     except (Exception, psycopg2.DatabaseError) as error:
         print('Error from connect_pg:', error)
         exit()  # pretty fatal
@@ -72,6 +63,7 @@ def run_query(query, cur):
 
 # Could be used when defining new metrics.
 def run_any_query(query):
+    connect_pg(configname='database.ini')
     global conn_pg
     try:
         cur = conn_pg.cursor()
@@ -80,7 +72,5 @@ def run_any_query(query):
         cur.close()
         return result
     except (Exception, psycopg2.DatabaseError) as error:
-        print('Error from execute_query():', error)
-        if conn_pg is not None:
-            close_pg(verbose=False)
-            connect_pg(verbose=False)
+        print('Error from run_any_query(): ', error)
+    close_pg()

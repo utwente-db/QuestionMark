@@ -1,10 +1,10 @@
-# Probabilistic-benchmark Manual
+# Manual
 
-This file contains the roadmap on how this project is to be used. 
+This file contains the roadmap on how QuestionMark: The Probabilistic Benchmark is to be used. 
 _Explanation is displayed in italics_. 
 
 Note that you are allowed to make changes to this program. 
-Please follow the rules as provided by the CC license. 
+Please follow the rules as provided by the CC license.
 
 ## 1 - Prepare the dataset
 - In case no dataset has been prepared yet, go to 
@@ -12,12 +12,11 @@ Please follow the rules as provided by the CC license.
 prepare the dataset that is to be used for this benchmark.
 
 ## 2 - Prepare the benchmark
-- It is expected that a functioning database connection is set up.
+- Set up a functioning database connection to the probabilistic database management system of choice. 
 - Create a file called ```database.ini``` and fill in the credentials following the structure of ```database.ini.tmpl```.
 Open ```parameters.py``` and change the present parameters to the desired values. The file provides information on what the parameters are used for. 
-Also take a good look at what queries you want to include in the benchmark execution.
-- Go to ```manual.py```.
-- To test the connection, run ```test_connection```.
+Also take a good look at what queries you want to include in the benchmark execution. For a clear image, it is advised to run the queries and update statements over separate benchmark runs.
+- In case you want to test the connection, set ```TEST``` to True, Go to ```manual.py``` and run ```run_benchmark```. When the connection is working, remember to set ```TEST``` back to False.
 
 ## 3 - Run the benchmark
 - Go to ```manual.py``` and run ```run_benchmark```.
@@ -33,6 +32,12 @@ you need to de a couple of extra steps to prepare the program. For this, a disti
 is made between PostgreSQL-based Database Management Systems and non-PostgreSQL based
 systems. For a non-PostgreSQL based system, please also follow the steps listed under 
 the PostgreSQL based system.
+
+<details>
+<summary><b>Included Database Management Systems</b></summary>
+<ul><li>MayBMS</li>
+    <li>DuBio</li></ul>
+</details>
 
 ### Including any new DBMS.
 When including any new DBMS, the following simple changes need to be

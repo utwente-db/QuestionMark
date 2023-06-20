@@ -1,4 +1,5 @@
 import sys
+import traceback
 from configparser import ConfigParser
 from time import time
 
@@ -11,6 +12,7 @@ from queries_dubio import DUBIO_QUERIES_DICT
 from queries_maybms import MAYBMS_QUERIES_DICT
 
 conn_pg = None
+info_printed = False
 
 
 # This part is copied and adapted from https://github.com/utwente-dmb/wdc_pdb
@@ -31,14 +33,15 @@ def config(configname='database.ini', section='postgresql'):
     return db
 
 
-def connect_pg(configname='database.ini', verbose=True):
+def connect_pg(configname='database.ini'):
     # Connect to the PostgreSQL database server
     try:
         # read connection parameters
         params = config(configname=configname)
 
         # connect to the PostgreSQL server
-        if verbose:
+        global info_printed
+        if not info_printed:
             print('\nConnecting to the PostgreSQL database...\n')
         global conn_pg
         conn_pg = psycopg2.connect(**params)
@@ -47,18 +50,19 @@ def connect_pg(configname='database.ini', verbose=True):
         cur = conn_pg.cursor()
 
         # execute a statement
-        if verbose:
+        if not info_printed:
             print('  PostgreSQL database version:')
             cur.execute('SELECT version()')
             # display the PostgreSQL database server version
             db_version = cur.fetchone()
             print('  ' + str(db_version) + '\n')
+            info_printed = True
     except (Exception, psycopg2.DatabaseError) as error:
         print('Error from connect_pg:', error)
         exit()  # pretty fatal
 
 
-def close_pg(verbose=True):
+def close_pg(verbose=False):
     # Close connection to the PostgreSQL database server
     global conn_pg
     try:
@@ -105,23 +109,22 @@ def execute_query(query_name):
         cur.close()
 
     except (Exception, psycopg2.DatabaseError) as error:
-        print('Error from execute_query():', error)
+        print('Error from execute_query() on ' + str(query_name) + ': ' + str(error))  # traceback.print_exc()
         add_failed(error, query_name)
+        add_runtime(query_name, 0, 0, 0)
         write_error(error)
         if conn_pg is not None:
-            close_pg(verbose=False)
-            connect_pg(verbose=False)
+            close_pg()
+            connect_pg()
 
 
 def explain_analyse(query, cur, query_name):
     planning_times = []
     execution_times = []
     total_times = []
-    result = ''
     for _ in range(ITERATIONS):
         if query_name.__contains__('_rollback') or query_name.__contains__('_view'):
             run_query("BEGIN;", cur)
-        start_time = time()
         run_query(query, cur)
         result = cur.fetchall()
         if query_name.__contains__('_rollback') or query_name.__contains__('_view'):
@@ -135,12 +138,12 @@ def explain_analyse(query, cur, query_name):
     if DBMS == 'MayBMS':
         average_total = round(sum(total_times) / len(total_times), 3)
         write_time(None, None, average_total)
-        add_runtime(average_total, 0, 0)
+        add_runtime(query_name, average_total, 0, 0)
     else:
         average_planning = round(sum(planning_times) / len(planning_times), 3)
         average_execution = round(sum(execution_times) / len(execution_times), 3)
         write_time(average_planning, average_execution, None)
-        add_runtime(0, average_planning, average_execution)
+        add_runtime(query_name, 0, average_planning, average_execution)
 
     if SHOW_QUERY_PLAN:
         if query_name.__contains__('_rollback'):
@@ -152,13 +155,17 @@ def explain_analyse(query, cur, query_name):
             run_query("ROLLBACK;", cur)
 
 
+# When the query is composed of multiple queries, we want to explain analyse each of them.
 def explain_analyse_each(query, cur, query_name):
-    # When the query is composed of multiple queries, we want to explain analyse each of them.
     query = "EXPLAIN ANALYSE" + query
+
     first = query[:query.find(";") + 1]
     rest = query[query.find(";") + 1:]
 
-    explain_analyse(first, cur, query_name)
+    if first.__contains__('DROP TABLE IF EXISTS'):
+        pass  # Explain analyse does not support DROP statements, so we ignore the time for now.
+    else:
+        explain_analyse(first, cur, query_name)
     if not rest.isspace():
         explain_analyse_each(rest, cur, query_name)
 

@@ -1,6 +1,5 @@
 database.ini
-results/QuestionMark_metrics_results.txt
-results/QuestionMark_query_results.txt
+results
 insert_dict.sql
 insert_offers.sql
 notepad.py
