@@ -5,6 +5,8 @@ The provided time is the average over the amount of runs (iterations).
 
 # # Adaptive Sorted Neighborhood blocking
 
+# See QM_graph_distance_asn_time.png and QM_graph_distance_asn_prerec.png
+#     for a visual representation of this data.
 time, precision, recall: dataset size,  distance,     parameters,              # iterations
  31 ms,   0.360, 0.239:  4 687 records, Levenshtein,  mbs = 30, phi = 0.4, ws = 6.  10 runs
  22 ms,   0.392, 0.521:  4 687 records, Jaro,         mbs = 30, phi = 0.4, ws = 6.  10 runs
@@ -12,21 +14,32 @@ time, precision, recall: dataset size,  distance,     parameters,              #
 436 ms,   0.496, 0.148:  4 687 records, Hamming,      mbs = 30, phi = 0.4, ws = 6.  10 runs
 150 ms,   0.390, 0.367:  4 687 records, Jaccard,      mbs = 30, phi = 0.4, ws = 6.  10 runs
 
+# See QM_graph_phi_asn_time.png and QM_graph_phi_asn_prerec.png
+#     for a visual representation of this data.
+time, precision, recall: dataset size,  distance,     parameters,              # iterations
  47 ms,   0.553, 0.109:  4 687 records, Jaro,         mbs = 30, phi = 0.1, ws = 2.  10 runs
  34 ms,   0.396, 0.403:  4 687 records, Jaro,         mbs = 30, phi = 0.3, ws = 2.  10 runs
  28 ms,   0.392, 0.512:  4 687 records, Jaro,         mbs = 30, phi = 0.4, ws = 2.  10 runs
  56 ms,   0.384, 0.512:  4 687 records, Jaro,         mbs = 30, phi = 0.5, ws = 2.  10 runs
 
+# See QM_graph_ws_asn_time.png and QM_graph_ws_asn_prerec.png
+#     for a visual representation of this data.
+time, precision, recall: dataset size,  distance,     parameters,              # iterations
  36 ms,   0.388, 0.496:  4 687 records, Jaro,         mbs = 30, phi = 0.4, ws = 1.  10 runs
  25 ms,   0.391, 0.517:  4 687 records, Jaro,         mbs = 30, phi = 0.4, ws = 3.  10 runs
  28 ms,   0.392, 0.521:  4 687 records, Jaro,         mbs = 30, phi = 0.4, ws = 6.  10 runs
  21 ms,   0.386, 0.519:  4 687 records, Jaro,         mbs = 30, phi = 0.4, ws = 10. 10 runs
 
+# See QM_graph_mbs_asn_time.png and QM_graph_mbs_asn_prerec.png
+#     for a visual representation of this data.
+time, precision, recall: dataset size,  distance,     parameters,              # iterations
  33 ms,   0.458, 0.329:  4 687 records, Jaro,         mbs = 6,  phi = 0.4, ws = 6.  10 runs
  24 ms,   0.400, 0.471:  4 687 records, Jaro,         mbs = 20, phi = 0.4, ws = 6.  10 runs
  21 ms,   0.374, 0.563:  4 687 records, Jaro,         mbs = 50, phi = 0.4, ws = 6.  10 runs
  19 ms,   0.364, 0.570:  4 687 records, Jaro,         mbs = 80, phi = 0.4, ws = 6.  10 runs
 
+# See QM_graph_size_asn_time.png for a visual representation of this data.
+time, precision, recall: dataset size,  distance,     parameters,              # iterations
  19 ms,       N/A:       1 171 records, Levenshtein,  mbs = 30, phi = 0.2, ws = 2.  10 runs
  33 ms,       N/A:       2 343 records, Levenshtein,  mbs = 30, phi = 0.2, ws = 2.  10 runs
 410 ms,       N/A:      20 000 records, Levenshtein,  mbs = 30, phi = 0.2, ws = 2.  10 runs
@@ -42,17 +55,25 @@ time, precision, recall: dataset size,  distance,     parameters,              #
 Although the ISA algorithm has a good performance, it is rather slow.
 This algorithm works best when comparing complete data of small strings.
 
+# See QM_graph_phi_isa_time.png and QM_graph_phi_isa_prerec.png
+#     for a visual representation of this data.
 time, precision, recall:  dataset size,  distance,     parameters,               # iterations
 1679 ms,  0.311, 0.425:   4 687 records, Jaro,         msl = 3, mbs = 30, phi = 0.2.  10 runs
 1669 ms,  0.374, 0.845:   4 687 records, Jaro,         msl = 3, mbs = 30, phi = 0.3.  10 runs
 1609 ms,  0.324, 0.994:   4 687 records, Jaro,         msl = 3, mbs = 30, phi = 0.4.  10 runs
  >3 min,      -,     -:   4 687 records, Jaro,         msl = 3, mbs = 30, phi = 0.5.  1  runs
 
+# See QM_graph_mbs_isa_time.png and QM_graph_mbs_isa_prerec.png
+#     for a visual representation of this data.
+time, precision, recall:  dataset size,  distance,     parameters,               # iterations
 1631 ms,  0.331, 0.993:   4 687 records, Jaro,         msl = 3, mbs = 6,  phi = 0.4.  10 runs
 1695 ms,  0.329, 0.994:   4 687 records, Jaro,         msl = 3, mbs = 10, phi = 0.4.  10 runs
 1560 ms,  0.328, 0.994:   4 687 records, Jaro,         msl = 3, mbs = 20, phi = 0.4.  10 runs
 1593 ms,  0.322, 0.994:   4 687 records, Jaro,         msl = 3, mbs = 50, phi = 0.4.  10 runs
 
+# See QM_graph_msl_isa_time.png and QM_graph_msl_isa_prerec.png
+#     for a visual representation of this data.
+time, precision, recall:  dataset size,  distance,     parameters,               # iterations
 1616 ms,  0.324, 0.994:   4 687 records, Jaro,         msl = 1, mbs = 30, phi = 0.5.  10 runs
 1565 ms,  0.324, 0.994:   4 687 records, Jaro,         msl = 5, mbs = 30, phi = 0.5.  10 runs
 1386 ms,  0.330, 0.981:   4 687 records, Jaro,         msl = 15,mbs = 30, phi = 0.5.  10 runs
@@ -83,6 +104,8 @@ time, precision, recall:  dataset size,  distance,     parameters,              
       meaning that the creation of possible worlds functions properly. Each match included in a block
       is also included as a match in one of the created possible worlds.
 
+# See QM_graph_lowphi_aer_asn_time.png and QM_graph_lowphi_aer_asn_prerec.png
+#     for a visual representation of this data.
 time,   exp. prec., exp. rec.:  dataset size, distance, parameters,                # iterations
 2588 ms,     0.073,     0.133: 4 687 records, Jaro,     low_phi = 0.08, upp_phi = 0.5.  10 runs
 162 ms,      0.061,     0.313: 4 687 records, Jaro,     low_phi = 0.12, upp_phi = 0.5.  10 runs
@@ -90,6 +113,9 @@ time,   exp. prec., exp. rec.:  dataset size, distance, parameters,             
 117 ms,      0.060,     0.358: 4 687 records, Jaro,     low_phi = 0.20, upp_phi = 0.5.  10 runs
 114 ms,      0.060,     0.358: 4 687 records, Jaro,     low_phi = 0.30, upp_phi = 0.5.  10 runs
 
+# See QM_graph_uppphi_aer_asn_time.png and QM_graph_uppphi_aer_asn_prerec.png
+#     for a visual representation of this data.
+time,   exp. prec., exp. rec.:  dataset size, distance, parameters,                # iterations
 114 ms,      0.060,     0.358: 4 687 records, Jaro,     low_phi = 0.20, upp_phi = 0.22. 10 runs
 114 ms,      0.061,     0.313: 4 687 records, Jaro,     low_phi = 0.20, upp_phi = 0.3.  10 runs
 114 ms,      0.061,     0.302: 4 687 records, Jaro,     low_phi = 0.20, upp_phi = 0.7.  10 runs
