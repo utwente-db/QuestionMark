@@ -1,11 +1,11 @@
 import sys
 
-from connect_db import run_any_query
-from graph_creator import gen_char_bar, gen_time_bar
+from src.connect_db import run_any_query
+from src.graph_creator import gen_char_bar, gen_time_bar
 from parameters import DBMS, QUERIES
 from queries_dubio import DUBIO_QUERIES_DICT
 from queries_maybms import MAYBMS_QUERIES_DICT
-from output_tui import write_metric, write_errors, write_table
+from src.output_tui import write_metric, write_errors, write_table
 
 QUERY_FUNCTIONALITY = {
     'test_1':           'There is likely an error in the database connection, \n' 
@@ -99,6 +99,7 @@ def char_count():
         if DBMS == 'MayBMS':
             if query_name == 'IUD_1_rollback':
                 count -= 9439
+                query_characters[query_name] = query_count - 9439
 
     write_metric('char', count)
     gen_char_bar(query_characters)
@@ -162,13 +163,12 @@ def prob_size():
 
 def digest_errors(errors):
     write_table(errors, [RUNTIME_TOTAL, RUNTIME_PLAN, RUNTIME_EXEC])
-    write_errors(errors, QUERY_FUNCTIONALITY)
+    if errors:
+        write_errors(errors, QUERY_FUNCTIONALITY)
 
 
 def get_metrics():
     char_count()
     error_rate()
     runtime()
-    prob_size()
-    if ERRORS:
-        digest_errors(ERRORS)
+    digest_errors(ERRORS)

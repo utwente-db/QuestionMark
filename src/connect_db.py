@@ -4,7 +4,7 @@ from configparser import ConfigParser
 
 import psycopg2
 
-from output_tui import get_raw_result
+from src.output_tui import get_raw_result
 
 conn_pg = None
 

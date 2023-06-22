@@ -7,7 +7,7 @@ QUERY_TABLE_BREAK = " +-----------------+------+---------+---------------+------
 
 
 def create_result_file():
-    with open('results/QM_query_results.txt', 'w+') as file:
+    with open('./results/QM_query_results.txt', 'w+') as file:
         file.write('\n      # ============================================= #'
                    '\n      # ==============   QuestionMark  ============== #'
                    '\n      # ============================================= #'
@@ -15,16 +15,16 @@ def create_result_file():
                    '\n      # Run on ' + str(DBMS) + '.\n\n'
                    'This file contains the query results and runtimes of this benchmark test.\n'
                    'The query plan and average run time are produced by PostgreSQL EXPLAIN ANALYSE.\n'
-                   'Please see \'benchmark_results_metrics\' for the results of the metrics.')
+                   'Please see \'QM_metrics_results\' for the results of the metrics.')
 
 
 def write_query_type(query_num):
-    with open('results/QM_query_results.txt', 'a') as file:
+    with open('./results/QM_query_results.txt', 'a') as file:
         file.write("\n\n\n# ============== " + query_num + " ============== #")
 
 
 def write_time(planning_time, execution_time, total_time):
-    with open('results/QM_query_results.txt', 'a') as file:
+    with open('./results/QM_query_results.txt', 'a') as file:
         if planning_time:
             file.write("\nAverage planning time over " + str(ITERATIONS) + " iterations:  " + str(planning_time) + " ms.")
         if execution_time:
@@ -33,18 +33,18 @@ def write_time(planning_time, execution_time, total_time):
             file.write("Average total time over " + str(ITERATIONS) + " iterations: " + str(total_time) + " ms.")
 
 
-def write_explain_analyse(cur, result):
-    with open('results/QM_query_results.txt', 'a') as file:
-        file.write('\n' + format_result(cur, result) + '\n')
+def write_explain_analyse(cur, result, query_plan=False):
+    with open('./results/QM_query_results.txt', 'a') as file:
+        file.write('\n' + format_result(cur, result, query_plan) + '\n')
 
 
 def write_error(error):
-    with open('results/QM_query_results.txt', 'a') as file:
+    with open('./results/QM_query_results.txt', 'a') as file:
         file.write('\nThe following error occurred while executing this query:\n' + str(error))
 
 
 def write_query(query):
-    with open('results/QM_query_results.txt', 'a') as file:
+    with open('./results/QM_query_results.txt', 'a') as file:
         if DBMS == 'DuBio':
             file.write('\n' + DUBIO_QUERIES_DICT[query] + '\n')
         elif DBMS == 'MayBMS':
@@ -52,11 +52,11 @@ def write_query(query):
 
 
 def write_results(printable_output):
-    with open('results/QM_query_results.txt', 'a') as file:
+    with open('./results/QM_query_results.txt', 'a') as file:
         file.write(str(printable_output) + '\n')
 
 
-def format_result(cur, result=None):
+def format_result(cur, result=None, query_plan=False):
     if not result:
         result = cur.fetchall()
 
@@ -72,7 +72,10 @@ def format_result(cur, result=None):
 
     index = 0
     for cd in cur.description:
-        max_col_length = min(max(list(map(lambda x: len(str(x[index])), result))), 50)
+        if query_plan:
+            max_col_length = max(list(map(lambda x: len(str(x[index])), result)))
+        else:
+            max_col_length = min(max(list(map(lambda x: len(str(x[index])), result))), 50)
         widths.append(max(max_col_length, len(cd[0])))
         columns.append(cd[0])
         index += 1
@@ -90,7 +93,7 @@ def format_result(cur, result=None):
     for row in result:
         count += 1
         for col in row:
-            if isinstance(col, str) and len(col) > 50:
+            if not query_plan and isinstance(col, str) and len(col) > 50:
                 too_long = True
         if not too_long:
             if count < 20:
@@ -120,7 +123,7 @@ def get_raw_result(cur, result=None):
 
 
 def create_metrics_file():
-    with open('results/QM_metrics_results.txt', 'w+') as file:
+    with open('./results/QM_metrics_results.txt', 'w+') as file:
         file.write(
             '\n      # ============================================= #'
             '\n      # ==============   QuestionMark  ============== #'
@@ -128,17 +131,17 @@ def create_metrics_file():
             '\n      # The metrics file.'
             '\n      # Run on ' + str(DBMS) + '.\n\n'
             ' This file contains the metrics of this benchmark test.\n'
-            ' Please see \'benchmark_results_queries.txt\' for the results and runtimes of the queries.\n\n'
+            ' Please see \'QM_query_results.txt\' for the results and runtimes of the queries.\n\n'
             ' The included metrics produced the following results:\n'
             + METRIC_TABLE_BREAK +
-            ' |        METRIC                                                            +        VALUE            |\n'
+            ' |        METRIC                                                            |        VALUE            |\n'
             + METRIC_TABLE_BREAK)
 
 
 def write_metric(metric, value):
-    with open('results/QM_metrics_results.txt', 'a') as file:
+    with open('./results/QM_metrics_results.txt', 'a') as file:
         if metric == 'char':
-            file.write(' | The total amount of characters needed for all queries:'.ljust(75) + ' | ' +
+            file.write(' | The total number of characters needed for all queries:'.ljust(75) + ' | ' +
                        (str(value) + ' characters').ljust(23) + ' |\n' + METRIC_TABLE_BREAK)
         if metric == 'error':
             file.write(' | The percentage of successful queries is:'.ljust(75) + ' | ' +
@@ -172,7 +175,7 @@ def write_metric(metric, value):
 
 
 def write_table(errors, runtimes):
-    with open('results/QM_metrics_results.txt', 'a') as file:
+    with open('./results/QM_metrics_results.txt', 'a') as file:
         file.write("\n\n # An overview of the queries that finished with their execution time:\n"
                    + QUERY_TABLE_BREAK +
                    " |   QUERY NAME    | Done | Runtime | Planning Time | Execution Time | \n"
@@ -195,7 +198,7 @@ def write_table(errors, runtimes):
 
 
 def write_errors(errors, functionality):
-    with open('results/QM_metrics_results.txt', 'a') as file:
+    with open('./results/QM_metrics_results.txt', 'a') as file:
         file.write("\n\n\n # ==== Overview of errors and possible missing functionality. ==== #\n"
                    " # Based on the errors thrown during benchmark testing, the batabase system might\n"
                    " # lack support for one or more functionalities. Please also verify the actual error\n"

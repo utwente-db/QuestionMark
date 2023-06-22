@@ -5,9 +5,9 @@ from time import time
 
 import psycopg2
 
-from metrics import add_failed, add_runtime
+from src.metrics import add_failed, add_runtime
 from parameters import ITERATIONS, DBMS, SHOW_QUERY_PLAN
-from output_tui import format_result, write_time, write_explain_analyse, write_results, write_query, write_error
+from src.output_tui import format_result, write_time, write_explain_analyse, write_results, write_query, write_error
 from queries_dubio import DUBIO_QUERIES_DICT
 from queries_maybms import MAYBMS_QUERIES_DICT
 
@@ -150,7 +150,7 @@ def explain_analyse(query, cur, query_name):
             run_query("BEGIN;", cur)
         run_query(query, cur)
         result = cur.fetchall()
-        write_explain_analyse(cur, result[0:-2])
+        write_explain_analyse(cur, result[0:-2], query_plan=True)
         if query_name.__contains__('_rollback'):
             run_query("ROLLBACK;", cur)
 

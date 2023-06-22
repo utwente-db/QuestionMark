@@ -25,7 +25,6 @@ def gen_char_bar(query_characters):
 # Generates a bar chart of the runtime per query.
 def gen_time_bar(runtime, planning_time, execution_time):
     if runtime:  # MayBMS returns runtime, DuBio returns planning and execution time.
-        print('runtime', runtime)
         data = []
         labels = []
         for query, time in runtime.items():
