@@ -3,19 +3,18 @@
 # This file is a supplement to the MANUAL.md roadmap. This file contains easy access to the functions #
 # present in this project and follows the steps as explained in the roadmap.                          #
 # =================================================================================================== #
-from dataset_preparation import resize_dataset
-from dataset_preparation import sort_offers
-from dataset_preparation import offer_by_id
-from asn_blocker import asn_blocker
-from asn_blocker import write_blocks_to_file
-from isa_blocker import isa_blocker  # This could be used, but is not recommended.
-from aer_matcher import aer_matcher
-from aer_matcher import write_clusters_to_file
-from database_filler_dubio import transfer_to_dubio
-from database_filler_maybms import transfer_to_maybms
-from gold_standard_dataset import create_dataset
-import blocker_performance
-import matcher_performance
+from src.dataset_preparation import resize_dataset
+from src.dataset_preparation import sort_offers
+from src.dataset_preparation import offer_by_id
+from src.asn_blocker import asn_blocker
+from src.asn_blocker import write_blocks_to_file
+from src.isa_blocker import isa_blocker  # This could be used, but is not recommended.
+from src.aer_matcher import aer_matcher
+from src.aer_matcher import write_clusters_to_file
+from src.database_filler_dubio import transfer_to_dubio
+from src.database_filler_maybms import transfer_to_maybms
+from src.gold_standard_dataset import create_dataset
+from src import matcher_performance, blocker_performance
 from parameters import BLOCK, SMALLER_DATASET, DBMS, PERFORMANCE, MEASURE
 
 if __name__ == '__main__':

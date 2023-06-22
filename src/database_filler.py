@@ -10,7 +10,7 @@ from configparser import ConfigParser
 
 import psycopg2
 
-from offer_distance import get_distance
+from src.offer_distance import get_distance
 from parameters import ATTRIBUTES, WEIGHTS
 
 conn_pg = None

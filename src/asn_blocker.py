@@ -2,9 +2,9 @@ import gzip
 import json
 from math import floor
 
-from window import Window
-from offer_distance import get_distance
+from src.offer_distance import get_distance
 from parameters import PHI, WS, MBS
+from src.window import Window
 
 # Global variables.
 progress_percentage = 0

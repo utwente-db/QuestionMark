@@ -2,7 +2,7 @@ import gzip
 import json
 import collections
 
-from offer_distance import *
+from src.offer_distance import *
 from parameters import MSL, MBS, PHI
 
 

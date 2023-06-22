@@ -1,9 +1,9 @@
 import sys
 import time
 
-from asn_blocker import asn_blocker
-from gold_standard_dataset import get_matches
-from isa_blocker import isa_blocker
+from src.asn_blocker import asn_blocker
+from src.gold_standard_dataset import get_matches
+from src.isa_blocker import isa_blocker
 from parameters import BLOCK, ITERS, DECIMAL_PLACES
 
 

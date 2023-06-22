@@ -3,9 +3,9 @@ import gzip
 import json
 import time
 
-from aer_matcher import aer_matcher
-from database_filler import get_attr_prob
-from gold_standard_dataset import get_matches
+from src.aer_matcher import aer_matcher
+from src.database_filler import get_attr_prob
+from src.gold_standard_dataset import get_matches
 from parameters import ITERS, DECIMAL_PLACES
 
 
@@ -38,7 +38,7 @@ def get_all_matches(clusters):
 def get_probabilistic_matches(world_graph_clusters, certain_clusters):
     all_matches = {}
 
-    with gzip.open('datasets/offers_gs_byID.json.gz', 'r') as id_file:
+    with gzip.open('./datasets/offers_gs_byID.json.gz', 'r') as id_file:
         offers = json.loads(id_file.read())
 
     for world_graph_cluster in world_graph_clusters:

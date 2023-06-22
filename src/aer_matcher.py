@@ -5,9 +5,9 @@ import json
 import pickle
 from math import floor
 
-from offer_distance import get_distance
+from src.offer_distance import get_distance
 from parameters import ATTRIBUTES, WEIGHTS, LOWER_PHI, UPPER_PHI
-from world_graph import WorldGraph
+from src.world_graph import WorldGraph
 
 progress_percentage = 0
 
@@ -44,10 +44,10 @@ def aer_matcher(blocks_file, performance=False):  # Use different byID file for 
     # Get all offer information from file. Type of offers: {offer_id: {'title': ..., 'id': ..., ...}, ...}
     print(' Reading offers by ID file...')
     if performance:
-        with gzip.open('datasets/offers_gs_byID.json.gz', 'r') as id_file:
+        with gzip.open('./datasets/offers_gs_byID.json.gz', 'r') as id_file:
             offers = json.loads(id_file.read())
     else:
-        with gzip.open('datasets/offers_corpus_byID.json.gz', 'r') as id_file:
+        with gzip.open('./datasets/offers_corpus_byID.json.gz', 'r') as id_file:
             offers = json.loads(id_file.read())
 
     # Generate comparison vector. Type of block_matches: [{(offer_id_1, offer_id_2): [dist_float, ...], ...}, {...}]
