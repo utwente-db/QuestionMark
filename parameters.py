@@ -1,5 +1,16 @@
 # This file contains all parameters that can be changed to tweak the behaviour of the benchmark.
 
+# # ================
+# # OTHER PARAMETERS
+# # ================
+
+# If true, a simple query will be run to test the connection to the database.
+TEST = False
+
+# If true, the query plan of each query is also provided with the benchmark results.
+SHOW_QUERY_PLAN = True
+
+
 # # ==========================
 # # DATABASE MANAGEMENT SYSTEM
 # # ==========================
@@ -19,17 +30,6 @@ ITERATIONS = 5
 # The maximum time a query may run before it is aborted. Increase drastically to enforce 'no' timeout.
 # Not yet in use.
 TIMEOUT = 60
-
-
-# # ================
-# # OTHER PARAMETERS
-# # ================
-
-# If true, the query plan of each query is also provided with the benchmark results.
-SHOW_QUERY_PLAN = True
-
-# If true, a simple query will be run to test the connection to the database.
-TEST = False
 
 
 # # =======

@@ -12,18 +12,18 @@ Please follow the rules as provided by the CC license.
 prepare the dataset that is to be used for this benchmark.
 
 ## 2 - Prepare the benchmark
-- Set up a functioning database connection to the probabilistic database management system of choice. 
+- Make sure the database management system of choice is running and is accepting connections. 
 - Create a file called ```database.ini``` and fill in the credentials following the structure of ```database.ini.tmpl```.
-Open ```parameters.py``` and change the present parameters to the desired values. The file provides information on what the parameters are used for. 
-Also take a good look at what queries you want to include in the benchmark execution. For a clear image, it is advised to run the queries and update statements over separate benchmark runs.
-- In case you want to test the connection, set ```TEST``` to True, Go to ```manual.py``` and run ```run_benchmark```. When the connection is working, remember to set ```TEST``` back to False.
+- Open ```parameters.py``` and change the present parameters to the desired values. The file provides information on what the parameters are used for. 
+Also take a good look at what queries you want to include in the benchmark execution. For a clearer result, it is advised to run the queries and update statements over separate benchmark runs.
+- In case you want to test the connection, go to ```parameters.py``` and set ```TEST``` to True, Go to ```manual.py``` and run the script. When the connection is working, remember to set ```TEST``` back to False.
 
 ## 3 - Run the benchmark
-- Go to ```manual.py``` and run ```run_benchmark```.
+- Go to ```manual.py``` and run the script.
 
 ## 4 - Reading the results
-- _The benchmark produces two result sheets: ```QuestionMark_metrics_results.txt``` and ```QuestionMark_query_results.txt```. The first file contains all information on the metric data collected. The second file provides an overview of all the query results and runtimes._
-- The manual of QuestionMark: The Probabilistic Benchmark provides clear instructions on how to interpret the results. You can find this manual in the results folder.
+- _The benchmark produces two result sheets: ```QM_metrics_results.txt``` and ```QM_query_results.txt```. The first file contains all information on the metric data collected. The second file provides an overview of all the query results and runtimes._
+- The manual of QuestionMark: The Probabilistic Benchmark provides clear instructions on how to interpret the results. You can find this manual in the ```results``` folder.
 - You have now finished the benchmarking procedure!
 
 ## Including a new DBMS.

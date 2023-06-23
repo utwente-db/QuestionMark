@@ -6,8 +6,12 @@ from src.metrics import get_metrics, prob_size
 
 def test_connection():
     connect_pg(configname='database.ini')
-    execute_query('test_1')
-    print('\nIf no error is shown, the connection is working! :)')
+    error = execute_query('test_1', test=True)
+    if error:
+        print('\n The connection is not working :('
+              '\n See the error above for more information.')
+    else:
+        print('\n The connection is working! :)')
     close_pg()
 
 

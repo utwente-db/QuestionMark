@@ -1,7 +1,5 @@
 import sys
-import traceback
 from configparser import ConfigParser
-from time import time
 
 import psycopg2
 
@@ -78,7 +76,7 @@ def run_query(query, cur):
     cur.execute(query)
 
 
-def execute_query(query_name):
+def execute_query(query_name, test=False):
     if DBMS == 'MayBMS':
         query_dict = MAYBMS_QUERIES_DICT
     elif DBMS == 'DuBio':
@@ -109,13 +107,15 @@ def execute_query(query_name):
         cur.close()
 
     except (Exception, psycopg2.DatabaseError) as error:
-        print('Error from execute_query() on ' + str(query_name) + ': ' + str(error))  # traceback.print_exc()
         add_failed(error, query_name)
         add_runtime(query_name, 0, 0, 0)
         write_error(error)
         if conn_pg is not None:
             close_pg()
             connect_pg()
+        if test:
+            print(str(error))
+            return error
 
 
 def explain_analyse(query, cur, query_name):
