@@ -58,10 +58,10 @@ if __name__ == '__main__':
         else:
             raise Exception(" Please choose a valid value of DBMS in parameters.py")
 
-        print('\n +---------------------------------------------------------------------------------+'
-              '\n | Hurray! The dataset generation is finished!                                     |'
-              '\n | Go to QuestionMark: The Dataset Generator to continue the benchmarking process. |'
-              '\n +---------------------------------------------------------------------------------+')
+        print('\n +---------------------------------------------------------------------------------------+'
+              '\n | Hurray! The dataset generation is finished!                                           |'
+              '\n | Go to QuestionMark: The Probabilistic Benchmark to continue the benchmarking process. |'
+              '\n +---------------------------------------------------------------------------------------+')
 
     else:
         # # ====== PERFORMANCE MEASURES =================================================================== #

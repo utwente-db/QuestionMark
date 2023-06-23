@@ -14,9 +14,9 @@ Please follow the rules as provided by the CC license.
 - Optional: Download the samples to get an impression of the dataset structure.
 
 ## 2 - Preparing and running the dataset generator
-- Open ```parameters.py``` and change the present parameters to the desired values. The file provides information on what the parameters are used for. Please check ```performance.txt``` to get an impression of how changing the parameters changes the performance.
+- Open ```parameters.py``` and change the present parameters to the desired values. The file provides information on what the parameters are used for. Please check ```performance/performance.txt``` to get an impression of how changing the parameters changes the performance.
 - Create a file called ```database.ini``` and fill in the credentials following the structure of ```database.ini.tmpl```.
-- Set up a functioning database connection to the probabilistic database management system of choice. 
+- Make sure the database management system of choice is running and is accepting connections.
 - In case a new probabilistic DBMS will be benchmarked, please see the instructions on the bottom of this manual.
 - Go to ```manual.py``` and run the script.
 
