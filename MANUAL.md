@@ -7,20 +7,23 @@ _Explanation is displayed in italics_.
 Note that you are allowed to make changes to this program. 
 Please follow the rules as provided by the CC license.
 
-## 1 - Downloading the WDC datasets
+## 1 - Prepare for benchmarking
+- In case this program is new to you, read the extensive manual provided with this benchmark carefully. This manual can be found as ```manual.pdf```
+
+## 2 - Downloading the WDC datasets
 - Create an empty folder ```datasets``` in the main project repo.
 - Go to the [WDC website](https://webdatacommons.org/largescaleproductcorpus/v2/index.html) and scroll to the bottom of the page.
 - Download ```offers_corpus_english_v2.json.gz``` and include this in the newly created datasets folder. Do not unzip this file.
 - Optional: Download the samples to get an impression of the dataset structure.
 
-## 2 - Preparing and running the dataset generator
+## 3 - Preparing and running the dataset generator
 - Open ```parameters.py``` and change the present parameters to the desired values. The file provides information on what the parameters are used for. Please check ```performance/performance.txt``` to get an impression of how changing the parameters changes the performance.
 - Create a file called ```database.ini``` and fill in the credentials following the structure of ```database.ini.tmpl```.
 - Make sure the database management system of choice is running and is accepting connections.
 - In case a new probabilistic DBMS will be benchmarked, please see the instructions on the bottom of this manual.
 - Go to ```manual.py``` and run the script.
 
-## 3 - Continue with benchmarking
+## 4 - Continue with benchmarking
 - You now have your dataset prepared! You can continue with the benchmarking. Go to [QuestionMark: The Probabilistic Benchmark](https://gitlab.utwente.nl/s1981951/probabilistic-benchmark) and follow the indicated steps.
 - You can also decide to measure the performance of QuestionMark: The Dataset Generator. In that case, please read the instructions below.
 

@@ -138,7 +138,7 @@ def get_bdd_certain(offers, cluster, cluster_id):
             bdds.append(bdd)
             prob = str(math.floor(attribute_probabilities[i] * 100000) / 100000)  # To floor to 5 decimal places.
             add = a + ':' + prob + ';'  # Otherwise when sum(prob) > 1
-            bulk_dict_query += add  # DuBio might crash.
+            bulk_dict_query += add
 
     return bdds
 
@@ -205,21 +205,20 @@ def transfer_to_dubio(prob_cluster_file, cert_cluster_file):
     print(' reading offers by ID file...\n')
     with gzip.open('./datasets/offers_corpus_byID.json.gz', 'r') as id_file:
         offers = json.loads(id_file.read())
+
     records = []  # Each record becomes a row in the database.
     sentences = {}  # To store and build complex sentences per record before insert.
-    cluster_id_start = 1
-    cluster_id_end = 1
-
+    cluster_id = 0
     count = 0
     for prob_cluster in prob_clusters:  # type prob_cluster:  [ [offers], [(possible_world), ...], [probabilities] ]
         count += 1
+        cluster_id += 1
         print_progress(count, len(prob_clusters), 'cluster')
-        cluster_id = cluster_id_start
         possible_world_number = 0
         for possible_world in prob_cluster[1]:  # type possible_world: ([offer_id, offer_id], ...)
             possible_world_number += 1
             cluster = []
-            for products in possible_world:  # only clustered offers are presented.
+            for products in possible_world:  # only clustered offers are present.
                 for offer in products:
                     if offer not in cluster:
                         cluster.append(offer)
@@ -230,7 +229,7 @@ def transfer_to_dubio(prob_cluster_file, cert_cluster_file):
                 if offer not in cluster:
                     individual_offers.append(offer)
 
-            bdds = get_bdd_possible(offers, cluster, cluster_id_start, prob_cluster[2], possible_world_number)
+            bdds = get_bdd_possible(offers, cluster, cluster_id, prob_cluster[2], possible_world_number)
             for i in range(len(cluster)):
                 if cluster[i] not in sentences:
                     sentences[cluster[i]] = []
@@ -244,11 +243,6 @@ def transfer_to_dubio(prob_cluster_file, cert_cluster_file):
                     sentences[individual_offers[i]] = []
                 sentences[individual_offers[i]].append(bdd[0])
 
-            if cluster_id > cluster_id_end:
-                cluster_id_end = cluster_id
-
-            cluster_id = cluster_id_start
-
         for offer, sentence in sentences.items():
             record = create_record_dubio(offers, offer, cluster_id, sentence)
             records.append(record)
@@ -257,12 +251,10 @@ def transfer_to_dubio(prob_cluster_file, cert_cluster_file):
 
         sentences.clear()
 
-        cluster_id_start = cluster_id_end + 1
-
     print(' 100 % done with processing probabilistic clusters.')
 
     # Continue with the certain clusters.
-    cluster_id = cluster_id_end + 1
+    cluster_id += 1
     cluster_count = 0
     print("\n Processing certain clusters for DuBio \n")
     for cluster in cert_clusters:
@@ -275,6 +267,9 @@ def transfer_to_dubio(prob_cluster_file, cert_cluster_file):
         if cluster_count >= 200:
             bulk_insert_dubio('dict')
             cluster_count = 0
+
+    # commit the remaining sentences
+    bulk_insert_dubio('dict')
 
     global progress_percentage
     progress_percentage = 0
