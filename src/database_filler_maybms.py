@@ -228,7 +228,7 @@ def transfer_to_maybms(prob_cluster_file, cert_cluster_file):
     execute_query(query)
     print(' 100 % done.')
 
-    print(' Running preparatory queries...')
+    print('\n Running preparatory queries...')
     run_preparatory_queries()
 
     close_pg()  # Close connection
