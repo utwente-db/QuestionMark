@@ -63,10 +63,10 @@ DUBIO_QUERIES_DICT = {
 
     # Get the average probability of the dataset.
     'insight_6': """ 
-    SELECT timeout, AVG(probability) AS certainty_of_the_dataset
+    SELECT AVG(probability) AS certainty_of_the_dataset
     FROM (
         SELECT round(prob(d.dict, o._sentence)::NUMERIC, 4) AS probability
-        FROM part o, _dict d
+        FROM offers o, _dict d
         WHERE d.name = 'mydict'
     ) AS probabilities;
     """,
@@ -78,7 +78,7 @@ DUBIO_QUERIES_DICT = {
     # Get offers with the probability of their occurrence.
     'probabilistic_1': """
     SELECT round(prob(d.dict, o._sentence)::NUMERIC, 4) AS probability, o.*
-    FROM part o, _dict d
+    FROM offers o, _dict d
     WHERE d.name = 'mydict'
     ORDER BY probability DESC;
     """,
@@ -86,7 +86,7 @@ DUBIO_QUERIES_DICT = {
     # Gets the expected count of the categories.
     'probabilistic_2': """
     SELECT category, SUM(prob(d.dict, o._sentence)) AS expected_count
-    FROM part o, _dict d
+    FROM offers o, _dict d
     WHERE d.name = 'mydict'
     GROUP BY category
     ORDER BY expected_count DESC;
@@ -95,47 +95,47 @@ DUBIO_QUERIES_DICT = {
     # Gets the expected sum of the product ids per cluster
     'probabilistic_3': """
     SELECT cluster_id, ROUND(SUM(id * prob(d.dict, o._sentence))::NUMERIC, 2) AS expected_sum, COUNT(id) AS number_of_offers
-    FROM part o, _dict d
+    FROM offers o, _dict d
     WHERE d.name = 'mydict'
     GROUP BY cluster_id
-    ORDER BY number_of_offers;
+    ORDER BY number_of_offers DESC;
     """,
 
     # Gets the sentence and probability for the categories
     'probabilistic_4': """
     WITH category_sentence AS (
-        SELECT timeout, category, AGG_OR(_sentence) AS sentence
-        FROM part
+        SELECT category, AGG_OR(_sentence) AS sentence
+        FROM offers
         GROUP BY category
     )
     SELECT cs.*, round(prob(d.dict, cs.sentence)::NUMERIC, 4) AS probability
     FROM category_sentence cs, _dict d
     WHERE d.name = 'mydict'
-    ORDER BY probability DESC;
+    ORDER BY probability ASC;
     """,
 
-    # Search Ford of web shop, where most probable product should be returned
+    # Search 'card' on web shop, where most probable product should be returned
     'probabilistic_5': """ 
     SELECT o.id, o.cluster_id, o.brand, o.category, o.identifiers, round(prob(d.dict, _sentence)::NUMERIC, 4) AS probability
-    FROM part o, _dict d
+    FROM offers o, _dict d
     WHERE cluster_id IN (
         SELECT cluster_id
-        FROM part 
-        WHERE title LIKE '%ford%' 
-        OR description LIKE '%ford%'
+        FROM offers 
+        WHERE title LIKE '%card%' 
+        OR description LIKE '%card%'
     ) 
     ORDER BY probability DESC 
     LIMIT 1;
     """,
 
-    # Returns all offers with high uncertainty for human check
+    # Returns all 'card'-offers with high uncertainty for human check
     'probabilistic_6': """
     SELECT o.*
-    FROM part o, _dict d  
-    WHERE title LIKE '%ford%' 
-	OR description LIKE '%ford%' 
-    AND prob(d.dict, _sentence) > 0.40
-    AND prob(d.dict, _sentence) < 0.60;
+    FROM offers o, _dict d  
+    WHERE title LIKE '%card%' 
+	OR description LIKE '%card%' 
+    AND prob(d.dict, _sentence) > 0.45
+    AND prob(d.dict, _sentence) < 0.55;
     """,
 
     # ====== INSERT, UPDATE, DELETE ================================================================= #
@@ -164,12 +164,11 @@ DUBIO_QUERIES_DICT = {
 
     'IUD_3_rollback': """
     UPDATE _dict
-    SET dict = upd(dict, 'a10x1=0:0.3992, a10x1=1:6008, a10x2=0:0.5, a10x2=1:0.5, a10x3=0:0.1254, a10x3=1:0.4746, a10x3=2:0.400, a12x1=0:0.5700, a12x2=0:0.4300, w10=1:0.345, w10=2:0.055, w10=3:0.60, w11=1:0.487, w11=2:0.329, w11=3:0.184') 
+    SET dict = upd(dict, 'a7x1=0:0.3992, a7x1=1:0.6008, a7x2=0:0.500, a7x2=1:0.500, a7x4=0:0.1254, a7x4=1:0.4746, a7x4=2:0.400, a7x5=0:0.5700, a7x5=1:0.4300, w7=1:0.345, w7=2:0.055, w7=3:0.600, w8=1:0.487, w8=2:0.329, w8=3:0.184') 
     WHERE name='mydict';
     """,
 
     'IUD_4_rollback': """
-            -- Creates a new cluster and puts offer 12071001 in it.
     WITH max_cluster AS (
         SELECT (max(cluster_id) + 1) AS max_id
         FROM offers
@@ -178,9 +177,8 @@ DUBIO_QUERIES_DICT = {
     SET cluster_id = max_cluster.max_id,
         _sentence = Bdd('1')
     FROM max_cluster
-    WHERE id = 12071001;
+    WHERE id = 2689021;
     
-            -- Creates a new cluster and puts offer 16457529 in it.
     WITH max_cluster AS (
         SELECT max(cluster_id) + 1 AS max_id
         FROM offers
@@ -189,18 +187,16 @@ DUBIO_QUERIES_DICT = {
     SET cluster_id = max_cluster.max_id,
         _sentence = Bdd('1')
     FROM max_cluster
-    WHERE id = 16457529;
+    WHERE id = 7257664;
     
-            -- Alters the sentence of the remaining offers in the cluster
     UPDATE offers 
     SET _sentence = Bdd('a162x5=0&w162=0')
-    WHERE id = 7339350;
+    WHERE id = 10198975;
     
     UPDATE offers 
     SET _sentence = Bdd('a162x5=1&w162=0')
-    WHERE id = 12326926;
+    WHERE id = 2668263;
     
-            -- Changes the corresponding dictionary values. DuBio updates / normalizes probabilities automatically.
     UPDATE _dict
     SET dict = add(dict, 'w162=0:0.83')
     WHERE name='mydict';
