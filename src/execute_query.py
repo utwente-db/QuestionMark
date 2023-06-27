@@ -2,6 +2,8 @@ import sys
 from configparser import ConfigParser
 
 import psycopg2
+from threading import Thread
+import functools
 
 from src.metrics import add_failed, add_runtime
 from parameters import ITERATIONS, DBMS, SHOW_QUERY_PLAN
@@ -170,13 +172,39 @@ def explain_analyse_each(query, cur, query_name):
         explain_analyse_each(rest, cur, query_name)
 
 
-# Based on https://stackoverflow.com/questions/25027122/break-the-function-after-certain-time
+# Based on https://stackoverflow.com/questions/21827874/timeout-a-function-windows
 # Ensures that the benchmark will not get stuck in a query that lasts forever.
-class TimeoutException(Exception):
-    pass
+def timeout(seconds_before_timeout):
+    def deco(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            res = [Exception('function [%s] timeout [%s seconds] exceeded!' % (func.__name__, seconds_before_timeout))]
 
-
-def timeout_handler(signum, frame):
-    raise TimeoutException
-
-
+            def new_func():
+                try:
+                    res[0] = func(*args, **kwargs)
+                except Exception as err:
+                    res[0] = err
+            t = Thread(target=new_func)
+            t.daemon = True
+            try:
+                t.start()
+                t.join(seconds_before_timeout)
+            except Exception as error:
+                print('error starting thread')
+                raise error
+            ret = res[0]
+            if isinstance(ret, BaseException):
+                write_error(ret)
+                print(' The current running query has timed out. \n There is currently no way to kill the '
+                      'running query without waiting for it to finish, so the entire connection is closed. \n '
+                      'Apologies for the inconvenience. \n\n If the timeout does still occur when running the '
+                      'query on the part table, \n query for the column called timeout to indicate that the query '
+                      'timed out.')
+                if conn_pg is not None:
+                    # close_pg()
+                    # connect_pg()
+                    exit()
+            return ret
+        return wrapper
+    return deco

@@ -6,9 +6,10 @@ _Explanation is displayed in italics_.
 Note that you are allowed to make changes to this program. 
 Please follow the rules as provided by the CC license.
 
-## 1 - Prepare the dataset
+## 1 - Prepare for benchmarking
+- In case this program is new to you, read the extensive manual provided with this benchmark carefully. This manual can be found as ```manual.pdf```
 - In case no dataset has been prepared yet, go to 
-[QuestionMark: The Dataset Generator](https://gitlab.utwente.nl/s1981951/prob-matcher) and follow the manual to 
+[QuestionMark: The Dataset Generator](https://gitlab.utwente.nl/s1981951/prob-matcher) and follow its ```manual.md``` to 
 prepare the dataset that is to be used for this benchmark.
 
 ## 2 - Prepare the benchmark

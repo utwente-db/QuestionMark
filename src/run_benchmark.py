@@ -1,7 +1,7 @@
-from src.execute_query import connect_pg, close_pg, execute_query
-from parameters import QUERIES
+from src.execute_query import connect_pg, close_pg, execute_query, timeout
+from parameters import QUERIES, TIMEOUT
 from src.output_tui import create_result_file, create_metrics_file, write_query_type
-from src.metrics import get_metrics, prob_size
+from src.metrics import get_metrics, prob_size, add_failed
 
 
 def test_connection():
@@ -24,7 +24,14 @@ def run_benchmark():
         connect_pg(configname='database.ini')
         count += 1
         write_query_type(query)
-        execute_query(query)
+        if TIMEOUT == -1:  # no timeout will take place.
+            execute_query(query)
+        else:
+            func = timeout(TIMEOUT)(execute_query)
+            try:
+                func(query)
+            except TimeoutError as error:
+                add_failed(error, 'RUNTIME')
         print(query + " finished. Currently " + str(count) + " out of " + str(len(QUERIES)) + " queries done.")
         close_pg()
 

@@ -16,8 +16,8 @@ SHOW_QUERY_PLAN = True
 # # ==========================
 
 # # Don't forget to change the database.ini as well!
-# DBMS = 'MayBMS'
-DBMS = 'DuBio'
+DBMS = 'MayBMS'
+# DBMS = 'DuBio'
 
 
 # # =============
@@ -27,8 +27,9 @@ DBMS = 'DuBio'
 # The number of times a query is run to obtain the average run time.
 ITERATIONS = 5
 
-# The maximum time a query may run before it is aborted. Increase drastically to enforce 'no' timeout.
-# Not yet in use.
+# The maximum number of seconds a query may run before it is aborted.
+# Set to -1 to benchmark without time out.
+# Temporary solution. When a timeout occurs, the benchmark run is aborted.
 TIMEOUT = 60
 
 
@@ -60,9 +61,9 @@ QUERIES = [
 
     'probabilistic_4',  # Gets the sentence and probability per category.
 
-    'probabilistic_5',   # Returns the most probable offer that is related to 'ford'.
+    'probabilistic_5',   # Returns the most probable offer that is related to 'card'.
 
-    'probabilistic_6',  # Returns all offers containing 'Ford' with a high uncertainty so they can be classified by human inspection.
+    'probabilistic_6',  # Returns all offers containing 'card' with a high uncertainty so they can be classified by human inspection.
 
     'IUD_1_rollback',   # Inserting a single row.
 
@@ -72,10 +73,7 @@ QUERIES = [
 
     'IUD_4_rollback',   # Removes uncertainty.
 
-    'IUD_5_rollback',   # Deletes a cluster.
-
-    # Run query below only with MayBMS!
-    # 'IUD_repairkey',  # Repairs the probability space after an IUD query. Still crashes.
+    'IUD_5_rollback'   # Deletes a cluster.
 ]
 
 
