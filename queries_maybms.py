@@ -67,7 +67,7 @@ MAYBMS_QUERIES_DICT = {
 
     # Get the average probability of the dataset.
     'insight_6': """ 
-    SELECT AVG(tconf()) * 100 AS certainty_of_the_dataset
+    SELECT round((AVG(tconf()) * 100)::NUMERIC, 4) AS certainty_of_the_dataset
     FROM offers;
     """,
 
@@ -77,9 +77,8 @@ MAYBMS_QUERIES_DICT = {
 
     # Get offers with the probability of their occurrence.
     'probabilistic_1': """
-    SELECT round(conf()::NUMERIC, 4) AS probability, *
+    SELECT round(tconf()::decimal, 4) AS probability, *
     FROM offers
-    GROUP BY id
     ORDER BY probability DESC;
     """,
 
@@ -114,8 +113,8 @@ MAYBMS_QUERIES_DICT = {
     WHERE cluster_id IN (
         SELECT cluster_id
         FROM offers_setup 
-        WHERE title LIKE '%ford%' 
-        OR description LIKE '%ford%'
+        WHERE title LIKE '%card%' 
+        OR description LIKE '%card%'
     ) 
     ORDER BY probability DESC 
     LIMIT 1;
@@ -125,10 +124,10 @@ MAYBMS_QUERIES_DICT = {
     'probabilistic_6': """
     SELECT id, cluster_id, brand, category, identifiers
     FROM offers
-    WHERE title LIKE '%ford%' 
-    OR description LIKE '%ford%'
-    AND tconf() > 0.40
-    AND tconf() < 0.60;
+    WHERE title LIKE '%card%' 
+    OR description LIKE '%card%'
+    AND tconf() > 0.45
+    AND tconf() < 0.55;
     """,
 
 
@@ -142,11 +141,37 @@ MAYBMS_QUERIES_DICT = {
               (-468, 77, 'hp pavilion dv6 3310st klavye i kl 321447 zc 2321 dataservis net', 'None', 'Computers_and_Accessories', 'y zde y z uyum garant s detaylari n tiklayiniz 100 uyum garant s y zde y z uyum garant s ncelemekte oldu unuz r nde kopyala yap t r y ntemiyle hayali r n olu turan yap lardan korunmak amac yla temsili resim kullan lm t r yay nlad m z t m uyumluluk bilgileri uzman r n y neticilerimiz taraf ndan yap lan test ve kontroller neticesinde elde edilmekte ve uyum garantisi sa land ktan sonra yay na sunulmaktad r bu r n belirtilen model par a kodu ve r n a klamalar er evesinde cihaz n zla y zde y z uyumludur stisnai durumlarda uyumsuzlu un ispatlanmas ko uluyla hatal uyumsuz r n n geri g nderilmesi ve do ru r n n sevk edilmesiyle ilgili t m kargo giderleri firmam za aittir geri g nderimin anla mal oldu umuz kargo firmas ile yap lmas gerekmektedir durumu yeni r n dil q t rk e renk siyah notlar led ayd nlatmal', 'None', '[{/sku: [321447zc2321]}]', '{r n kodu: 321447 zc 2321 fiyat: 14 95 usd kdv 58 99 tl kdv garanti: 12 ay stok: yok panlanan geli tarihi: 22 12 2017 planlanan geli tarihi nceden bildirilmeksizin de i tirilebilir}', 'r n kodu 321447 zc 2321 fiyat 14 95 usd kdv 58 99 tl kdv kdv dahil 17 64 usd 69 61 tl garanti 12 ay stok yok planlanan geli tarihi 22 12 2017 planlanan geli tarihi nceden bildirilmeksizin de i tirilebilir', 0.32635, 0.629),
               (-469, 77, 'hp pavilion dv7 4107eg lcd ekran 114991 sb 8937 dataservis net', 'None', 'Computers_and_Accessories', 'y zde y z uyum garant s detaylari n tiklayiniz 100 uyum garant s y zde y z uyum garant s ncelemekte oldu unuz r nde kopyala yap t r y ntemiyle hayali r n olu turan yap lardan korunmak amac yla temsili resim kullan lm t r yay nlad m z t m uyumluluk bilgileri uzman r n y neticilerimiz taraf ndan yap lan test ve kontroller neticesinde elde edilmekte ve uyum garantisi sa land ktan sonra yay na sunulmaktad r bu r n belirtilen model par a kodu ve r n a klamalar er evesinde cihaz n zla y zde y z uyumludur stisnai durumlarda uyumsuzlu un ispatlanmas ko uluyla hatal uyumsuz r n n geri g nderilmesi ve do ru r n n sevk edilmesiyle ilgili t m kargo giderleri firmam za aittir geri g nderimin anla mal oldu umuz kargo firmas ile yap lmas gerekmektedir durumu yeni r n boyut 17 3 z n rl k wxga piksel 1600 x 900 y zey parlak ayd nlatma led notlar', 'None', '[{/sku: [114991sb8937]}]', '{bulundu u depolar stok merkez: merkez outlet: kadik y 0 216 550 71 42: r n kodu: 114991 sb 8937 fiyat: 61 48 usd kdv 242 60 tl kdv garanti: 12 ay: stok: var}', 'bulundu u depolar stok merkez merkez outlet kadik y 0 216 550 71 42 g ncellenme 23 11 2017 05 02 08 r n kodu 114991 sb 8937 fiyat 61 48 usd kdv 242 60 tl kdv kdv dahil 72 55 usd 286 27 tl garanti 12 ay stok var', 0.5, 0.125),
               (-471, 77, 'hp photosmart 7850 cartridges for ink jet printers quill com', 'None', 'Office_Products', 'yields up to 175 pageshp 93 cartridge is not compatible with hp officejet 6310 all in one printer hp officejet 6310v all in one hp officejet 6310xi all in onefade resistant color provides superior results and brilliant true to life images that last for generations', 'None', '[{/productID: [901c9361wn]}]', 'None', 'None', 0.24454, 0.629); 
+    
+    DROP TABLE IF EXISTS offers_rk_world CASCADE; 
+    DROP TABLE IF EXISTS offers_rk_attrs CASCADE; 
+    DROP TABLE IF EXISTS offers CASCADE; 
+    
+    CREATE TABLE offers_rk_world AS REPAIR KEY cluster_id IN offers_setup WEIGHT BY world_prob;
+    CREATE TABLE offers_rk_attrs AS REPAIR KEY id IN offers_setup WEIGHT BY attribute_prob;
+    
+    CREATE TABLE offers AS (
+        SELECT attrs.* 
+        FROM offers_rk_attrs AS attrs, offers_rk_world AS world
+        WHERE attrs.id = world.id 
+    );
     """,
 
     'IUD_2_rollback': """
     INSERT INTO offers_setup (id, cluster_id, title, brand, category, description, price, identifiers, keyvaluepairs, spectablecontent, world_prob, attribute_prob)
-    SELECT * FROM bulk_insert;	
+    SELECT * FROM bulk_insert;
+    
+    DROP TABLE IF EXISTS offers_rk_world CASCADE; 
+    DROP TABLE IF EXISTS offers_rk_attrs CASCADE; 
+    DROP TABLE IF EXISTS offers CASCADE; 
+    
+    CREATE TABLE offers_rk_world AS REPAIR KEY cluster_id IN offers_setup WEIGHT BY world_prob;
+    CREATE TABLE offers_rk_attrs AS REPAIR KEY id IN offers_setup WEIGHT BY attribute_prob;
+    
+    CREATE TABLE offers AS (
+        SELECT attrs.* 
+        FROM offers_rk_attrs AS attrs, offers_rk_world AS world
+        WHERE attrs.id = world.id 
+    );	
     """,
 
     'IUD_3_rollback': """
@@ -221,6 +246,19 @@ MAYBMS_QUERIES_DICT = {
     SET world_prob = 0.184
     WHERE _d0 = 615197
     and _d1 = 613039;
+    
+    DROP TABLE IF EXISTS offers_rk_world CASCADE; 
+    DROP TABLE IF EXISTS offers_rk_attrs CASCADE; 
+    DROP TABLE IF EXISTS offers CASCADE; 
+    
+    CREATE TABLE offers_rk_world AS REPAIR KEY cluster_id IN offers_setup WEIGHT BY world_prob;
+    CREATE TABLE offers_rk_attrs AS REPAIR KEY id IN offers_setup WEIGHT BY attribute_prob;
+    
+    CREATE TABLE offers AS (
+        SELECT attrs.* 
+        FROM offers_rk_attrs AS attrs, offers_rk_world AS world
+        WHERE attrs.id = world.id 
+    );
     """,
 
     'IUD_4_rollback': """
@@ -253,14 +291,25 @@ MAYBMS_QUERIES_DICT = {
     SET world_prob = 0.63,
         attribute_prob = 0.5
     WHERE id = 12326926; 
+    
+    DROP TABLE IF EXISTS offers_rk_world CASCADE; 
+    DROP TABLE IF EXISTS offers_rk_attrs CASCADE; 
+    DROP TABLE IF EXISTS offers CASCADE; 
+    
+    CREATE TABLE offers_rk_world AS REPAIR KEY cluster_id IN offers_setup WEIGHT BY world_prob;
+    CREATE TABLE offers_rk_attrs AS REPAIR KEY id IN offers_setup WEIGHT BY attribute_prob;
+    
+    CREATE TABLE offers AS (
+        SELECT attrs.* 
+        FROM offers_rk_attrs AS attrs, offers_rk_world AS world
+        WHERE attrs.id = world.id 
+    );
     """,
 
     'IUD_5_rollback': """
     DELETE FROM offers_setup 
     WHERE cluster_id = 41;  
-    """,
-
-    'IUD_repairkey': """  
+    
     DROP TABLE IF EXISTS offers_rk_world CASCADE; 
     DROP TABLE IF EXISTS offers_rk_attrs CASCADE; 
     DROP TABLE IF EXISTS offers CASCADE; 

@@ -24,8 +24,8 @@ probabilistic_1:    Gets offers with the probability of their occurrence.
 probabilistic_2:    Gets the expected count of the categories.
 probabilistic_3:    Gets the expected sum of the product ids per cluster.
 probabilistic_4:    Gets the sentence and probability per category.
-probabilistic_5:    Returns the most probable offer that is related to 'ford'.
-probabilistic_6:    Returns all offers containing 'Ford' with a high uncertainty so they can be classified by human inspection.
+probabilistic_5:    Returns the most probable offer that is related to a specified string.
+probabilistic_6:    Returns all offers containing a specified string with a high uncertainty so these can be classified by human inspection.
 
 insert_update_delete_1:    Inserting a single row.
 insert_update_delete_2:    Inserting bulk.
@@ -38,159 +38,222 @@ insert_update_delete_5:    Deletes a cluster.
 # ====== TEST THE CONNECTION ====================================================================== #
 
 # == TEST 1 == #
-    select attribute 'id'
-    from entity 'offers'
-    return the first 20 records;
-
+# Simple query to test the connection.
+# Provides insight into the handling of very light queries.
+  +------------------------------+
+  | select attribute 'id'        |
+  | from entity 'offers'         |
+  | return the first 20 records; |
+  +------------------------------+
 
 # ====== INSIGHT QUERIES ========================================================================== #
 
 # == INSIGHT 1 == #
-    select all attributes
-    from 'offers';
-
-    if present select all remaining data;
+# Retrieves the full dataset.
+# Provides insight in the data structure and load handling capabilities of the DBMS.
+  +---------------------------------------+
+  | select all attributes                 |
+  | from 'offers';                        |
+  |                                       |
+  | if present select all remaining data; |
+  +---------------------------------------+
 
 # == INSIGHT 2 == #
-    select the count of all attributes alias 'records',
-        the count of all distinct values of attirbute 'id' alias 'offers',
-        the count of all distinct values of attribute 'cluster_id' alias 'clusters'
-    from entity 'offers';
+# Provides insight into the dataset and into the manner of probability handling of the DBMS.
+  +---------------------------------------------------------------------------------+
+  | select the count of all attributes alias 'records',                             |
+  |     the count of all distinct values of attribute 'id' alias 'offers',          |
+  |     the count of all distinct values of attribute 'cluster_id' alias 'clusters' |
+  | from entity 'offers';                                                           |
+  +---------------------------------------------------------------------------------+
 
 # == INSIGHT 3 == #
-    select attribute 'cluster_size',
-        the count of all values of attribute 'cluster_size' alias 'amount'
-    from subquery (
-        select the count of all distinct values of attribute 'id' alias 'cluster_size'
-        from entity 'offers'
-        grouped by attribute 'cluster_id'
-    ) alias 'cluster_sizes'
-    grouped by attribute 'cluster_size'
-    ascendingly ordered by 'cluster_size';
+# Provides insight into the distribution of cluster volumes.
+  +------------------------------------------------------------------------------------+
+  | select attribute 'cluster_size',                                                   |
+  |     the count of all values of attribute 'cluster_size' alias 'amount'             |
+  | from subquery (                                                                    |
+  |     select the count of all distinct values of attribute 'id' alias 'cluster_size' |
+  |     from entity 'offers'                                                           |
+  |     grouped by attribute 'cluster_id'                                              |
+  | ) alias 'cluster_sizes'                                                            |
+  | grouped by attribute 'cluster_size'                                                |
+  | ascendingly ordered by 'cluster_size';                                             |
+  +------------------------------------------------------------------------------------+
 
 # == INSIGHT 4 == #
-    select the count of all certain records divided by the count of all attributes times 100 rounded to four decimal places alias 'certain percentage'
-    from entity offers;
+# Gets the percentage of certain clusters.
+# Provides insight into the handling of probabilistic data of the DBMS.
+  +----------------------------------------------------------------------------------------------------------------------------------------------------+
+  | select the count of all certain records divided by the count of all attributes times 100 rounded to four decimal places alias 'certain percentage' |
+  | from entity offers;                                                                                                                                |
+  +----------------------------------------------------------------------------------------------------------------------------------------------------+
 
 # == INSIGHT 5 == #
-    select attribute 'id',
-        the probability attribute,
-        the variable or sentence attribute
-    from entity 'offers'
-    satisfying a specific variable or sentence statement;
+# Gets the id and probability of the offers with a specific variable value or sentence.
+  +-------------------------------------------------------+
+  | select attribute 'id',                                |
+  |     the probability attribute,                        |
+  |     the variable or sentence attribute                |
+  | from entity 'offers'                                  |
+  | satisfying a specific variable or sentence statement; |
+  +-------------------------------------------------------+
 
 # == INSIGHT 6 == #
-    select the average of the probability attribute rounded to four decimal places alias 'certainty_of_the_dataset'
-    from entity 'offers';
+# Gets the average probability of the dataset.
+  +-----------------------------------------------------------------------------------------------------------------+
+  | select the average of the probability attribute rounded to four decimal places alias 'certainty_of_the_dataset' |
+  | from entity 'offers';                                                                                           |
+  +-----------------------------------------------------------------------------------------------------------------+
 
 
 # ====== PROBABILITY CENTERED QUERIES ============================================================= #
 
 # == PROBABILISTIC 1 == #
-    select the probability attribute rounded to four decimal places alias 'probability',
-        all attributes
-    from entity 'offers'
-    descendingly ordered by 'probability';
+# Gets offers with the probability of their occurrence.
+  +--------------------------------------------------------------------------------------+
+  | select the probability attribute rounded to four decimal places alias 'probability', |
+  |     all attributes                                                                   |
+  | from entity 'offers'                                                                 |
+  | descendingly ordered by 'probability';                                               |
+  +--------------------------------------------------------------------------------------+
 
 # == PROBABILISTIC 2 == #
-    select the attribute 'category', the expected count per attribute 'category' alias 'expected_count'
-    from entity 'offers'
-    grouped by attribute 'category'
-    descendingly ordered by 'expected_count';
+# Gets the expected count of the categories.
+  +-----------------------------------------------------------------------------------------------------+
+  | select the attribute 'category', the expected count per attribute 'category' alias 'expected_count' |
+  | from entity 'offers'                                                                                |
+  | grouped by attribute 'category'                                                                     |
+  | descendingly ordered by 'expected_count';                                                           |
+  +-----------------------------------------------------------------------------------------------------+
 
 # == PROBABILISTIC 3 == #
-    select attribute 'cluster_id',
-        the expected sum per attribute 'id' alias 'number_of_offers'
-    from entity 'offers'
-    grouped by attribute 'cluster_id'
-    descendingly ordered by 'number_of_offers';
+# Gets the expected sum of the product ids per cluster.
+  +------------------------------------------------------------------+
+  | select attribute 'cluster_id',                                   |
+  |     the expected sum per attribute 'id' alias 'number_of_offers' |
+  | from entity 'offers'                                             |
+  | grouped by attribute 'cluster_id'                                |
+  | descendingly ordered by 'number_of_offers';                      |
+  +------------------------------------------------------------------+
 
 # == PROBABILISTIC 4 == #
-    select attribute 'category',
-        the compound variable/sentence attribute,
-        the compound probability attribute rounded to four demical places alias 'probability'
-    from entity 'offers'
-    grouped by attribute 'category'
-    descendingly ordered by 'probability';
+# Gets the sentence and probability per category.
+  +-------------------------------------------------------------------------------------------+
+  | select attribute 'category',                                                              |
+  |     the compound variable/sentence attribute,                                             |
+  |     the compound probability attribute rounded to four demical places alias 'probability' |
+  | from entity 'offers'                                                                      |
+  | grouped by attribute 'category'                                                           |
+  | descendingly ordered by 'probability';                                                    |
+  +-------------------------------------------------------------------------------------------+
 
 # == PROBABILISTIC 5 == #
-    select all attributes,
-        the probability attribute rounded to four decimal places alias 'probability'
-    from entity 'offers'
-    satisfying that the attribute value 'cluster_id' exists in subquery (
-        select attribute 'cluster_id'
-        from entity 'offers'
-        satisfying that attribute 'title' contains 'ford'
-            or that attribute 'description' contains 'ford'
-    )
-    descindingly ordered by 'probability'
-    return the first 1 records;
+# Returns the most probable offer that is related to a specified string. An example string is 'card'.
+  +----------------------------------------------------------------------------------+
+  | select all attributes,                                                           |
+  |     the probability attribute rounded to four decimal places alias 'probability' |
+  | from entity 'offers'                                                             |
+  | satisfying that the attribute value 'cluster_id' exists in subquery (            |
+  |     select attribute 'cluster_id'                                                |
+  |     from entity 'offers'                                                         |
+  |     satisfying that attribute 'title' contains a specified string                |
+  |         or that attribute 'description' contains a specified string              |
+  | )                                                                                |
+  | descindingly ordered by 'probability'                                            |
+  | return the first 1 records;                                                      |
+  +----------------------------------------------------------------------------------+
 
 # == PROBABILISTIC 6 == #
-    select attribute 'id',
-        attribute 'cluster_id',
-        attribute 'brand',
-        attribute 'category',
-        attribute 'identifiers'
-    from entity 'offers'
-    satisfying that attribute 'title' contains 'ford'
-        or that attribute 'description' contains 'ford'
-        and the value of the probability attribute is higher than 0.45
-        and the value of the probability attribute is lower than 0.55;
+# Returns all offers containing a specified string with a high uncertainty so these can be classified by human inspection.
+  +--------------------------------------------------------------------+
+  | select attribute 'id',                                             |
+  |     attribute 'cluster_id',                                        |
+  |     attribute 'brand',                                             |
+  |     attribute 'category',                                          |
+  |     attribute 'identifiers'                                        |
+  | from entity 'offers'                                               |
+  | satisfying that attribute 'title' contains a specified string      |
+  |     or that attribute 'description' contains a specified string    |
+  |     and the value of the probability attribute is higher than 0.45 |
+  |     and the value of the probability attribute is lower than 0.55; |
+  +--------------------------------------------------------------------+
 
 
 # ====== INSERT, UPDATE, DELETE =================================================================== #
 
 # == INSERT, UPDATE, DELETE 1 == #
-    insert into entity 'offers'
-    the values (0, 543, 'david yurman 5mm sterling silver and citrine cable classics bracelet yoogi s closet', 'david yurman', 'Jewelry', 'this gorgeous david yurman 5mm sterling silver and citrine cable classics bracelet is an elegant classic that will never go out of style it features the signature cable design in sterling silver two dainty faceted citrine stones end caps and 14k gold details makes for a great everyday bracelet or a fabulous gift retail price is 625 the bracelet is clean and beautiful throughout with no visible signs of wear', 'cad 60 35 cad', '[{"/productID": "[11106896]"}]', 'None', 'shipping method estimated transit time fee per order standard ups ground 1 5 business days free expedited ups 2 day delivery on monday friday 2 business days 24 95 apo fpo alaska and hawaii usps priority insured 6 10 business days free canada usps priority insured 6 10 business days 19 95 canada usps express insured 3 5 business days 29 95 international usps priority insured 6 10 business days 29 95 international usps express insured 3 5 business days 39 95', the probabilistic representation),
-               (-1, 543, 'david yurman cable classics bracelet yoogi s closet', 'david yurman', 'Jewelry', 'with no visible signs of wear', 'cad 60 35 cad', '[{"/productID": "[11106896]"}]', 'None', 'shipping method estimated transit time fee per order standard ups ground 1 5 business days free expedited ups 2 day delivery on monday friday 2 business days 39 95', the probabilistic representation ),
-               (-2, 543, 'yoogi s closet', 'david yurman', 'Jewelry', 'None', 'cad 60 35 cad', '[{"/productID": "[11106896]"}]', 'None', 'None', the probabilistic representation );
-
-    if required add the new probabilities to the corresponding entity
-    if required update the probability space;
+# Inserting a single row.
+  +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+  | insert into entity 'offers'                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+  | the values (0, 543, 'david yurman 5mm sterling silver and citrine cable classics bracelet yoogi s closet', 'david yurman', 'Jewelry', 'this gorgeous david yurman 5mm sterling silver and citrine cable classics bracelet is an elegant classic that will never go out of style it features the signature cable design in sterling silver two dainty faceted citrine stones end caps and 14k gold details makes for a great everyday bracelet or a fabulous gift retail price is 625 the bracelet is clean and beautiful throughout with no visible signs of wear', 'cad 60 35 cad', '[{"/productID": "[11106896]"}]', 'None', 'shipping method estimated transit time fee per order standard ups ground 1 5 business days free expedited ups 2 day delivery on monday friday 2 business days 24 95 apo fpo alaska and hawaii usps priority insured 6 10 business days free canada usps priority insured 6 10 business days 19 95 canada usps express insured 3 5 business days 29 95 international usps priority insured 6 10 business days 29 95 international usps express insured 3 5 business days 39 95', the probabilistic representation), |
+  |            (-1, 543, 'david yurman cable classics bracelet yoogi s closet', 'david yurman', 'Jewelry', 'with no visible signs of wear', 'cad 60 35 cad', '[{"/productID": "[11106896]"}]', 'None', 'shipping method estimated transit time fee per order standard ups ground 1 5 business days free expedited ups 2 day delivery on monday friday 2 business days 39 95', the probabilistic representation ),                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+  |            (-2, 543, 'yoogi s closet', 'david yurman', 'Jewelry', 'None', 'cad 60 35 cad', '[{"/productID": "[11106896]"}]', 'None', 'None', the probabilistic representation );                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+  |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+  | if required add the new probabilities to the corresponding entity                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+  | if required update the probability space;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+  +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 # == INSERT, UPDATE, DELETE 2 == #
-    insert into entity 'offers'
-    the results of subquery (
-        select all attributes
-        from entity 'bulk_insert'
-    );
-
-    if required add the new probabilities to the corresponding entity
-    if required update the probability space;
+# Inserting bulk.
+  +-------------------------------------------------------------------+
+  | insert into entity 'offers'                                       |
+  | the results of subquery (                                         |
+  |     select all attributes                                         |
+  |     from entity 'bulk_insert'                                     |
+  | );                                                                |
+  |                                                                   |
+  | if required add the new probabilities to the corresponding entity |
+  | if required update the probability space;                         |
+  +-------------------------------------------------------------------+
 
 # == INSERT, UPDATE, DELETE 3 == #
-    update the entity containing the probabilities.
-    alter half of the probabilities of the cluster with cluster_id 10;
-
-    if required manually repair the probability space;
+# Updates uncertainty.
+# Should be run on a cluster with four offers.
+#    With the current parameters, this query can be run on the cluster with cluster_id 10.
+  +----------------------------------------------------------------+
+  | update the entity containing the probabilities.                |
+  | alter half of the probabilities of a cluster with four offers; |
+  |                                                                |
+  | if required manually repair the probability space;             |
+  +----------------------------------------------------------------+
 
 # == INSERT, UPDATE, DELETE 4 == #
-    update entity 'offers'
-    set attribute 'cluster_id' with the maximum value of attribute 'cluster_id' + 1,
-        the variable/sentence/probability attribute to certain
-    satisfying that attribute 'id' has value '12071001';
+# Removes uncertainty.
+# Should be run on a cluster with four offers.
+#     With the current parameters, this query can be run on the cluster with cluster_id 162.
+#     The corresponding id values are 12071001, 16457529, 7339350, and 12326926
+  +----------------------------------------------------------------------------------+
+  | update entity 'offers'                                                           |
+  | set attribute 'cluster_id' with the maximum value of attribute 'cluster_id' + 1, |
+  |     the variable/sentence/probability attribute to certain                       |
+  | satisfying that attribute 'id' has the value of the first offer in the cluster;  |
+  |                                                                                  |
+  | update entity 'offers'                                                           |
+  | set attribute 'cluster_id' with the maximum value of attribute 'cluster_id' + 1, |
+  |     the variable/sentence/probability attribute to certain                       |
+  | satisfying that attribute 'id' has the value of the third offer in the cluster;  |
+  |                                                                                  |
+  | update entity 'offers'                                                           |
+  | set the variable/sentence/probability attribute to a new normalized value        |
+  | satisfying that attribute 'id' has the value of the second offer in the cluster; |
+  |                                                                                  |
+  | update entity 'offers'                                                           |
+  | set the variable/sentence/probability attribute to a new normalized value        |
+  | satisfying that attribute 'id' has the value of the fourth offer in the cluster; |
+  |                                                                                  |
+  | if required update the probabilities in the corresponding entity                 |
+  | if required update the probability space;                                        |
+  +----------------------------------------------------------------------------------+
 
-    update entity 'offers'
-    set attribute 'cluster_id' with the maximum value of attribute 'cluster_id' + 1,
-        the variable/sentence/probability attribute to certain
-    satisfying that attribute 'id' has value '16457529';
-
-    update entity 'offers'
-    set the variable/sentence/probability attribute to a new normalized value
-    satisfying that attribute 'id' has value '7339350';
-
-    update entity 'offers'
-    set the variable/sentence/probability attribute to a new normalized value
-    satisfying that attribute 'id' has value '12326926';
-
-    if required update the probabilities in the corresponding entity
-    if required update the probability space;
 
 # == INSERT, UPDATE, DELETE 5 == #
-    delete all records from entity 'offers'
-    satisfying that attribute 'cluster_id' has value 190;
-
-    if required delete the probabilities in the corresponding entity
-    if required update the probability space;
+# Deletes a full cluster.
+# Should be run on a sufficiently large cluster.
+  +--------------------------------------------------------------------------------+
+  | delete all records from entity 'offers'                                        |
+  | satisfying that attribute 'cluster_id' has the value of the specified cluster; |
+  |                                                                                |
+  | if required delete the probabilities in the corresponding entity;              |
+  | if required manually repair the probability space;                             |
+  +--------------------------------------------------------------------------------+

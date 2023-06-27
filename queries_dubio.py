@@ -49,16 +49,11 @@ DUBIO_QUERIES_DICT = {
     FROM offers;
     """,
 
-    # Get the id of the offers with sentence 'w8=1'.
+    # Get the id of the offers with sentence 'w43=1'.
     'insight_5': """
-    WITH prob AS (
-        SELECT prob(dict, 'w8=1') AS probability
-        FROM _dict 
-        WHERE name = 'mydict'
-    )
-    SELECT offers.id, prob.probability, hasrva(_sentence, 'w8=1')
-    FROM offers, prob  
-    WHERE hasrva(_sentence, 'w8=1');
+    SELECT o.id, prob(dict, 'w43=1') AS probability, hasrva(_sentence, 'w43=1')
+    FROM offers o, _dict d
+    WHERE hasrva(_sentence, 'w43=1');
     """,
 
     # Get the average probability of the dataset.
