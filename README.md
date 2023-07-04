@@ -1,5 +1,5 @@
 # QuestionMark
-QuestionMark is a set of two Python programs that can be used to benchmark any probabilistic database management system. QuestionMark is composed of the following two programs:
+QuestionMark is a set of two Python programs that can be used to benchmark any probabilistic database management system. The QuestionMark Benchmark for Probabilistic Databases is composed of the following two programs:
 - _QuestionMark: The Dataset Generator_. This program generates the dataset that is to be used in QuestionMark: The Probabilistic Benchmark.
 - _QuestionMark: The Probabilistic Benchmark_. This program runs the benchmark test. It contains a set of queries and metrics to provide a clear picture of the performance of any probailisictic DMBS.
 
