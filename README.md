@@ -63,7 +63,7 @@ The following metrics are included in QuestionMark:
 This project can be downloaded for use. Please check ```MANUAL.md``` for a roadmap on how
 to run the benchmark tests.
 
-This project may be adapted for own use. It is planned to release this work under a CC license.
+QuestionMark © 2023 by the University of Twente is licensed under CC BY 4.0 (Attribution 4.0 International)
 
 Additional dialects could be added to wish. The queries in ```queries-pseudo-code.txt``` can be used for convenient 
 translation to any other dialect. Currently, QuestionMark is built with PostgreSQL-based databases in mind. 
