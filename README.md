@@ -64,7 +64,7 @@ parameters.py.
 This project can be downloaded for use. Please check ```MANUAL.md``` for a roadmap on how
 to generate the datasets with the desired size and amount of uncertainty.
 
-This project may be adapted for own use. It is planned to release this work under a CC license.
+QuestionMark © 2023 by the University of Twente is licensed under CC BY 4.0 (Attribution 4.0 International).
 
 ## Contributors
 This project is written by Nikki Zandbergen as part of her M.Sc. Computer Science thesis
