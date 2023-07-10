@@ -8,7 +8,7 @@ To view and download the two projects, select either the branch _thedatasetgener
 Please see manual.pdf for more information on the project.
 
 ## Use
-QuestionMark is licensed under a Creative Commons Attribution 4.0 International License, also known as CC-BY.
+QuestionMark © 2023 by the University of Twente is licensed under CC BY 4.0 (Attribution 4.0 International)
 
 ## Contributors
 This project is written by Nikki Zandbergen as part of her M.Sc. Computer Science thesis
