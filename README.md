@@ -15,4 +15,4 @@ This project is written by Nikki Zandbergen as part of her M.Sc. Computer Scienc
 at the University of Twente.
 This project was supervised by Maurice van Keulen, Tom van Dijk and Jan Flokstra.
 
-The thesis can be downloaded [here](#). (not yet published).
+The thesis can be downloaded [here](http://essay.utwente.nl/96148/).
