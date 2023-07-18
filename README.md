@@ -7,6 +7,8 @@ To view and download the two projects, select either the branch _thedatasetgener
 
 Please see manual.pdf for more information on the project.
 
+This project can also be found at https://doi.org/10.5281/zenodo.8146101
+
 ## Use
 QuestionMark © 2023 by the University of Twente is licensed under CC BY 4.0 (Attribution 4.0 International)
 
